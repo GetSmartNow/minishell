@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 10:29:05 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/09 17:42:15 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/10 20:04:41 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,36 +80,35 @@ static char		*join_dir(char **s)
 	return (dir);
 }
 
-static void		mini_env(char **s, char **env)
+static int		mini_env(char **s, char **env)
 {
 	pid_t		pid;
 	int			i = 0;
 	char		*dir;
+	int			status;
 
-	// for(int p = 0; p <= 1; p++)
-	// {
+	for(int p = 0; p < 1; p++)
+	{
 		dir = join_dir(s);
-		printf("|%s|\n", dir);
+		// printf("|%s|\n", dir);
 		pid = fork();
 		// printf("|%s|\n", s[0]);
-		// while (env[i] != NULL)
-		// {
-		// 	printf("%s\n", env[i]);
-		// 	i++;
-		// }
-		// printf("|%d|\n", pid);
 		if (pid < 0)
 		{
 			write(1, "error\n", 6);
-			exit (0);
+			exit (127);
 		}
-		if (pid == 0)
+		else if (pid == 0)
 		{
-			write(1, "\n", 1);
 			execve(dir, s, env);
-			exit (0);
+			exit (1);
 		}
-	// }
+	}
+	if (waitpid(pid, &status, 0) > 0)
+	{
+		return (status);
+	}
+	return (0);
 }
 
 static void		sort_ft(char **s, char **env)
@@ -137,6 +136,7 @@ int			main(int ac, char **av, char **env)
 		write(1, "minishell$ ", 11);
 		status = get_next_line(&line);
 		s = ft_split(line, ' ');
+		// printf("|%s|\n", s[0]);
 		sort_ft(s, env);
 	}
 	return (0);

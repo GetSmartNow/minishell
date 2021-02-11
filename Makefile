@@ -6,7 +6,7 @@
 #    By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/09 17:56:31 by ctycho            #+#    #+#              #
-#    Updated: 2021/02/09 18:13:49 by ctycho           ###   ########.fr        #
+#    Updated: 2021/02/11 10:59:16 by ctycho           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,6 @@ INC_D	=	./include/
 
 INC		=	minishell.h
 SRCS	=	main_test.c 
-OBJS	=	${SRCS:.c=.o}
 
 #colors----------------------------------------------------------------------
 
@@ -47,18 +46,17 @@ LBLUE	=	\033[1;34m
 
 all:		$(NAME)
 	
-${NAME}: ${OBJS} ${INC}
+${NAME}: $(SRCS) ${INC}
 	@$(CC) -o $(NAME) $(SRCS) $(LIB_D)libft.a $(GNL_D)gnl.a
 	@echo "${CYAN}Library "${NAME}" succesfully compiled"
 
 clean:		
-	@rm -f ${OBJS}
-	@echo "${LRED}All object files were cleaned"
-
-fclean:		clean
 	@rm -f ${NAME}
-	@echo "${LRED}Binary file was cleaned"
 	@echo "${LGREEN}Everything is cleaned succesfully"
 
-re:     fclean all
+fclean:
+	@rm -f ${NAME}
+	@echo "${LGREEN}Everything is cleaned succesfully"
+
+re:			fclean all
 	@echo "${LBLUE}Library successfuly rebuilt"
