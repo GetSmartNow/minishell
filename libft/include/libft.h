@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 13:26:54 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/09 09:53:26 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/12 08:54:58 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct		s_list
 
 void				*ft_memset(void *str, int c, size_t len);
 void				ft_bzero(void *s, size_t n);
+void				*ft_memdel(void *ptr);
 void				*ft_memcpy(void *dst, const void *src, size_t n);
 void				*ft_memccpy(void *dest, const void *src, int c, size_t n);
 void				*ft_memmove(void *dst, const void *src, size_t len);

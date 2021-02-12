@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 10:29:05 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/10 20:04:41 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/12 14:05:33 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,52 +58,70 @@ static void		mini_exit(char **s)
 
 }
 
-static char		*join_dir(char **s)
+static char		*join_dir(t_mini *s)
 {
-	char		*dir;
-	int			i = 5;
-	int			j = 0;
+	char		**bin = NULL;
+	int			i = 0;
 
-	dir = (char *)malloc(sizeof(char) * 50);
-	dir[0] = '/';
-	dir[1] = 'b';
-	dir[2] = 'i';
-	dir[3] = 'n';
-	dir[4] = '/';
-	// printf("s:|%s|\n", s[0]);
-	// dir = ft_strjoin(dir, s[0]);
-	while (s[0][j])
+	s->tmp = NULL;
+	while (ft_strncmp(s->env[i], "PATH=", 5) != 0)
+		i++;
+	printf("|%s|\n", s->env[i]);
+	bin = ft_split(s->env[i], ':');
+	printf("|%s|\n", bin[0]);
+	s->tmp = bin[0];
+	s->tmp = ft_strnstr(s->tmp, "/bin", ft_strlen(s->tmp));
+	s->tmp = ft_strjoin(s->tmp, "/");
+	i = 0;
+	while (bin[i] != NULL)
 	{
-		dir[i++] = s[0][j++];
+		free(bin[i]);
+		i++;
+		// printf("|%s|\n", bin[i]);
 	}
-	dir[i] = '\0';
-	return (dir);
+	return (s->tmp);
 }
 
-static int		mini_env(char **s, char **env)
+static int		mini_env(t_mini *s)
 {
-	pid_t		pid;
-	int			i = 0;
-	char		*dir;
-	int			status;
+	DIR				*folder;
+	struct dirent	*command;
+	pid_t			pid;
+	int				i = 0;
+	int				status;
+	char			*bin = NULL;
 
-	for(int p = 0; p < 1; p++)
+	bin = join_dir(s);
+	free(s->tmp);
+	folder = opendir(bin);
+	if (folder == NULL)
 	{
-		dir = join_dir(s);
-		// printf("|%s|\n", dir);
-		pid = fork();
-		// printf("|%s|\n", s[0]);
-		if (pid < 0)
+		write(1, "error\n", 6);
+		exit (127);
+	}
+	while ((command = readdir(folder)))
+	{
+		if (ft_strcmp(command->d_name, s->arg[0]) == 0)
 		{
-			write(1, "error\n", 6);
-			exit (127);
-		}
-		else if (pid == 0)
-		{
-			execve(dir, s, env);
-			exit (1);
+			bin = ft_strjoin(bin, s->arg[0]);
+			free(s->arg[0]);
 		}
 	}
+	closedir(folder);
+	printf("|%s|\n", bin);
+	pid = fork();
+	if (pid < 0)
+	{
+		write(1, "error\n", 6);
+		exit (127);
+	}
+	else if (pid == 0)
+	{
+		execve(bin, s->arg, s->env);
+		free(bin);
+		exit (1);
+	}
+	free(bin);
 	if (waitpid(pid, &status, 0) > 0)
 	{
 		return (status);
@@ -111,33 +129,91 @@ static int		mini_env(char **s, char **env)
 	return (0);
 }
 
-static void		sort_ft(char **s, char **env)
+static void		sort_ft(t_mini	*s, char **env1)
 {
-	if (ft_strcmp(s[0], "echo") == 0)
-		mini_echo(s);
-	else if (ft_strcmp(s[0], "pwd") == 0)
-		mini_pwd(s);
-	else if (ft_strcmp(s[0], "exit") == 0)
-		mini_exit(s);
+	s->env = env1;
+	if (ft_strcmp(s->arg[0], "echo") == 0)
+		mini_echo(s->arg);
+	else if (ft_strcmp(s->arg[0], "pwd") == 0)
+		mini_pwd(s->arg);
+	else if (ft_strcmp(s->arg[0], "exit") == 0)
+		mini_exit(s->arg);
 	else
-		mini_env(s, env);
+		mini_env(s);
 }
 
-int			main(int ac, char **av, char **env)
+int			main(int ac, char **av, char **env1)
 {
+	t_mini	s;
 	char	*line;
-	char	**s;
 	int		status = 1;
 	
-	// printf("env |%s|\n", env[0]);
-	// printf("env1 |%s|\n", env[1]);
+	// env_init(env);
+
+	// printf("env |%s|\n", env1->content);
 	while (status)
 	{
 		write(1, "minishell$ ", 11);
 		status = get_next_line(&line);
-		s = ft_split(line, ' ');
+		s.arg = ft_split(line, ' ');
+		free(line);
 		// printf("|%s|\n", s[0]);
-		sort_ft(s, env);
+		sort_ft(&s, env1);
 	}
 	return (0);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// static void		env_init(char **env_array)
+// {
+// 	t_list		*env1;
+// 	t_list		*tmp;
+// 	int			i = 0;
+
+// 	// if (!(env = malloc(sizeof(t_env))))
+// 	// 	return ;
+// 	ft_lstnew(env_array[i]);
+// 	tmp = env1;
+// 	while (env_array[i++] != NULL)
+// 	{
+// 		ft_lstadd_back(&tmp, ft_lstnew(env_array[i]));
+// 		// printf("env |%s|\n", tmp->content);
+// 		tmp = tmp->next;
+// 	}
+// }
