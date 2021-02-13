@@ -6,16 +6,25 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 10:29:05 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/12 14:05:33 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/12 19:34:04 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static void		ft_init(t_mini *s)
+{
+	s->arg = NULL;
+	s->env = NULL;
+	s->tmp = NULL;
+	s->var.bin = NULL;
+}
+
 static void		mini_echo(char **s)
 {
-	int			i = 0;
+	int			i;
 
+	i = 0;
 	if (s[1] == NULL)
 		write(1, "\n", 1);
 	else if (ft_strcmp(s[1], "-n") == 0)
@@ -38,7 +47,7 @@ static void		mini_echo(char **s)
 	}
 }
 
-static void		mini_pwd(char **s)
+static void		mini_pwd(t_mini	*s)
 {
 	char		*s1;
 
@@ -47,6 +56,7 @@ static void		mini_pwd(char **s)
 	getcwd(s1, 100);
 	write(1, s1, ft_strlen(s1));
 	write(1, "\n", 1);
+	ft_memdel(s1);
 }
 
 static void		mini_exit(char **s)
@@ -58,75 +68,56 @@ static void		mini_exit(char **s)
 
 }
 
-static char		*join_dir(t_mini *s)
+static void		mini_cd(t_mini *s)
 {
-	char		**bin = NULL;
-	int			i = 0;
+	int			res;
 
-	s->tmp = NULL;
-	while (ft_strncmp(s->env[i], "PATH=", 5) != 0)
-		i++;
-	printf("|%s|\n", s->env[i]);
-	bin = ft_split(s->env[i], ':');
-	printf("|%s|\n", bin[0]);
-	s->tmp = bin[0];
-	s->tmp = ft_strnstr(s->tmp, "/bin", ft_strlen(s->tmp));
-	s->tmp = ft_strjoin(s->tmp, "/");
-	i = 0;
-	while (bin[i] != NULL)
+	res = 0;
+	res = chdir(s->arg[1]);
+	if (res == -1)
 	{
-		free(bin[i]);
-		i++;
-		// printf("|%s|\n", bin[i]);
+		write(1, "cd: ", 4);
+		write(1, s->arg[1], ft_strlen(s->arg[1]));
+		write(1, ": No such file or directory\n", 28);
 	}
-	return (s->tmp);
+
 }
 
-static int		mini_env(t_mini *s)
+static void		mini_env(t_mini *s)
 {
-	DIR				*folder;
-	struct dirent	*command;
-	pid_t			pid;
-	int				i = 0;
-	int				status;
-	char			*bin = NULL;
+	
+	int			i;
 
-	bin = join_dir(s);
-	free(s->tmp);
-	folder = opendir(bin);
-	if (folder == NULL)
+	i = 0;
+	if (s->arg[1])
 	{
-		write(1, "error\n", 6);
-		exit (127);
+		write(1, "env: ", 5);
+		write(1, s->arg[1], ft_strlen(s->arg[1]));
+		write(1, ": No such file or directory\n", 28);
 	}
-	while ((command = readdir(folder)))
-	{
-		if (ft_strcmp(command->d_name, s->arg[0]) == 0)
+	else
+		while (s->env[i] != NULL)
 		{
-			bin = ft_strjoin(bin, s->arg[0]);
-			free(s->arg[0]);
+			write(1, s->env[i], ft_strlen(s->env[i]));
+			write(1, "\n", 1);
+			i++;
 		}
-	}
-	closedir(folder);
-	printf("|%s|\n", bin);
-	pid = fork();
-	if (pid < 0)
-	{
-		write(1, "error\n", 6);
-		exit (127);
-	}
-	else if (pid == 0)
-	{
-		execve(bin, s->arg, s->env);
-		free(bin);
-		exit (1);
-	}
-	free(bin);
-	if (waitpid(pid, &status, 0) > 0)
-	{
-		return (status);
-	}
-	return (0);
+}
+
+static void		mini_export(t_mini *s)
+{
+	
+	int			i;
+
+	i = 0;
+	if (!(s->arg[1]))
+		while (s->env[i] != NULL)
+		{
+			write(1, "declare -x ", 11);
+			write(1, s->env[i], ft_strlen(s->env[i]));
+			write(1, "\n", 1);
+			i++;
+		}
 }
 
 static void		sort_ft(t_mini	*s, char **env1)
@@ -135,11 +126,18 @@ static void		sort_ft(t_mini	*s, char **env1)
 	if (ft_strcmp(s->arg[0], "echo") == 0)
 		mini_echo(s->arg);
 	else if (ft_strcmp(s->arg[0], "pwd") == 0)
-		mini_pwd(s->arg);
+		mini_pwd(s);
 	else if (ft_strcmp(s->arg[0], "exit") == 0)
 		mini_exit(s->arg);
-	else
+	else if (ft_strcmp(s->arg[0], "cd") == 0)
+		mini_cd(s);
+	else if (ft_strcmp(s->arg[0], "env") == 0)
 		mini_env(s);
+	else if (ft_strcmp(s->arg[0], "export") == 0)
+		mini_export(s);
+	else
+		mini_bin(s);
+	ft_memdel_arr((void**)s->arg);
 }
 
 int			main(int ac, char **av, char **env1)
@@ -147,17 +145,14 @@ int			main(int ac, char **av, char **env1)
 	t_mini	s;
 	char	*line;
 	int		status = 1;
-	
-	// env_init(env);
 
-	// printf("env |%s|\n", env1->content);
+	ft_init(&s);
 	while (status)
 	{
 		write(1, "minishell$ ", 11);
 		status = get_next_line(&line);
 		s.arg = ft_split(line, ' ');
 		free(line);
-		// printf("|%s|\n", s[0]);
 		sort_ft(&s, env1);
 	}
 	return (0);

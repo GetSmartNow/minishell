@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctycho <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 16:47:58 by ctycho            #+#    #+#             */
-/*   Updated: 2020/11/04 17:42:51 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/12 15:47:22 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n)
 
 	i = 0;
 	res = 0;
+	if (!s1 || !s2)
+		return (-1);
 	while ((s1[i] || s2[i]) && (i < n))
 	{
 		if (s1[i] < s2[i])

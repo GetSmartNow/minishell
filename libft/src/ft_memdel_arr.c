@@ -1,33 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_memdel_arr.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/09 09:51:44 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/12 15:47:06 by ctycho           ###   ########.fr       */
+/*   Created: 2021/02/12 14:46:29 by ctycho            #+#    #+#             */
+/*   Updated: 2021/02/12 15:12:53 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_strcmp(const char *s1, const char *s2)
+void		ft_memdel_arr(void **s)
 {
-	size_t	i;
-	int		res;
+	int		i;
 
 	i = 0;
-	res = 0;
-	if (!s1 || !s2)
-		return (-1);
-	while (s1[i] || s2[i])
+	if (s)
 	{
-		if (s1[i] < s2[i])
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		if (s1[i] > s2[i])
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		i++;
+		while (s[i] != NULL)
+		{
+			free(s[i]);
+			i++;
+		}	
 	}
-	return ((unsigned char)res);
+	free(s);
 }

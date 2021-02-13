@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 12:17:23 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/12 09:58:42 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/12 18:21:12 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,20 @@
 #include <sys/wait.h>
 #include <dirent.h>
 
+typedef struct		s_env
+{
+	char			*bin;
+	int				flag;
+}					t_env;
+
 typedef struct		s_mini
 {
+	t_env			var;
 	char			**arg;
 	char			**env;
 	char			*tmp;
 }					t_mini;
+
+int					mini_bin(t_mini *s);
 
 #endif
