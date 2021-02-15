@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 10:29:05 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/12 19:34:04 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/15 19:45:20 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,6 @@ static void		mini_echo(char **s)
 	}
 }
 
-static void		mini_pwd(t_mini	*s)
-{
-	char		*s1;
-
-	s1 = NULL;
-	s1 = malloc(1000);
-	getcwd(s1, 100);
-	write(1, s1, ft_strlen(s1));
-	write(1, "\n", 1);
-	ft_memdel(s1);
-}
-
 static void		mini_exit(char **s)
 {
 
@@ -68,24 +56,9 @@ static void		mini_exit(char **s)
 
 }
 
-static void		mini_cd(t_mini *s)
-{
-	int			res;
-
-	res = 0;
-	res = chdir(s->arg[1]);
-	if (res == -1)
-	{
-		write(1, "cd: ", 4);
-		write(1, s->arg[1], ft_strlen(s->arg[1]));
-		write(1, ": No such file or directory\n", 28);
-	}
-
-}
-
 static void		mini_env(t_mini *s)
 {
-	
+	t_mass		*tmp;
 	int			i;
 
 	i = 0;
@@ -96,12 +69,16 @@ static void		mini_env(t_mini *s)
 		write(1, ": No such file or directory\n", 28);
 	}
 	else
+	{
+		tmp = s->head;
 		while (s->env[i] != NULL)
 		{
-			write(1, s->env[i], ft_strlen(s->env[i]));
+			write(1, tmp->content, ft_strlen(tmp->content));
 			write(1, "\n", 1);
+			tmp = tmp->next;
 			i++;
 		}
+	}
 }
 
 static void		mini_export(t_mini *s)
@@ -140,6 +117,31 @@ static void		sort_ft(t_mini	*s, char **env1)
 	ft_memdel_arr((void**)s->arg);
 }
 
+static int		init_list(t_mini *s, char **env)
+{
+	t_mass		*tmp = NULL;
+	t_mass		*tmp1 = NULL;
+	char		*line = NULL;
+	int			i = 0;
+
+	s->head = NULL;
+	// tmp = s->head;
+	while (env[i] != NULL)
+	{
+		line = ft_strdup(env[i]);
+		my_lstadd_back(&s->head, my_lstnew(line));
+		i++;
+	}
+	// tmp = s->head;
+	// while (tmp->next != NULL)
+	// {
+	// 	printf("|%s|\n", tmp->content);
+	// 	tmp = tmp->next;
+	// }
+	// printf("|%s|\n", s->head->content);
+	return (0);
+}
+
 int			main(int ac, char **av, char **env1)
 {
 	t_mini	s;
@@ -147,6 +149,8 @@ int			main(int ac, char **av, char **env1)
 	int		status = 1;
 
 	ft_init(&s);
+	init_list(&s, env1);
+	// env_init(env1);
 	while (status)
 	{
 		write(1, "minishell$ ", 11);
@@ -195,20 +199,3 @@ int			main(int ac, char **av, char **env1)
 
 
 
-// static void		env_init(char **env_array)
-// {
-// 	t_list		*env1;
-// 	t_list		*tmp;
-// 	int			i = 0;
-
-// 	// if (!(env = malloc(sizeof(t_env))))
-// 	// 	return ;
-// 	ft_lstnew(env_array[i]);
-// 	tmp = env1;
-// 	while (env_array[i++] != NULL)
-// 	{
-// 		ft_lstadd_back(&tmp, ft_lstnew(env_array[i]));
-// 		// printf("env |%s|\n", tmp->content);
-// 		tmp = tmp->next;
-// 	}
-// }

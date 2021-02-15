@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 12:17:23 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/12 18:21:12 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/15 19:45:48 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,13 @@
 #include <sys/wait.h>
 #include <dirent.h>
 
+typedef struct		s_mass
+{
+	void			*content;
+	struct s_mass	*next;
+	struct s_mass	*prev;
+}					t_mass;
+
 typedef struct		s_env
 {
 	char			*bin;
@@ -32,6 +39,7 @@ typedef struct		s_env
 
 typedef struct		s_mini
 {
+	t_mass			*head;
 	t_env			var;
 	char			**arg;
 	char			**env;
@@ -39,5 +47,10 @@ typedef struct		s_mini
 }					t_mini;
 
 int					mini_bin(t_mini *s);
+void				mini_cd(t_mini *s);
+void				mini_pwd(t_mini	*s);
+t_mass				*my_lstnew(void *content);
+void				my_lstadd_back(t_mass **lst, t_mass *new);
+void				my_lstdelone(t_mass *lst, void (*del)(void *));
 
 #endif
