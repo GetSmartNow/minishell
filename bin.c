@@ -6,13 +6,13 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 15:50:33 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/12 19:24:31 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/16 13:04:19 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int			mini_env2(t_mini *s)
+static int			mini_bin2(t_mini *s)
 {
 	DIR				*folder;
 	struct dirent	*command;
@@ -37,7 +37,7 @@ static int			mini_env2(t_mini *s)
 	return (flag);
 }
 
-static char		*mini_env1(t_mini *s)
+static char		*mini_bin1(t_mini *s)
 {
 	char		**bin = NULL;
 	int			i = 0;
@@ -60,9 +60,9 @@ int		mini_bin(t_mini *s)
 	int				status;
 	char			*bin = NULL;
 
-	s->var.bin = mini_env1(s);
+	s->var.bin = mini_bin1(s);
 	ft_memdel(s->tmp);
-	res = mini_env2(s);
+	res = mini_bin2(s);
 	pid = fork();
 	if (pid < 0)
 	{

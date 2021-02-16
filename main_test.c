@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 10:29:05 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/15 19:45:20 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/16 13:19:48 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,83 +18,6 @@ static void		ft_init(t_mini *s)
 	s->env = NULL;
 	s->tmp = NULL;
 	s->var.bin = NULL;
-}
-
-static void		mini_echo(char **s)
-{
-	int			i;
-
-	i = 0;
-	if (s[1] == NULL)
-		write(1, "\n", 1);
-	else if (ft_strcmp(s[1], "-n") == 0)
-	{
-		i = 1;
-		while (s[++i])
-		{
-			write(1, s[i], ft_strlen(s[i]));
-			s[i + 1] != NULL ? write(1, " ", 1) : 0;
-		}
-	}
-	else
-	{
-		while (s[++i])
-		{
-			write(1, s[i], ft_strlen(s[i]));
-			s[i + 1] != NULL ? write(1, " ", 1) : 0;
-		}
-		write(1, "\n", 1);
-	}
-}
-
-static void		mini_exit(char **s)
-{
-
-	write(1, s[0], ft_strlen(s[0]));
-	write(1, "\n", 1);
-	exit (0);
-
-}
-
-static void		mini_env(t_mini *s)
-{
-	t_mass		*tmp;
-	int			i;
-
-	i = 0;
-	if (s->arg[1])
-	{
-		write(1, "env: ", 5);
-		write(1, s->arg[1], ft_strlen(s->arg[1]));
-		write(1, ": No such file or directory\n", 28);
-	}
-	else
-	{
-		tmp = s->head;
-		while (s->env[i] != NULL)
-		{
-			write(1, tmp->content, ft_strlen(tmp->content));
-			write(1, "\n", 1);
-			tmp = tmp->next;
-			i++;
-		}
-	}
-}
-
-static void		mini_export(t_mini *s)
-{
-	
-	int			i;
-
-	i = 0;
-	if (!(s->arg[1]))
-		while (s->env[i] != NULL)
-		{
-			write(1, "declare -x ", 11);
-			write(1, s->env[i], ft_strlen(s->env[i]));
-			write(1, "\n", 1);
-			i++;
-		}
 }
 
 static void		sort_ft(t_mini	*s, char **env1)
@@ -150,10 +73,9 @@ int			main(int ac, char **av, char **env1)
 
 	ft_init(&s);
 	init_list(&s, env1);
-	// env_init(env1);
 	while (status)
 	{
-		write(1, "minishell$ ", 11);
+		ft_putstr_fd("\033[0;36m\033[1mminishell ▸ \033[0m", STDOUT);
 		status = get_next_line(&line);
 		s.arg = ft_split(line, ' ');
 		free(line);

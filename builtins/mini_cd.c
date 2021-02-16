@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 18:41:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/15 19:44:17 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/16 10:46:36 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void			mini_oldpwd(t_mini *s)
 	}
 }
 
-static void			mini_pwd(t_mini *s)
+static void			mini_pwd1(t_mini *s)
 {
 	t_mass			*tmp;
 	char			*line;
@@ -69,5 +69,5 @@ void				mini_cd(t_mini *s)
 		write(1, ": No such file or directory\n", 28);
 	}
 	else
-		mini_pwd(s);
+		mini_pwd1(s);
 }
