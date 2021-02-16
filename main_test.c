@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 10:29:05 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/16 13:19:48 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/17 00:33:54 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void		sort_ft(t_mini	*s, char **env1)
 		mini_export(s);
 	else
 		mini_bin(s);
-	ft_memdel_arr((void**)s->arg);
+	ft_memdel_2d((void**)s->arg);
 }
 
 static int		init_list(t_mini *s, char **env)
@@ -48,7 +48,6 @@ static int		init_list(t_mini *s, char **env)
 	int			i = 0;
 
 	s->head = NULL;
-	// tmp = s->head;
 	while (env[i] != NULL)
 	{
 		line = ft_strdup(env[i]);
@@ -70,16 +69,39 @@ int			main(int ac, char **av, char **env1)
 	t_mini	s;
 	char	*line;
 	int		status = 1;
+	int		i = 0;
+	int		j = 0;
 
+	s.mass3d = (char ***)malloc(sizeof(char) * 10);
 	ft_init(&s);
 	init_list(&s, env1);
 	while (status)
 	{
 		ft_putstr_fd("\033[0;36m\033[1mminishell ▸ \033[0m", STDOUT);
 		status = get_next_line(&line);
-		s.arg = ft_split(line, ' ');
+		s.pipes = ft_split(line, '|');
+		// s.arg = ft_split(line, ' ');
+		while (s.pipes[i])
+		{
+			printf("p|%s|\n", s.pipes[i]);
+			s.mass3d[i] = ft_split(s.pipes[i], ' ');
+			i++;
+		}
+		i = 0;
+		// printf("a|%s|\n", s.mass3d[i][j]);
+		while (s.mass3d[i])
+		{
+			j = 0;
+			while(s.mass3d[i][j])
+			{
+				printf("a|%s|\n", s.mass3d[i][j]);
+				j++;
+			}
+			i++;
+		}
 		free(line);
-		sort_ft(&s, env1);
+		// ft_memdel_3d((void***)s.mass3d);
+		// sort_ft(&s, env1);
 	}
 	return (0);
 }

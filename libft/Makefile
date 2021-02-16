@@ -6,7 +6,7 @@
 #    By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/31 11:32:38 by ctycho            #+#    #+#              #
-#    Updated: 2021/02/12 14:47:10 by ctycho           ###   ########.fr        #
+#    Updated: 2021/02/17 00:02:26 by ctycho           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,8 +30,8 @@ INC		=	libft.h
 
 SRCS	=	$(addprefix ${SRC_D}, \
 			ft_memset.c			ft_bzero.c			ft_memcpy.c \
-			ft_memccpy.c		ft_memmove.c		ft_memdel.c \
-			ft_memdel_arr.c \
+			ft_memccpy.c		ft_memmove.c		ft_memdel_1d.c \
+			ft_memdel_2d.c		ft_memdel_3d.c \
 			ft_memchr.c			ft_memcmp.c			ft_strlen.c \
 			ft_strlcpy.c		ft_strlcat.c		ft_strchr.c \
 			ft_strrchr.c		ft_strnstr.c		ft_strcmp.c \

@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mini_pwd.c                                         :+:      :+:    :+:   */
+/*   ft_memdel.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/15 18:46:08 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/17 00:07:16 by ctycho           ###   ########.fr       */
+/*   Created: 2021/02/11 15:43:23 by ctycho            #+#    #+#             */
+/*   Updated: 2021/02/16 23:56:00 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void			mini_pwd(t_mini	*s)
+void			*ft_memdel_1d(void *ptr)
 {
-	char		*s1;
-
-	s1 = NULL;
-	s1 = malloc(1000);
-	getcwd(s1, 100);
-	write(1, s1, ft_strlen(s1));
-	write(1, "\n", 1);
-	ft_memdel_1d(s1);
+	if (ptr)
+	{
+		free(ptr);
+		ptr = NULL;
+	}
+	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 12:17:23 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/16 13:40:56 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/16 23:46:53 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,9 @@ typedef struct		s_mini
 	t_mass			*head;
 	t_env			var;
 	char			**arg;
+	char			***mass3d;
 	char			**env;
+	char			**pipes;
 	char			*tmp;
 }					t_mini;
 
