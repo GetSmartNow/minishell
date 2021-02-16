@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 10:29:05 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/17 00:33:54 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/17 00:41:01 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int			main(int ac, char **av, char **env1)
 		// printf("a|%s|\n", s.mass3d[i][j]);
 		while (s.mass3d[i])
 		{
-			j = 0;
+			// j = 0;
 			while(s.mass3d[i][j])
 			{
 				printf("a|%s|\n", s.mass3d[i][j]);
