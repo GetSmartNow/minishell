@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 15:50:33 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/17 00:05:50 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/17 19:56:53 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ static int			mini_bin2(t_mini *s)
 	}
 	while ((command = readdir(folder)))
 	{
-		if (ft_strcmp(command->d_name, s->arg[0]) == 0)
+		if (ft_strcmp(command->d_name, s->arg[0]) == 0) //if (ft_strcmp(command->d_name, s->arg[0]) == 0)
 		{
 			flag = 1;
-			s->var.bin = ft_strjoin(s->var.bin, s->arg[0]);
+			s->var.bin = ft_strjoin(s->var.bin, s->arg[0]); //s->var.bin = ft_strjoin(s->var.bin, s->arg[0]);
 		}
 	}
 	closedir(folder);

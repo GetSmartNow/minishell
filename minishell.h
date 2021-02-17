@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 12:17:23 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/16 23:46:53 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/17 20:44:42 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,13 @@
 #define STDOUT 1
 #define STDERR 2
 
+typedef struct		s_pipe
+{
+	int				count_pipe;
+	int				count_commands;
+	// char			**div_pipe;
+}					t_pipe;
+
 typedef struct		s_mass
 {
 	void			*content;
@@ -44,12 +51,13 @@ typedef struct		s_env
 
 typedef struct		s_mini
 {
+	t_pipe			pipe;
 	t_mass			*head;
 	t_env			var;
 	char			**arg;
 	char			***mass3d;
 	char			**env;
-	char			**pipes;
+	char			**div_pipe;
 	char			*tmp;
 }					t_mini;
 
@@ -60,6 +68,7 @@ void				mini_echo(char **s);
 void				mini_exit(char **s);
 void				mini_env(t_mini *s);
 void				mini_export(t_mini *s);
+int					mini_pipes(t_mini *s);
 
 t_mass				*my_lstnew(void *content);
 void				my_lstadd_back(t_mass **lst, t_mass *new);
