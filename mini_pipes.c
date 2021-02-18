@@ -6,13 +6,13 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:05:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/17 21:13:10 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/18 16:55:29 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int			mini_bin2(t_mini *s)
+static int			mini_bin2(t_mini *s, int i)
 {
 	DIR				*folder;
 	struct dirent	*command;
@@ -27,10 +27,10 @@ static int			mini_bin2(t_mini *s)
 	}
 	while ((command = readdir(folder)))
 	{
-		if (ft_strcmp(command->d_name, s->mass3d[1][0]) == 0) //if (ft_strcmp(command->d_name, s->arg[0]) == 0)
+		if (ft_strcmp(command->d_name, s->mass3d[i][0]) == 0) //if (ft_strcmp(command->d_name, s->arg[0]) == 0)
 		{
 			flag = 1;
-			s->var.bin = ft_strjoin(s->var.bin, s->div_pipe[1]); //s->var.bin = ft_strjoin(s->var.bin, s->arg[0]);
+			s->var.bin = ft_strjoin(s->var.bin, s->mass3d[i][0]); //s->var.bin = ft_strjoin(s->var.bin, s->arg[0]);
 		}
 	}
 	closedir(folder);
@@ -70,15 +70,19 @@ int					mini_pipes(t_mini *s)
 		fdin = dup(0);
 	int	ret;
 	int	fdout;
-	s->var.bin = mini_bin1(s);
-	res = mini_bin2(s);
-	printf("|%s|\n", s->var.bin);
 	for(i = 0; i < s->pipe.count_commands; i++)
 	{
+		res = 0;
+		s->var.bin = mini_bin1(s);
+		ft_memdel_1d(s->tmp);
+		// printf("b1|%s|\n", s->var.bin);
+		res = mini_bin2(s, i);
+		// printf("b2|%s|\n", s->var.bin);
 		dup2(fdin, 0);
 		close(fdin);
 		if (i == s->pipe.count_commands - 1)
 		{
+			// write(1, "#\n", 2);
 			// if (outfile)
 			// 	fdout = open();
 			// else
@@ -91,18 +95,18 @@ int					mini_pipes(t_mini *s)
 			fdout = fdpipe[1];
 			fdin = fdpipe[0];
 		}
-		// dup2(fdout, 1);
-		// close(fdout);
+		dup2(fdout, 1);
+		close(fdout);
 		
 		ret = fork();
 		if (ret == 0)
 		{
 			execve(s->var.bin, s->mass3d[i], s->env);
-			// perror("error");
+			perror("error");
 			exit (1);
 		}
-		// if (res)
-		// 	ft_memdel_1d(s->var.bin);
+		if (res)
+			ft_memdel_1d(s->var.bin);
 	}
 	dup2(tmpin, 0);
 	dup2(tmpout, 1);

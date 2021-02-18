@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 10:29:05 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/17 20:45:29 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/18 17:12:26 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ static void		ft_init(t_mini *s)
 static void		sort_ft(t_mini	*s, char **env1)
 {
 	s->env = env1;
-	// if (ft_strcmp(s->arg[0], "echo") == 0)
-	// 	mini_echo(s->arg);
+	if (ft_strcmp(s->mass3d[0][0], "echo") == 0)
+		mini_echo(s->mass3d[0]);
 	// else if (ft_strcmp(s->arg[0], "pwd") == 0)
 	// 	mini_pwd(s);
 	// else if (ft_strcmp(s->arg[0], "exit") == 0)
@@ -39,9 +39,9 @@ static void		sort_ft(t_mini	*s, char **env1)
 	// 	mini_env(s);
 	// else if (ft_strcmp(s->arg[0], "export") == 0)
 	// 	mini_export(s);
-	// else
+	else
+		mini_pipes(s);
 		// mini_bin(s);
-	mini_pipes(s);
 	// ft_memdel_2d((void**)s->arg);
 }
 
@@ -69,7 +69,7 @@ static int		init_list(t_mini *s, char **env)
 	return (0);
 }
 
-int			main(int ac, char **av, char **env1)
+int			main(int ac, char **av, char **env)
 {
 	t_mini	s;
 	char	*line;
@@ -78,7 +78,7 @@ int			main(int ac, char **av, char **env1)
 	int		j = 0;
 
 	s.mass3d = (char ***)malloc(sizeof(char) * 1000);
-	init_list(&s, env1);
+	init_list(&s, env);
 	while (status)
 	{
 		ft_init(&s);
@@ -89,29 +89,33 @@ int			main(int ac, char **av, char **env1)
 		i = 0;
 		while (s.div_pipe[i])
 		{
-			printf("p|%s|\n", s.div_pipe[i]);
+			// printf("p|%s|\n", s.div_pipe[i]);
 			s.mass3d[i] = ft_split(s.div_pipe[i], ' ');
 			s.pipe.count_commands++;
 			i++;
 		}
-		i = 0;
-		while (s.mass3d[i])
-		{
-			j = 0;
-			while(s.mass3d[i][j])
-			{
-				printf("a|%s|\n", s.mass3d[i][j]);
-				j++;
-			}
-			i++;
-		}
-		printf("|%d|\n", s.pipe.count_commands);
+		// i = 0;
+		// while (s.mass3d[i])
+		// {
+		// 	j = 0;
+		// 	while(s.mass3d[i][j])
+		// 	{
+		// 		printf("a|%s|\n", s.mass3d[i][j]);
+		// 		j++;
+		// 	}
+		// 	i++;
+		// }
+		// printf("|%d|\n", s.pipe.count_commands);
 		free(line);
-		sort_ft(&s, env1);
+		sort_ft(&s, env);
 		ft_memdel_2d((void**)s.div_pipe);
-		i = -1;
-		while (s.mass3d[++i])
-			ft_memdel_2d((void**)s.mass3d[i]);
+		// i = 0;
+		// while (s.mass3d[i])
+		// {
+		// 	write(1, "*", 1);
+		// 	ft_memdel_2d((void**)s.mass3d[i]);
+		// 	i++;
+		// }
 	}
 	return (0);
 }
