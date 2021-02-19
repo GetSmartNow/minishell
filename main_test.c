@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 10:29:05 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/19 19:00:52 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/19 21:34:42 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void		ft_init(t_mini *s)
 static void		sort_ft(t_mini	*s, char **env1)
 {
 	s->env = env1;
-	printf("|%s|\n", s->mass3d[0][0]);
+	// printf("|%s|\n", s->mass3d[0][0]);
 	if (ft_strcmp(s->mass3d[0][0], "echo") == 0)
 		mini_echo(s->mass3d[0]);
 	else if (ft_strcmp(s->mass3d[0][0], "pwd") == 0)
