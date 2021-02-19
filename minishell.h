@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 12:17:23 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/17 20:44:42 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/19 17:44:42 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,11 @@
 #define STDIN 0
 #define STDOUT 1
 #define STDERR 2
+
+typedef struct		s_flag
+{
+	int				oldpwd;
+}					t_flag;
 
 typedef struct		s_pipe
 {
@@ -51,8 +56,10 @@ typedef struct		s_env
 
 typedef struct		s_mini
 {
+	t_flag			flag;
 	t_pipe			pipe;
 	t_mass			*head;
+	t_mass			*head_x;
 	t_env			var;
 	char			**arg;
 	char			***mass3d;
@@ -69,6 +76,8 @@ void				mini_exit(char **s);
 void				mini_env(t_mini *s);
 void				mini_export(t_mini *s);
 int					mini_pipes(t_mini *s);
+
+void				ft_error(char *error, int flag);
 
 t_mass				*my_lstnew(void *content);
 void				my_lstadd_back(t_mass **lst, t_mass *new);

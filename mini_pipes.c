@@ -6,51 +6,57 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:05:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/18 16:55:29 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/19 17:41:37 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int			mini_bin2(t_mini *s, int i)
+static int		mini_bin1(t_mini *s, int i)
 {
+	char		**bin = NULL;
+	char		*line = NULL;
+	int			m = 0;
 	DIR				*folder;
 	struct dirent	*command;
 	int				flag;
 
 	flag = 0;
-	folder = opendir(s->var.bin);
+	// s->tmp = NULL;
+	while (ft_strncmp(s->env[m], "PATH=", 5) != 0)
+		m++;
+	line = ft_substr(s->env[m], 5, ft_strlen(s->env[m]));
+	bin = ft_split(line, ':');
+	ft_memdel_1d(line);
+	if (s->mass3d[i][0][0] == '/')
+		s->var.bin = ft_strdup(s->mass3d[i][0]);
+	else
+	{
+		m = 0;
+		while (bin[m] && flag == 0)
+		{
+			folder = opendir(bin[m]);
+			while ((command = readdir(folder)))
+			{
+				if (ft_strcmp(command->d_name, s->mass3d[i][0]) == 0)
+				{
+					flag = 1;
+					line = ft_strjoin(bin[m], "/");
+					s->var.bin = ft_strjoin(line, s->mass3d[i][0]);
+					ft_memdel_1d(line);
+				}
+			}
+			closedir(folder);
+			m++;
+		}
+	}
+	ft_memdel_2d((void**)bin);
 	if (folder == NULL)
 	{
 		write(1, "error\n", 6);
 		exit (127);
 	}
-	while ((command = readdir(folder)))
-	{
-		if (ft_strcmp(command->d_name, s->mass3d[i][0]) == 0) //if (ft_strcmp(command->d_name, s->arg[0]) == 0)
-		{
-			flag = 1;
-			s->var.bin = ft_strjoin(s->var.bin, s->mass3d[i][0]); //s->var.bin = ft_strjoin(s->var.bin, s->arg[0]);
-		}
-	}
-	closedir(folder);
 	return (flag);
-}
-
-static char		*mini_bin1(t_mini *s)
-{
-	char		**bin = NULL;
-	int			i = 0;
-
-	s->tmp = NULL;
-	while (ft_strncmp(s->env[i], "PATH=", 5) != 0)
-		i++;
-	bin = ft_split(s->env[i], ':');
-	s->tmp = bin[0];
-	s->tmp = ft_strnstr(s->tmp, "/bin", ft_strlen(s->tmp));
-	s->tmp = ft_strjoin(s->tmp, "/");
-	ft_memdel_2d((void**)bin);
-	return (s->tmp);
 }
 
 int					mini_pipes(t_mini *s)
@@ -73,11 +79,7 @@ int					mini_pipes(t_mini *s)
 	for(i = 0; i < s->pipe.count_commands; i++)
 	{
 		res = 0;
-		s->var.bin = mini_bin1(s);
-		ft_memdel_1d(s->tmp);
-		// printf("b1|%s|\n", s->var.bin);
-		res = mini_bin2(s, i);
-		// printf("b2|%s|\n", s->var.bin);
+		res = mini_bin1(s, i);
 		dup2(fdin, 0);
 		close(fdin);
 		if (i == s->pipe.count_commands - 1)
@@ -97,12 +99,11 @@ int					mini_pipes(t_mini *s)
 		}
 		dup2(fdout, 1);
 		close(fdout);
-		
 		ret = fork();
 		if (ret == 0)
 		{
 			execve(s->var.bin, s->mass3d[i], s->env);
-			perror("error");
+			ft_error(s->mass3d[i][0], 1);
 			exit (1);
 		}
 		if (res)

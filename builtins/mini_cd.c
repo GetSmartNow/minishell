@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 18:41:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/17 00:06:54 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/19 13:50:13 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,15 @@ static void			mini_oldpwd(t_mini *s)
 {
 	t_mass			*tmp;
 	char			*line;
+	int				flag = 0;
 
 	line = NULL;
 	tmp = s->head;
-	while (tmp->next != NULL)
+	while (tmp != NULL)
 	{
 		if (ft_strncmp(tmp->content, "OLDPWD=", ft_strlen("OLDPWD=")) == 0)
 		{
+			flag = 1;
 			free(tmp->content);
 			line = malloc(1000);
 			getcwd(line, 100);
@@ -30,6 +32,13 @@ static void			mini_oldpwd(t_mini *s)
 			ft_memdel_1d(line);
 		}
 		tmp = tmp->next;
+	}
+	if (flag == 0)
+	{
+		line = malloc(1000);
+		getcwd(line, 100);
+		line = ft_strjoin("OLDPWD=", line);
+		my_lstadd_back(&s->head, my_lstnew(line));
 	}
 }
 
@@ -57,15 +66,14 @@ void				mini_cd(t_mini *s)
 {
 	int				res;
 	t_mass			*tmp;
-	char			*line = NULL;
 
 	res = 0;
 	mini_oldpwd(s);
-	res = chdir(s->arg[1]);
+	res = chdir(s->mass3d[0][1]);
 	if (res == -1)
 	{
 		write(1, "cd: ", 4);
-		write(1, s->arg[1], ft_strlen(s->arg[1]));
+		write(1, s->mass3d[0][1], ft_strlen(s->mass3d[0][1]));
 		write(1, ": No such file or directory\n", 28);
 	}
 	else
