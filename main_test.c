@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 10:29:05 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/19 21:34:42 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/21 00:38:05 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,14 +83,21 @@ static int		init_list(t_mini *s, char **env)
 		i++;
 	}
 	// tmp = s->head;
-	// while (tmp->next != NULL)
+	// while (tmp != NULL)
 	// {
 	// 	// printf("|%s|\n", tmp->content);
 	// 	write(1, tmp->content, ft_strlen(tmp->content));
 	// 	write(1, "\n", 1);
 	// 	tmp = tmp->next;
 	// }
-	// printf("|%s|\n", s->head->content);
+	// tmp = s->head;
+	// while (tmp->next != NULL)
+	//   tmp = tmp->next;  // переход к концу списка
+	// while (tmp != NULL) // условие окончания обхода
+	// {
+	// 	printf("%s\n", tmp->content); // вывод значения элемента tmp
+	// 	tmp = tmp->prev; // переход к предыдущему узлу
+	// }
 	return (0);
 }
 

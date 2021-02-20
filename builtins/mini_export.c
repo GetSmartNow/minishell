@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:46:29 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/19 23:01:28 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/21 00:40:17 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void				export_to_export(t_mini *s, int equal)
 {
 	t_mass			*tmp;
+	t_mass			*tmp1;
 	char			*line = NULL;
 	int				i = 1;
 	int				flag;
@@ -38,7 +39,9 @@ void				export_to_export(t_mini *s, int equal)
 					printf("|%d|\n", length);
 					write(1, "#\n", 2);
 					flag = 0;
-					free(tmp->content);
+					tmp1 = tmp;
+					tmp1 = tmp->prev;
+					free(tmp1->content);
 					line = ft_strdup(s->mass3d[0][i]);
 					my_lstadd_back(&s->head_x, my_lstnew(line));
 				}
@@ -56,8 +59,8 @@ void				export_to_export(t_mini *s, int equal)
 		if (flag == 1)
 		{
 			write(1, "*\n", 2);
-			if (equal == 1)
-				free(tmp->content);
+			// if (equal == 1)
+			// 	free(tmp->content);
 			line = ft_strdup(s->mass3d[0][i]);
 			my_lstadd_back(&s->head_x, my_lstnew(line));
 		}
