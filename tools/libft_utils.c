@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 18:43:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/21 00:32:42 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/21 02:51:55 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ t_mass	*my_lstnew(void *content)
 void			my_lstadd_back(t_mass **lst, t_mass *new)
 {
 	t_mass	*end;
-	t_mass	*tmp;
 
 	if (lst == NULL)
 		return ;
@@ -60,6 +59,21 @@ void			my_lstadd_back(t_mass **lst, t_mass *new)
 // 		end->next = new;
 // 	}
 // }
+
+t_mass			*deletelem(t_mass *lst)
+{
+	t_mass		*prev;
+	t_mass		*next;
+	
+	prev = lst->prev; // узел, предшествующий lst
+	next = lst->next; // узел, следующий за lst
+	if (prev != NULL)
+		prev->next = lst->next; // переставляем указатель
+	if (next != NULL)
+		next->prev = lst->prev; // переставляем указатель
+	free(lst); // освобождаем память удаляемого элемента
+	return(prev);
+}
 
 void	my_lstdelone(t_mass *lst, void (*del)(void *))
 {

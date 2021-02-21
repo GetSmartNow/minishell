@@ -6,11 +6,41 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:46:29 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/21 00:40:17 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/21 03:22:17 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int			length_to_equal(t_mini *s, char *line)
+{
+	int				i = 0;
+	int				count = 0;
+
+	while (line[i] != '=')
+	{
+		i++;
+	}
+	return (i);
+}
+
+static char			*put_quotes(char *s, char *s1)
+{
+	int		i = 0;
+	int		j = 0;
+	while (s1[i])
+	{
+		s[i] = s1[j];
+		if (s1[j] == '=')
+		{
+			i++;
+			s[i] = '"';
+		}
+		i++;
+		j++;
+		
+	}
+}
 
 void				export_to_export(t_mini *s, int equal)
 {
@@ -24,26 +54,21 @@ void				export_to_export(t_mini *s, int equal)
 	while (s->mass3d[0][i])
 	{
 		printf("1|%s|\n", s->mass3d[0][i]);
-		flag = 1;
+		flag = 0;
 		tmp = s->head_x;
-		while (tmp != NULL && flag == 1)
+		while (tmp != NULL && flag == 0)
 		{
 			// printf("|%s|\n", tmp->content);
 			if (equal == 1)
 			{
-				length = ft_strlen(s->mass3d[0][i]);
-				length = length - 1;
+				length = length_to_equal(s, s->mass3d[0][i]);
+				printf("|%d|\n", length);
 				if (ft_strncmp(tmp->content, s->mass3d[0][i], length) == 0)
 				{
 					printf("2|%s|\n", tmp->content);
-					printf("|%d|\n", length);
-					write(1, "#\n", 2);
-					flag = 0;
-					tmp1 = tmp;
-					tmp1 = tmp->prev;
-					free(tmp1->content);
-					line = ft_strdup(s->mass3d[0][i]);
-					my_lstadd_back(&s->head_x, my_lstnew(line));
+					// write(1, "#\n", 2);
+					// flag = 2;
+					deletelem(tmp);
 				}
 			}
 			else
@@ -51,12 +76,12 @@ void				export_to_export(t_mini *s, int equal)
 				if (ft_strncmp(tmp->content, s->mass3d[0][i], ft_strlen(s->mass3d[0][i])) == 0)
 				{
 					write(1, "&\n", 2);
-					flag = 0;
+					flag = 1;
 				}
 			}	
 			tmp = tmp->next;
 		}
-		if (flag == 1)
+		if (flag == 0)
 		{
 			write(1, "*\n", 2);
 			// if (equal == 1)
@@ -83,7 +108,7 @@ void				mini_export(t_mini *s)
 		// if (ft_strcmp(s->mass3d[0][1], "=") == 0)
 		if (ft_strchr(s->mass3d[0][1], '='))
 		{
-			write(1, "#\n", 2);
+			// write(1, "#\n", 2);
 			export_to_env(s);
 			export_to_export(s, 1);
 		}

@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 12:17:23 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/19 17:44:42 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/21 02:49:56 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,6 @@ void				ft_error(char *error, int flag);
 t_mass				*my_lstnew(void *content);
 void				my_lstadd_back(t_mass **lst, t_mass *new);
 void				my_lstdelone(t_mass *lst, void (*del)(void *));
+t_mass			*deletelem(t_mass *lst);
 
 #endif
