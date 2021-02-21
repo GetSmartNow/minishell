@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 10:29:05 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/21 00:38:05 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/21 21:17:35 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ static void		sort_ft(t_mini	*s, char **env1)
 		mini_env(s);
 	else if (ft_strcmp(s->mass3d[0][0], "export") == 0)
 		mini_export(s);
+	else if (ft_strcmp(s->mass3d[0][0], "unset") == 0)
+		mini_unset(s);
 	else
 		mini_pipes(s);
 		// mini_bin(s);

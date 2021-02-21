@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 12:17:23 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/21 02:49:56 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/21 21:17:49 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,10 @@ void				mini_echo(char **s);
 void				mini_exit(char **s);
 void				mini_env(t_mini *s);
 void				mini_export(t_mini *s);
+void				mini_unset(t_mini *s);
 int					mini_pipes(t_mini *s);
 
+int					length_to_equal(t_mini *s, char *line);
 void				ft_error(char *error, int flag);
 
 t_mass				*my_lstnew(void *content);
