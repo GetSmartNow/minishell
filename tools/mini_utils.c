@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/21 21:13:20 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/22 19:42:47 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/23 01:22:23 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,12 @@ int					length_to_equal(t_mini *s, char *line)
 	return (i);
 }
 
-char				*put_quotes(char *s, char *s1)
+char				*put_quotes(char *s1)
 {
 	int		i = 0;
 	int		j = 0;
 	int		flag = 0;
+	char	*s = NULL;
 
 	s = (char *)malloc(sizeof(char) * ft_strlen(s1) + 3);
 	while (s1[j])

@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 12:17:23 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/22 19:42:52 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/23 01:22:39 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void				mini_unset(t_mini *s);
 int					mini_pipes(t_mini *s);
 
 int					length_to_equal(t_mini *s, char *line);
-char				*put_quotes(char *s, char *s1);
+char				*put_quotes(char *s1);
 void				ft_error(char *error, int flag);
 
 t_mass				*my_lstnew(void *content);

@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:46:29 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/22 19:42:34 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/23 01:21:54 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void				export_to_export(t_mini *s, int i, int equal)
 		}
 		if (flag == 0)
 		{
-			line = put_quotes(line, s->mass3d[0][i]);
+			line = put_quotes(s->mass3d[0][i]);
 			my_lstadd_back(&s->head_x, my_lstnew(line));
 		}
 		i++;
