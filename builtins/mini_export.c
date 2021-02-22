@@ -6,35 +6,11 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:46:29 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/21 23:00:08 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/22 19:42:34 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static char			*put_quotes(char *s, char *s1)
-{
-	int		i = 0;
-	int		j = 0;
-	int		flag = 0;
-
-	s = (char *)malloc(sizeof(char) * ft_strlen(s1) + 3);
-	while (s1[j])
-	{
-		s[i] = s1[j];
-		if (s1[j] == '=')
-		{
-			s[++i] = '"';
-			flag = 1;
-		}
-		if (s1[j + 1] == '\0' && flag == 1)
-			s[++i] = '"';
-		i++;
-		j++;
-	}
-	s[i] = '\0';
-	return(s);
-}
 
 void				export_to_export(t_mini *s, int i, int equal)
 {

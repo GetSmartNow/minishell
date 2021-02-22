@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 10:29:05 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/21 21:17:35 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/22 20:12:56 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,14 @@ static int		init_list_x(t_mini *s, char **env)
 	{
 		if (ft_strncmp(env[i], "OLDPWD=", ft_strlen("OLDPWD=")) != 0)
 		{
-			line = ft_strdup(env[i]);
+			line = put_quotes(line, env[i]);
 			my_lstadd_back(&s->head_x, my_lstnew(line));
 		}
 		i++;
 	}
+	line = put_quotes(line, "OLDPWD");
+	my_lstadd_back(&s->head_x, my_lstnew(line));
+	ft_list_sort(&s->head_x, 0);
 	return (0);
 }
 

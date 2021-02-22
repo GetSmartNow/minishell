@@ -1,46 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mini_utils.c                                       :+:      :+:    :+:   */
+/*   ft_list_sort.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/21 21:13:20 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/22 19:42:47 by ctycho           ###   ########.fr       */
+/*   Created: 2021/02/22 16:53:38 by ctycho            #+#    #+#             */
+/*   Updated: 2021/02/22 18:01:18 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int					length_to_equal(t_mini *s, char *line)
+void			ft_list_sort(t_mass **lst, int cmp)
 {
-	int				i = 0;
+	t_mass		*tmp;
+	t_mass		*cur;
+	t_mass		*nex;
 
-	while (line[i] != '=' && line[i] != '\0')
-		i++;
-	return (i);
-}
-
-char				*put_quotes(char *s, char *s1)
-{
-	int		i = 0;
-	int		j = 0;
-	int		flag = 0;
-
-	s = (char *)malloc(sizeof(char) * ft_strlen(s1) + 3);
-	while (s1[j])
+	cur = *(lst);
+	while (tmp->next != NULL)
 	{
-		s[i] = s1[j];
-		if (s1[j] == '=')
+		tmp = cur;
+		nex = cur->next;
+		if (ft_strcmp(tmp->content[0], nex->content[0]) > 0)
 		{
-			s[++i] = '"';
-			flag = 1;
+			cur = nex;
+			cur->next = tmp;
 		}
-		if (s1[j + 1] == '\0' && flag == 1)
-			s[++i] = '"';
-		i++;
-		j++;
+		else
+		{
+			cur = cur->next;
+		}
 	}
-	s[i] = '\0';
-	return(s);
 }

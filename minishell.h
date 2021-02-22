@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 12:17:23 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/21 21:17:49 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/22 19:42:52 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ typedef struct		s_pipe
 
 typedef struct		s_mass
 {
-	void			*content;
+	char			*content;
 	struct s_mass	*next;
 	struct s_mass	*prev;
 }					t_mass;
@@ -79,11 +79,13 @@ void				mini_unset(t_mini *s);
 int					mini_pipes(t_mini *s);
 
 int					length_to_equal(t_mini *s, char *line);
+char				*put_quotes(char *s, char *s1);
 void				ft_error(char *error, int flag);
 
 t_mass				*my_lstnew(void *content);
 void				my_lstadd_back(t_mass **lst, t_mass *new);
 void				my_lstdelone(t_mass *lst, void (*del)(void *));
 t_mass			*deletelem(t_mass *lst);
+void			ft_list_sort(t_mass **lst, int cmp);
 
 #endif

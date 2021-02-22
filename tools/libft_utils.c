@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 18:43:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/21 02:51:55 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/22 19:37:52 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,23 +43,6 @@ void			my_lstadd_back(t_mass **lst, t_mass *new)
 	}
 }
 
-// void			my_lstadd_back(t_mass **lst, t_mass *new)
-// {
-// 	t_mass	*end;
-
-// 	if (lst == NULL)
-// 		return ;
-// 	end = *lst;
-// 	if (end == NULL)
-// 		*lst = new;
-// 	else
-// 	{
-// 		while (end->next != NULL)
-// 			end = end->next;
-// 		end->next = new;
-// 	}
-// }
-
 t_mass			*deletelem(t_mass *lst)
 {
 	t_mass		*prev;
@@ -71,6 +54,7 @@ t_mass			*deletelem(t_mass *lst)
 		prev->next = lst->next; // переставляем указатель
 	if (next != NULL)
 		next->prev = lst->prev; // переставляем указатель
+	free(lst->content);
 	free(lst); // освобождаем память удаляемого элемента
 	return(prev);
 }
@@ -79,4 +63,30 @@ void	my_lstdelone(t_mass *lst, void (*del)(void *))
 {
 	del(lst->content);
 	free(lst);
+}
+
+void			ft_list_sort(t_mass **lst, int cmp)
+{
+	t_mass		*ptr;
+	t_mass		*ptr1;
+	t_mass		*next;
+	t_mass		*tmp;
+	int			i;
+
+	ptr = *(lst);
+	while (ptr != NULL)
+	{
+		ptr1 = *(lst);
+		while (ptr1->next != NULL)
+		{
+			if (ft_strcmp(ptr1->content, ptr1->next->content) > 0)
+			{
+				tmp->content = ptr1->content;
+				ptr1->content = ptr1->next->content;
+				ptr1->next->content = tmp->content;
+			}
+			ptr1 = ptr1->next;
+		}
+		ptr = ptr->next;
+	}
 }

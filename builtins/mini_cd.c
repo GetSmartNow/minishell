@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 18:41:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/19 13:50:13 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/22 20:19:24 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,20 @@ static void			mini_oldpwd(t_mini *s)
 		line = ft_strjoin("OLDPWD=", line);
 		my_lstadd_back(&s->head, my_lstnew(line));
 	}
+	tmp = s->head_x;
+	while (tmp != NULL)
+	{
+		if (ft_strncmp(tmp->content, "OLDPWD", ft_strlen("OLDPWD")) == 0)
+		{
+			flag = 1;
+			free(tmp->content);
+			line = malloc(1000);
+			getcwd(line, 100);
+			tmp->content = ft_strjoin("OLDPWD=", line);
+			ft_memdel_1d(line);
+		}
+		tmp = tmp->next;
+	}
 }
 
 static void			mini_pwd1(t_mini *s)
@@ -48,6 +62,19 @@ static void			mini_pwd1(t_mini *s)
 	char			*line;
 
 	tmp = s->head;
+	while (tmp->next != NULL)
+	{
+		if (ft_strncmp(tmp->content, "PWD=", ft_strlen("PWD=")) == 0)
+		{
+			free(tmp->content);
+			line = malloc(1000);
+			getcwd(line, 100);
+			tmp->content = ft_strjoin("PWD=", line);
+			ft_memdel_1d(line);
+		}
+		tmp = tmp->next;
+	}
+	tmp = s->head_x;
 	while (tmp->next != NULL)
 	{
 		if (ft_strncmp(tmp->content, "PWD=", ft_strlen("PWD=")) == 0)
