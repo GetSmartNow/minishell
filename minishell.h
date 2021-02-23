@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 12:17:23 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/22 19:42:52 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/23 18:53:01 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ typedef struct		s_pipe
 
 typedef struct		s_mass
 {
-	char			*content;
+	void			*content;
 	struct s_mass	*next;
 	struct s_mass	*prev;
 }					t_mass;
@@ -51,7 +51,7 @@ typedef struct		s_mass
 typedef struct		s_env
 {
 	char			*bin;
-	int				flag;
+	int				shlvl;
 }					t_env;
 
 typedef struct		s_mini

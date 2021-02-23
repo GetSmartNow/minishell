@@ -6,36 +6,75 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:05:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/19 17:41:37 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/23 19:18:06 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static void			ft_shlvl(t_mini *s, int count)
+{
+	t_mass			*tmp;
+	t_mass			*tmp_x;
+
+	tmp = s->head;
+	while (tmp != NULL)
+	{
+		if (ft_strncmp(tmp->content, "SHLVL=", 6) == 0)
+		{
+			printf("2|%s|\n", tmp->content);
+			printf("3|%d|\n", count);
+			deletelem(tmp);
+			tmp->content = ft_strjoin("SHLVL=", ft_itoa(count));
+			printf("4|%s|\n", tmp->content);
+		}
+		tmp = tmp->next;
+	}
+	// tmp = s->head_x;
+}
+
 static int		mini_bin1(t_mini *s, int i)
 {
 	char		**bin = NULL;
 	char		*line = NULL;
+	t_mass		*tmp;
 	int			m = 0;
 	DIR				*folder;
 	struct dirent	*command;
 	int				flag;
 
 	flag = 0;
-	// s->tmp = NULL;
-	while (ft_strncmp(s->env[m], "PATH=", 5) != 0)
-		m++;
-	line = ft_substr(s->env[m], 5, ft_strlen(s->env[m]));
-	bin = ft_split(line, ':');
-	ft_memdel_1d(line);
+	tmp = s->head;
+	while (tmp != NULL && ft_strncmp(tmp->content, "PATH=", 5) != 0)
+	{
+		tmp = tmp->next;
+	}
 	if (s->mass3d[i][0][0] == '/')
+	{
 		s->var.bin = ft_strdup(s->mass3d[i][0]);
+	}
+	else if (tmp == NULL)
+		return (-1);
+	else if (ft_strncmp(s->mass3d[i][0], "minishell", 9) == 0)
+	{
+		s->var.shlvl++;
+		s->var.bin = ft_strdup("minishell");
+		ft_shlvl(s, s->var.shlvl);
+	}
 	else
 	{
+		line = ft_substr(tmp->content, 5, ft_strlen(tmp->content));
+		bin = ft_split(line, ':');
+		ft_memdel_1d(line);
 		m = 0;
 		while (bin[m] && flag == 0)
 		{
 			folder = opendir(bin[m]);
+			if (folder == NULL)
+			{
+				write(1, "error\n", 6);
+				exit (127);
+			}
 			while ((command = readdir(folder)))
 			{
 				if (ft_strcmp(command->d_name, s->mass3d[i][0]) == 0)
@@ -51,11 +90,6 @@ static int		mini_bin1(t_mini *s, int i)
 		}
 	}
 	ft_memdel_2d((void**)bin);
-	if (folder == NULL)
-	{
-		write(1, "error\n", 6);
-		exit (127);
-	}
 	return (flag);
 }
 
@@ -102,6 +136,7 @@ int					mini_pipes(t_mini *s)
 		ret = fork();
 		if (ret == 0)
 		{
+			// printf("|%s|\n", s->var.bin);
 			execve(s->var.bin, s->mass3d[i], s->env);
 			ft_error(s->mass3d[i][0], 1);
 			exit (1);

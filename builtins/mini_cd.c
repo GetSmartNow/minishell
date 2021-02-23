@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 18:41:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/22 20:19:24 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/23 13:46:09 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ static void			mini_oldpwd(t_mini *s)
 		line = ft_strjoin("OLDPWD=", line);
 		my_lstadd_back(&s->head, my_lstnew(line));
 	}
+	flag = 0;
 	tmp = s->head_x;
 	while (tmp != NULL)
 	{
@@ -53,6 +54,13 @@ static void			mini_oldpwd(t_mini *s)
 			ft_memdel_1d(line);
 		}
 		tmp = tmp->next;
+	}
+	if (flag == 0)
+	{
+		line = malloc(1000);
+		getcwd(line, 100);
+		line = ft_strjoin("OLDPWD=", line);
+		my_lstadd_back(&s->head_x, my_lstnew(line));
 	}
 }
 
@@ -94,6 +102,11 @@ void				mini_cd(t_mini *s)
 	int				res;
 	t_mass			*tmp;
 
+	if (s->mass3d[0][1] == NULL)
+	{
+		write(1, "\n", 1);
+		return ;
+	}
 	res = 0;
 	mini_oldpwd(s);
 	res = chdir(s->mass3d[0][1]);

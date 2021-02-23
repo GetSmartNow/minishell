@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 10:29:05 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/22 20:12:56 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/23 19:27:28 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,13 @@ static void		sort_ft(t_mini	*s, char **env1)
 	s->env = env1;
 	// printf("|%s|\n", s->mass3d[0][0]);
 	if (ft_strcmp(s->mass3d[0][0], "echo") == 0)
+	{
 		mini_echo(s->mass3d[0]);
+	}
 	else if (ft_strcmp(s->mass3d[0][0], "pwd") == 0)
+	{
 		mini_pwd(s);
+	}
 	else if (ft_strcmp(s->mass3d[0][0], "exit") == 0)
 		mini_exit(s->mass3d[0]);
 	else if (ft_strcmp(s->mass3d[0][0], "cd") == 0)
@@ -43,8 +47,9 @@ static void		sort_ft(t_mini	*s, char **env1)
 	else if (ft_strcmp(s->mass3d[0][0], "unset") == 0)
 		mini_unset(s);
 	else
+	{
 		mini_pipes(s);
-		// mini_bin(s);
+	}
 }
 
 static int		init_list_x(t_mini *s, char **env)
@@ -113,8 +118,10 @@ int			main(int ac, char **av, char **env)
 	int		status = 1;
 	int		i = 0;
 	int		j = 0;
+	int 	flag = 0;
 
-	s.mass3d = (char ***)malloc(sizeof(char) * 1000);
+	s.mass3d = (char ***)ft_calloc(sizeof(char **), 100);
+	s.var.shlvl = 1;
 	init_list(&s, env);
 	init_list_x(&s, env);
 	while (status)
@@ -126,33 +133,20 @@ int			main(int ac, char **av, char **env)
 		i = 0;
 		while (s.div_pipe[i])
 		{
+			flag = 1; 
 			// printf("p|%s|\n", s.div_pipe[i]);
 			s.mass3d[i] = ft_split(s.div_pipe[i], ' ');
 			s.pipe.count_commands++;
 			i++;
+			// printf("i = |%d|\n", i);
+		}
+		free(line);
+		if (flag != 0)
+		{	
+			sort_ft(&s, env);
+			ft_memdel_2d((void**)s.div_pipe);
 		}
 		i = 0;
-		// while (s.mass3d[i])
-		// {
-		// 	j = 0;
-		// 	while(s.mass3d[i][j])
-		// 	{
-		// 		printf("a|%s|\n", s.mass3d[i][j]);
-		// 		j++;
-		// 	}
-		// 	i++;
-		// }
-		// printf("|%d|\n", s.pipe.count_commands);
-		free(line);
-		sort_ft(&s, env);
-		ft_memdel_2d((void**)s.div_pipe);
-		i = 0;
-		// while (s.mass3d[i])
-		// {
-		// 	write(1, "*", 1);
-		// 	ft_memdel_2d((void**)s.mass3d[i]);
-		// 	i++;
-		// }
 	}
 	return (0);
 }
