@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/24 18:46:39 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/24 20:35:56 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ void				mini_export(t_mini *s);
 void				mini_unset(t_mini *s);
 int					mini_pipes(t_mini *s);
 
+void				ft_shlvl(t_mini *s);
+
 int					length_to_equal(t_mini *s, char *line);
 char				*put_quotes(char *s1);
 void				ft_error(char *error, int flag);
@@ -85,7 +87,7 @@ char				*mini_putnbr(int n);
 t_mass				*my_lstnew(void *content);
 void				my_lstadd_back(t_mass **lst, t_mass *new);
 void				my_lstdelone(t_mass *lst, void (*del)(void *));
-t_mass			*deletelem(t_mass *lst);
-void			ft_list_sort(t_mass **lst, int cmp);
+t_mass				*deletelem(t_mass *lst);
+void				ft_list_sort(t_mass **lst, int cmp);
 
 #endif

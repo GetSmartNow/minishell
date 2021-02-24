@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:05:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/24 19:12:17 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/24 20:39:20 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,24 +28,6 @@ static void			ft_list_to_2d(t_mini *s)
 	{
 		s->env[i] = NULL;
 		i++;
-	}
-}
-
-static void			ft_shlvl(t_mini *s, int count)
-{
-	t_mass			*tmp;
-	t_mass			*tmp_x;
-	char			*line;
-
-	tmp = s->head;
-	while (tmp != NULL)
-	{
-		if (ft_strncmp(tmp->content, "SHLVL=", 6) == 0)
-		{
-			ft_bzero(tmp->content, ft_strlen(tmp->content));
-			tmp->content = ft_strjoin("SHLVL=", mini_putnbr(count));
-		}
-		tmp = tmp->next;
 	}
 }
 
@@ -75,7 +57,6 @@ static int		mini_bin1(t_mini *s, int i)
 			ft_strncmp(s->mass3d[i][0], "./minishell", 11) == 0)
 	{
 		s->var.bin = ft_strdup("minishell");
-		// ft_shlvl(s, s->var.shlvl);
 		ft_list_to_2d(s);
 	}
 	else

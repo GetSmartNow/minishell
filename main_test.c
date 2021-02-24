@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:35:14 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/24 20:27:17 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/24 20:37:35 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,89 +22,6 @@ static void		ft_init(t_mini *s)
 	s->pipe.count_commands = 0;
 	s->pipe.count_pipe = 0;
 	s->div_pipe = NULL;
-}
-
-static int			mini_atoi(char *line)
-{
-	int				i;
-	int				res;
-	
-	i = 0;
-	res = 0;
-	while (line[i] != '\0')
-	{
-		if (line[i] >= '0' && line[i] <= '9')
-		{
-			res = (res * 10) + (line[i] - 48);
-			i++;
-		}
-		else
-			i++;
-	}
-	return (res);
-}
-
-static int				check_shlvl(t_mini *s, char *line)
-{
-	int					i = 0;
-	int					flag = 0;
-
-	while (line[i] != '=')
-		i++;
-	printf("1|%c|\n", line[i]);
-	i++;
-	printf("2|%c|\n", line[i]);
-	while (line[i] != '\0')
-	{
-		if (line[i] >= '0' && line[i] <= '9')
-		{
-			printf("3|%c|\n", line[i]);
-			flag = 1;
-		}
-		else
-		{
-			printf("4|%c|\n", line[i]);
-			return (2);
-		}
-		i++;
-	}
-	return (flag);
-}
-
-static void				ft_shlvl(t_mini *s, char **env)
-{
-	t_mass			*tmp;
-	int				flag = 0;
-	char			*line;
-
-	tmp = s->head;
-	while (tmp != NULL)
-	{
-		if (ft_strncmp(tmp->content, "SHLVL=", 6) == 0)
-		{
-			flag = check_shlvl(s, tmp->content);
-			if (flag == 1)
-			{
-				s->var.shlvl = mini_atoi(tmp->content);
-				s->var.shlvl++;
-				printf("lvl = |%d|\n", s->var.shlvl);
-				ft_bzero(tmp->content, ft_strlen(tmp->content));
-				tmp->content = ft_strjoin("SHLVL=", ft_itoa(s->var.shlvl));
-			}
-			else if (flag == 2)
-			{
-				ft_bzero(tmp->content, ft_strlen(tmp->content));
-				tmp->content = ft_strdup("SHLVL=1");
-			}
-			printf("flag = |%d|\n", flag);
-		}
-		tmp = tmp->next;
-	}
-	if (flag == 0)
-	{
-		line = ft_strdup("SHLVL=1");
-		my_lstadd_back(&s->head, my_lstnew(line));
-	}
 }
 
 static void		sort_ft(t_mini *s, char **env1)
@@ -207,7 +124,7 @@ int			main(int ac, char **av, char **env)
 	s.mass3d = (char ***)ft_calloc(sizeof(char **), 100);
 	init_list(&s, env);
 	init_list_x(&s, env);
-	ft_shlvl(&s, env);
+	ft_shlvl(&s);
 	while (status)
 	{
 		ft_init(&s);

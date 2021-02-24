@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:46:29 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/23 01:21:54 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/24 21:55:11 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ void				export_to_export(t_mini *s, int i, int equal)
 				length = length_to_equal(s, s->mass3d[0][i]);
 				if (ft_strncmp(tmp->content, s->mass3d[0][i], length) == 0)
 				{
-					deletelem(tmp);
+					flag = 1;
+					ft_bzero(tmp->content, ft_strlen(tmp->content));
+					tmp->content = ft_strdup(s->mass3d[0][i]);
 				}
 			}
 			else
@@ -60,7 +62,6 @@ void				export_to_env(t_mini *s, int i)
 
 	while (s->mass3d[0][i])
 	{
-		// printf("|%s|\n", s->mass3d[0][i]);
 		flag = 0;
 		tmp = s->head;
 		while (tmp != NULL)
@@ -68,7 +69,9 @@ void				export_to_env(t_mini *s, int i)
 			length = length_to_equal(s, s->mass3d[0][i]);
 			if (ft_strncmp(tmp->content, s->mass3d[0][i], length) == 0)
 			{
-				deletelem(tmp);
+				flag = 1;
+				ft_bzero(tmp->content, ft_strlen(tmp->content));
+				tmp->content = ft_strdup(s->mass3d[0][i]);
 			}	
 			tmp = tmp->next;
 		}
