@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/08 10:29:05 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/23 19:27:28 by ctycho           ###   ########.fr       */
+/*   Created: 2021/02/24 14:35:14 by ctycho            #+#    #+#             */
+/*   Updated: 2021/02/24 14:35:51 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,12 @@ static int		init_list_x(t_mini *s, char **env)
 	{
 		if (ft_strncmp(env[i], "OLDPWD=", ft_strlen("OLDPWD=")) != 0)
 		{
-			line = put_quotes(line, env[i]);
+			line = put_quotes(env[i]);
 			my_lstadd_back(&s->head_x, my_lstnew(line));
 		}
 		i++;
 	}
-	line = put_quotes(line, "OLDPWD");
+	line = ft_strdup("OLDPWD");
 	my_lstadd_back(&s->head_x, my_lstnew(line));
 	ft_list_sort(&s->head_x, 0);
 	return (0);

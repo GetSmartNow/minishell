@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/15 18:41:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/23 13:46:09 by ctycho           ###   ########.fr       */
+/*   Created: 2021/02/24 14:32:58 by ctycho            #+#    #+#             */
+/*   Updated: 2021/02/24 14:33:01 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ static void			mini_oldpwd(t_mini *s)
 			line = malloc(1000);
 			getcwd(line, 100);
 			tmp->content = ft_strjoin("OLDPWD=", line);
+			tmp->content = put_quotes(tmp->content);
 			ft_memdel_1d(line);
 		}
 		tmp = tmp->next;
