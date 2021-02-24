@@ -1,42 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_intlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/29 14:18:02 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/24 15:49:39 by ctycho           ###   ########.fr       */
+/*   Created: 2021/02/24 16:30:04 by ctycho            #+#    #+#             */
+/*   Updated: 2021/02/24 16:30:57 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_atoi(const char *str)
+int					ft_intlen(int line)
 {
-	int flag;
-	int res;
-	int check;
+	int				count;
 
-	flag = 1;
-	res = 0;
-	check = 0;
-	while ((*str >= 9 && *str <= 13) || *str == 32)
-		str++;
-	if ((*str == '-') || (*str == '+'))
-		if (*str++ == '-')
-			flag = -flag;
-	while (*str >= '0' && *str <= '9')
+	count = 0;
+	while (line)
 	{
-		res = (res * 10) + (*str++ - 48);
-		check++;
-		if (check > 19)
-		{
-			if (flag < 1)
-				return (0);
-			else
-				return (-1);
-		}
+		line = line / 10;
+		count++;
 	}
-	return (res * flag);
+	return (count);
 }

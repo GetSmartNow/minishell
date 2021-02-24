@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/21 21:13:20 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/23 01:22:23 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/24 18:46:30 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,25 @@ char				*put_quotes(char *s1)
 	}
 	s[i] = '\0';
 	return(s);
+}
+
+char			*mini_putnbr(int n)
+{
+	int				size;
+	char			*s;
+	int				i = 0;
+
+	size = ft_intlen(n);
+	s = (char *)malloc(sizeof(char) * (size + 1));
+	if (n <= 9)
+	{
+		s[i] = n + '0';
+		i++;
+	}
+	else
+	{
+		mini_putnbr(n / 10);
+		mini_putnbr(n % 10);
+	}
+	return (s);
 }

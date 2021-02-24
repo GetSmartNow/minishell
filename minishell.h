@@ -5,12 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/08 12:17:23 by ctycho            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2021/02/23 18:53:01 by ctycho           ###   ########.fr       */
-=======
-/*   Updated: 2021/02/23 01:22:39 by ctycho           ###   ########.fr       */
->>>>>>> 733b0e798a04979ff0dd967cbbc117ee9ad2bf59
+/*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
+/*   Updated: 2021/02/24 18:46:39 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +38,6 @@ typedef struct		s_pipe
 {
 	int				count_pipe;
 	int				count_commands;
-	// char			**div_pipe;
 }					t_pipe;
 
 typedef struct		s_mass
@@ -85,6 +80,7 @@ int					mini_pipes(t_mini *s);
 int					length_to_equal(t_mini *s, char *line);
 char				*put_quotes(char *s1);
 void				ft_error(char *error, int flag);
+char				*mini_putnbr(int n);
 
 t_mass				*my_lstnew(void *content);
 void				my_lstadd_back(t_mass **lst, t_mass *new);

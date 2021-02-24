@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 18:43:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/22 19:37:52 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/24 18:46:04 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,6 @@ t_mass			*deletelem(t_mass *lst)
 	free(lst->content);
 	free(lst); // освобождаем память удаляемого элемента
 	return(prev);
-}
-
-void	my_lstdelone(t_mass *lst, void (*del)(void *))
-{
-	del(lst->content);
-	free(lst);
 }
 
 void			ft_list_sort(t_mass **lst, int cmp)

@@ -6,31 +6,47 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:05:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/23 19:18:06 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/24 19:12:17 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static void			ft_list_to_2d(t_mini *s)
+{
+	t_mass			*tmp;
+	int				i = 0; //export asd=123 dfg=345
+
+	tmp = s->head;
+	while (tmp != NULL)
+	{
+		s->env[i] = tmp->content;
+		i++;
+		tmp = tmp->next;
+	}
+	while (s->env[i])
+	{
+		s->env[i] = NULL;
+		i++;
+	}
+}
+
 static void			ft_shlvl(t_mini *s, int count)
 {
 	t_mass			*tmp;
 	t_mass			*tmp_x;
+	char			*line;
 
 	tmp = s->head;
 	while (tmp != NULL)
 	{
 		if (ft_strncmp(tmp->content, "SHLVL=", 6) == 0)
 		{
-			printf("2|%s|\n", tmp->content);
-			printf("3|%d|\n", count);
-			deletelem(tmp);
-			tmp->content = ft_strjoin("SHLVL=", ft_itoa(count));
-			printf("4|%s|\n", tmp->content);
+			ft_bzero(tmp->content, ft_strlen(tmp->content));
+			tmp->content = ft_strjoin("SHLVL=", mini_putnbr(count));
 		}
 		tmp = tmp->next;
 	}
-	// tmp = s->head_x;
 }
 
 static int		mini_bin1(t_mini *s, int i)
@@ -55,11 +71,12 @@ static int		mini_bin1(t_mini *s, int i)
 	}
 	else if (tmp == NULL)
 		return (-1);
-	else if (ft_strncmp(s->mass3d[i][0], "minishell", 9) == 0)
+	else if (ft_strncmp(s->mass3d[i][0], "minishell", 9) == 0 || \
+			ft_strncmp(s->mass3d[i][0], "./minishell", 11) == 0)
 	{
-		s->var.shlvl++;
 		s->var.bin = ft_strdup("minishell");
-		ft_shlvl(s, s->var.shlvl);
+		// ft_shlvl(s, s->var.shlvl);
+		ft_list_to_2d(s);
 	}
 	else
 	{
