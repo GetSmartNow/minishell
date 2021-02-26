@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:35:14 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/26 19:22:37 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/27 00:14:51 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,7 @@ static int		init_list_x(t_mini *s, char **env)
 	}
 	line = ft_strdup("OLDPWD");
 	my_lstadd_back(&s->head_x, my_lstnew(line));
-	// ft_list_sort(&s->head_x);
-	// write(1, "*", 1);
+	ft_list_sort(&s->head_x);
 	return (0);
 }
 
@@ -93,7 +92,43 @@ static int		init_list(t_mini *s, char **env)
 		}
 		i++;
 	}
+	ft_list_sort(&s->head);
 	return (0);
+}
+
+void			get_pwd(t_mini	*s)
+{
+	t_mass		*tmp;
+	char		*line = NULL;
+	char		*free_str = NULL;
+
+	tmp = s->head;
+	while (tmp != NULL)
+	{
+		if (ft_strncmp(tmp->content, "PWD=", ft_strlen("PWD=")) == 0)
+		{
+			ft_bzero(tmp->content, ft_strlen(tmp->content));
+			line = malloc(1000);
+			getcwd(line, 100);
+			tmp->content = ft_strjoin("PWD=", line);
+			ft_memdel_1d(line);
+		}
+		tmp = tmp->next;
+	}
+	tmp = s->head_x;
+	while (tmp != NULL)
+	{
+		if (ft_strncmp(tmp->content, "PWD=", ft_strlen("PWD=")) == 0)
+		{
+			ft_bzero(tmp->content, ft_strlen(tmp->content));
+			line = malloc(1000);
+			getcwd(line, 100);
+			free_str = ft_strjoin("PWD=", line);
+			ft_memdel_1d(line);
+			tmp->content = put_quotes(free_str);
+		}
+		tmp = tmp->next;
+	}
 }
 
 int			main(int ac, char **av, char **env)
@@ -109,6 +144,7 @@ int			main(int ac, char **av, char **env)
 	init_list(&s, env);
 	init_list_x(&s, env);
 	ft_shlvl(&s);
+	// get_pwd(&s);
 	while (status)
 	{
 		ft_init(&s);
