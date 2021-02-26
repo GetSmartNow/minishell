@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 18:43:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/24 18:46:04 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/26 19:21:36 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,12 @@ t_mass			*deletelem(t_mass *lst)
 	return(prev);
 }
 
-void			ft_list_sort(t_mass **lst, int cmp)
+void			ft_list_sort(t_mass **lst)
 {
 	t_mass		*ptr;
 	t_mass		*ptr1;
 	t_mass		*next;
-	t_mass		*tmp;
+	char		*tmp;
 	int			i;
 
 	ptr = *(lst);
@@ -75,12 +75,42 @@ void			ft_list_sort(t_mass **lst, int cmp)
 		{
 			if (ft_strcmp(ptr1->content, ptr1->next->content) > 0)
 			{
-				tmp->content = ptr1->content;
+				// printf("|%s|\n", ptr1->content);
+				tmp = ptr1->content;
+				// write(1, "#", 1);
 				ptr1->content = ptr1->next->content;
-				ptr1->next->content = tmp->content;
+				ptr1->next->content = tmp;
 			}
 			ptr1 = ptr1->next;
 		}
 		ptr = ptr->next;
 	}
 }
+
+
+// void			ft_list_sort(t_mass **lst)
+// {
+// 	t_mass		*ptr;
+// 	t_mass		*ptr1;
+// 	t_mass		*next;
+// 	t_mass		*tmp;
+// 	int			i;
+
+// 	ptr = *(lst);
+// 	while (ptr != NULL)
+// 	{
+// 		ptr1 = *(lst);
+// 		while (ptr1->next != NULL)
+// 		{
+// 			if (ft_strcmp(ptr1->content, ptr1->next->content) > 0)
+// 			{
+// 				tmp->content = ptr1->content;
+// 				write(1, "#", 1);
+// 				ptr1->content = ptr1->next->content;
+// 				ptr1->next->content = tmp->content;
+// 			}
+// 			ptr1 = ptr1->next;
+// 		}
+// 		ptr = ptr->next;
+// 	}
+// }

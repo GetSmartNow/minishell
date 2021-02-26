@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:35:14 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/24 20:37:35 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/26 19:22:37 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ static int		init_list_x(t_mini *s, char **env)
 	}
 	line = ft_strdup("OLDPWD");
 	my_lstadd_back(&s->head_x, my_lstnew(line));
-	ft_list_sort(&s->head_x, 0);
+	// ft_list_sort(&s->head_x);
+	// write(1, "*", 1);
 	return (0);
 }
 
@@ -90,25 +91,8 @@ static int		init_list(t_mini *s, char **env)
 			line = ft_strdup(env[i]);
 			my_lstadd_back(&s->head, my_lstnew(line));
 		}
-		// if (ft_strncmp(env[i], "SHLVL=", 6) == 0)
-		// {
-		// 	// ft_bzero(env[i], ft_strlen(env[i]));
-		// 	env[i] = NULL;
-		// 	line = ft_strjoin("SHLVL=", mini_putnbr(s->var.shlvl));
-		// 	my_lstadd_back(&s->head, my_lstnew(line));
-		// }
 		i++;
 	}
-	// tmp = s->head;
-	// while (tmp != NULL)
-	// {
-	// 	if (ft_strncmp(tmp->content, "SHLVL=", 6) == 0)
-	// 	{
-	// 		ft_bzero(tmp->content, ft_strlen(tmp->content));
-	// 		tmp->content = ft_strjoin("SHLVL=", mini_putnbr(s->var.shlvl));
-	// 	}
-	// 	tmp = tmp->next;
-	// }
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/24 20:35:56 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/26 18:55:21 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,5 @@ t_mass				*my_lstnew(void *content);
 void				my_lstadd_back(t_mass **lst, t_mass *new);
 void				my_lstdelone(t_mass *lst, void (*del)(void *));
 t_mass				*deletelem(t_mass *lst);
-void				ft_list_sort(t_mass **lst, int cmp);
-
+void				ft_list_sort(t_mass **lst);
 #endif

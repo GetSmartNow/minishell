@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:46:29 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/24 21:55:11 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/26 19:35:03 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void				export_to_export(t_mini *s, int i, int equal)
 		}
 		i++;
 	}
+	ft_list_sort(&s->head_x);
 }
 
 void				export_to_env(t_mini *s, int i)
@@ -82,6 +83,7 @@ void				export_to_env(t_mini *s, int i)
 		}
 		i++;
 	}
+	ft_list_sort(&s->head);
 }
 
 void				mini_export(t_mini *s)
@@ -89,7 +91,7 @@ void				mini_export(t_mini *s)
 	t_mass			*tmp;
 	int				i = 1;
 
-	tmp = s->head_x;
+	// tmp = s->head_x;
 	if (s->mass3d[0][1])
 	{
 		while (s->mass3d[0][i])
@@ -111,6 +113,7 @@ void				mini_export(t_mini *s)
 	}
 	else
 	{
+		tmp = s->head_x;
 		while (tmp != NULL)
 		{
 			write(1, "declare -x ", 11);
