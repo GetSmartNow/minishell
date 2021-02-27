@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:57:51 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/22 17:36:12 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/27 12:09:00 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void				mini_unset(t_mini *s)
 	{
 		printf("1|%s|\n", s->mass3d[0][i]);
 		count = 0;
+		if (ft_strncmp("PWD", s->mass3d[0][i], ft_strlen("PWD")) == 0)
+			s->var.pwd = 1;
 		tmp = s->head;
 		while (tmp != NULL)
 		{

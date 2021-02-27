@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:05:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/24 20:39:20 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/27 12:39:11 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static void			ft_list_to_2d(t_mini *s)
 	tmp = s->head;
 	while (tmp != NULL)
 	{
+		printf("|%s|\n", s->env[i]);
 		s->env[i] = tmp->content;
 		i++;
 		tmp = tmp->next;

@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/27 00:01:01 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/27 12:02:50 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct		s_env
 {
 	char			*bin;
 	int				shlvl;
+	int				pwd;
 }					t_env;
 
 typedef struct		s_mini
@@ -78,6 +79,7 @@ void				mini_unset(t_mini *s);
 int					mini_pipes(t_mini *s);
 
 void				ft_shlvl(t_mini *s);
+void				get_pwd(t_mini	*s);
 
 int					length_to_equal(t_mini *s, char *line);
 char				*put_quotes(char *s1);

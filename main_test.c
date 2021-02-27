@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:35:14 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/27 00:14:51 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/27 12:03:48 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,41 +96,6 @@ static int		init_list(t_mini *s, char **env)
 	return (0);
 }
 
-void			get_pwd(t_mini	*s)
-{
-	t_mass		*tmp;
-	char		*line = NULL;
-	char		*free_str = NULL;
-
-	tmp = s->head;
-	while (tmp != NULL)
-	{
-		if (ft_strncmp(tmp->content, "PWD=", ft_strlen("PWD=")) == 0)
-		{
-			ft_bzero(tmp->content, ft_strlen(tmp->content));
-			line = malloc(1000);
-			getcwd(line, 100);
-			tmp->content = ft_strjoin("PWD=", line);
-			ft_memdel_1d(line);
-		}
-		tmp = tmp->next;
-	}
-	tmp = s->head_x;
-	while (tmp != NULL)
-	{
-		if (ft_strncmp(tmp->content, "PWD=", ft_strlen("PWD=")) == 0)
-		{
-			ft_bzero(tmp->content, ft_strlen(tmp->content));
-			line = malloc(1000);
-			getcwd(line, 100);
-			free_str = ft_strjoin("PWD=", line);
-			ft_memdel_1d(line);
-			tmp->content = put_quotes(free_str);
-		}
-		tmp = tmp->next;
-	}
-}
-
 int			main(int ac, char **av, char **env)
 {
 	t_mini	s;
@@ -141,10 +106,11 @@ int			main(int ac, char **av, char **env)
 	int 	flag = 0;
 
 	s.mass3d = (char ***)ft_calloc(sizeof(char **), 100);
+	s.var.pwd = 0;
 	init_list(&s, env);
 	init_list_x(&s, env);
 	ft_shlvl(&s);
-	// get_pwd(&s);
+	get_pwd(&s);
 	while (status)
 	{
 		ft_init(&s);

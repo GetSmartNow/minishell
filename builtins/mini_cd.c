@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:32:58 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/26 19:32:47 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/27 12:31:08 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static void			mini_pwd1(t_mini *s)
 	char			*line;
 
 	tmp = s->head;
-	while (tmp->next != NULL)
+	while (tmp != NULL)
 	{
 		if (ft_strncmp(tmp->content, "PWD=", ft_strlen("PWD=")) == 0)
 		{
@@ -84,7 +84,7 @@ static void			mini_pwd1(t_mini *s)
 		tmp = tmp->next;
 	}
 	tmp = s->head_x;
-	while (tmp->next != NULL)
+	while (tmp != NULL)
 	{
 		if (ft_strncmp(tmp->content, "PWD=", ft_strlen("PWD=")) == 0)
 		{
@@ -93,6 +93,33 @@ static void			mini_pwd1(t_mini *s)
 			getcwd(line, 100);
 			tmp->content = ft_strjoin("PWD=", line);
 			ft_memdel_1d(line);
+		}
+		tmp = tmp->next;
+	}
+}
+
+static void			empty_olpwd(t_mini *s)
+{
+	t_mass			*tmp;
+	char			*line;
+
+	tmp = s->head;
+	while (tmp != NULL)
+	{
+		if (ft_strncmp(tmp->content, "OLDPWD=", ft_strlen("OLDPWD=")) == 0)
+		{
+			ft_bzero(tmp->content, ft_strlen(tmp->content));
+			tmp->content = ft_strdup("OLDPWD=");
+		}
+		tmp = tmp->next;
+	}
+	tmp = s->head_x;
+	while (tmp != NULL)
+	{
+		if (ft_strncmp(tmp->content, "OLDPWD=", ft_strlen("OLDPWD=")) == 0)
+		{
+			ft_bzero(tmp->content, ft_strlen(tmp->content));
+			tmp->content = put_quotes("OLDPWD=");
 		}
 		tmp = tmp->next;
 	}
@@ -109,7 +136,10 @@ void				mini_cd(t_mini *s)
 		return ;
 	}
 	res = 0;
-	mini_oldpwd(s);
+	if (s->var.pwd == 0)
+		mini_oldpwd(s);
+	else
+		empty_olpwd(s);
 	res = chdir(s->mass3d[0][1]);
 	if (res == -1)
 	{
