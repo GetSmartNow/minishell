@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:32:58 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/27 12:31:08 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/27 17:01:13 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,10 +131,7 @@ void				mini_cd(t_mini *s)
 	t_mass			*tmp;
 
 	if (s->mass3d[0][1] == NULL)
-	{
-		write(1, "\n", 1);
 		return ;
-	}
 	res = 0;
 	if (s->var.pwd == 0)
 		mini_oldpwd(s);

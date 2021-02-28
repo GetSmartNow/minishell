@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:05:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/27 12:39:11 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/02/28 19:52:40 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,11 @@
 static void			ft_list_to_2d(t_mini *s)
 {
 	t_mass			*tmp;
-	int				i = 0; //export asd=123 dfg=345
+	int				i = 0;
 
 	tmp = s->head;
 	while (tmp != NULL)
 	{
-		printf("|%s|\n", s->env[i]);
 		s->env[i] = tmp->content;
 		i++;
 		tmp = tmp->next;
@@ -92,14 +91,17 @@ static int		mini_bin1(t_mini *s, int i)
 	return (flag);
 }
 
-int					mini_pipes(t_mini *s)
+int					mini_pipes(t_mini *s) //ps -a | cat -e | cat -e
 {
+	int		fdpipe[2];
 	int		tmpin = 0;
 	int		tmpout = 0;
 	int		fdin = 0;
+	int		fdout = 0;
 	int		i;
 	int				status;
-	int		res = 0;
+	int		res;
+	int		ret;
 
 	tmpin = dup(0);
 	tmpout = dup(1);
@@ -107,8 +109,6 @@ int					mini_pipes(t_mini *s)
 	// 	fdin = open(infile, O_RDONLY);
 	// else
 		fdin = dup(0);
-	int	ret;
-	int	fdout;
 	for(i = 0; i < s->pipe.count_commands; i++)
 	{
 		res = 0;
@@ -117,7 +117,6 @@ int					mini_pipes(t_mini *s)
 		close(fdin);
 		if (i == s->pipe.count_commands - 1)
 		{
-			// write(1, "#\n", 2);
 			// if (outfile)
 			// 	fdout = open();
 			// else
@@ -125,7 +124,7 @@ int					mini_pipes(t_mini *s)
 		}
 		else
 		{
-			int fdpipe[2];
+			// int fdpipe[2];
 			pipe(fdpipe);
 			fdout = fdpipe[1];
 			fdin = fdpipe[0];
@@ -151,3 +150,78 @@ int					mini_pipes(t_mini *s)
 		return (status);
 	return (0);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// tmpin = dup(0);
+// 	tmpout = dup(1);
+// 	// if (infile)
+// 	// 	fdin = open(infile, O_RDONLY);
+// 	// else
+// 		fdin = dup(0);
+// 	int	ret;
+// 	int	fdout;
+// 	for(i = 0; i < s->pipe.count_commands; i++)
+// 	{
+// 		res = 0;
+// 		res = mini_bin1(s, i);
+// 		dup2(fdin, 0);
+// 		close(fdin);
+// 		if (i == s->pipe.count_commands - 1)
+// 		{
+// 			// if (outfile)
+// 			// 	fdout = open();
+// 			// else
+// 			fdout = dup(tmpout);
+// 		}
+// 		else
+// 		{
+// 			// int fdpipe[2];
+// 			pipe(fdpipe);
+// 			fdout = fdpipe[1];
+// 			fdin = fdpipe[0];
+// 		}
+// 		dup2(fdout, 1);
+// 		close(fdout);
+// 		ret = fork();
+// 		if (ret == 0)
+// 		{
+// 			// printf("|%s|\n", s->var.bin);
+// 			execve(s->var.bin, s->mass3d[i], s->env);
+// 			ft_error(s->mass3d[i][0], 1);
+// 			exit (1);
+// 		}
+// 		if (res)
+// 			ft_memdel_1d(s->var.bin);
+// 	}
+// 	dup2(tmpin, 0);
+// 	dup2(tmpout, 1);
+// 	close(tmpin);
+// 	close(tmpout);
+// 	if (waitpid(ret, &status, 0) > 0)
+// 		return (status);
+// 	return (0);
