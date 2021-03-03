@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:35:14 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/03 19:27:11 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/03 19:44:52 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int		init_list_x(t_mini *s, char **env)
 	char		*line = NULL;
 	int			i = 0;
 
-	s->head_x = NULL;
+	s->head_x = NULL; //export
 	while (env[i] != NULL)
 	{
 		if (ft_strncmp(env[i], "OLDPWD=", ft_strlen("OLDPWD=")) != 0)
@@ -77,7 +77,7 @@ static int		init_list(t_mini *s, char **env)
 	char		*line = NULL;
 	int			i = 0;
 
-	s->head = NULL;
+	s->head = NULL; //env
 	while (env[i] != NULL)
 	{
 		if (ft_strncmp(env[i], "OLDPWD=", ft_strlen("OLDPWD=")) != 0)
