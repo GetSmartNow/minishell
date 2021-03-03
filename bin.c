@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 15:50:33 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/19 14:44:29 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/03 19:16:48 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,9 @@ static int		mini_bin1(t_mini *s)
 	while (ft_strncmp(s->env[i], "PATH=", 5) != 0)
 		i++;
 	line = ft_substr(s->env[i], 5, ft_strlen(s->env[i]));
-	// printf("e|%s|\n", s->env[i]);
-	// printf("l|%s|\n", line);
 	bin = ft_split(line, ':');
 	i = 0;
-	while (bin[i])
-	{
-		printf("b|%s|\n", bin[i]);
-		i++;
-	}
-	// ft_memdel_2d((void**)bin);
+
 	flag = 0;
 	i = 0;
 	printf("m|%s|\n", s->mass3d[0][0]);
@@ -58,8 +51,7 @@ static int		mini_bin1(t_mini *s)
 		closedir(folder);
 		i++;
 	}
-
-	printf("b|%s|\n", s->var.bin);
+	ft_memdel_2d((void**)bin);
 	return (flag);
 }
 
@@ -70,9 +62,7 @@ int		mini_bin(t_mini *s)
 	int				status;
 	char			*bin = NULL;
 
-	res = mini_bin1(s);
-	// ft_memdel_1d(s->tmp);
-	// res = mini_bin2(s);
+	res = mini_bin1(s, 0);
 	pid = fork();
 	if (pid < 0)
 	{

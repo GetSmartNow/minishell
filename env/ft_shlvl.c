@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 20:33:50 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/27 00:00:45 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/02 16:40:13 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ void				ft_shlvl(t_mini *s)
 				ft_bzero(tmp->content, ft_strlen(tmp->content));
 				tmp->content = ft_strdup("SHLVL=1");
 			}
-			printf("flag = |%d|\n", flag);
 		}
 		tmp = tmp->next;
 	}
@@ -122,7 +121,6 @@ void				ft_shlvl(t_mini *s)
 				ft_bzero(tmp->content, ft_strlen(tmp->content));
 				tmp->content = put_quotes("SHLVL=1");
 			}
-			printf("flag_x = |%d|\n", flag);
 		}
 		tmp = tmp->next;
 	}

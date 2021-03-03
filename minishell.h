@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/27 12:02:50 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/03 18:50:41 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@
 #define STDOUT 1
 #define STDERR 2
 
-typedef struct		s_flag
-{
-	int				oldpwd;
-}					t_flag;
+// typedef struct		s_flag
+// {
+// 	int				oldpwd;
+// }					t_flag;
 
 typedef struct		s_pipe
 {
@@ -56,7 +56,7 @@ typedef struct		s_env
 
 typedef struct		s_mini
 {
-	t_flag			flag;
+	// t_flag			flag;
 	t_pipe			pipe;
 	t_mass			*head;
 	t_mass			*head_x;
