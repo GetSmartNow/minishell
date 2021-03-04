@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/03 18:50:41 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/04 18:40:25 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@
 
 typedef struct		s_pipe
 {
+	int				**fd;
+	pid_t			*pid;
 	int				count_pipe;
 	int				count_commands;
 }					t_pipe;
@@ -52,6 +54,8 @@ typedef struct		s_env
 	char			*bin;
 	int				shlvl;
 	int				pwd;
+	char			*path;
+	int				count_bin;
 }					t_env;
 
 typedef struct		s_mini
@@ -61,13 +65,14 @@ typedef struct		s_mini
 	t_mass			*head;
 	t_mass			*head_x;
 	t_env			var;
-	char			**arg;
+	char			*av;
 	char			***mass3d;
 	char			**env;
 	char			**div_pipe;
 	char			*tmp;
 }					t_mini;
 
+int					exec_bin(t_mini *s, char **arr, char *command);
 int					mini_bin(t_mini *s);
 void				mini_cd(t_mini *s);
 void				mini_pwd(t_mini	*s);

@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:35:14 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/03 19:44:52 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/04 17:52:09 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 static void		ft_init(t_mini *s)
 {
-	s->arg = NULL;
 	s->env = NULL;
 	s->tmp = NULL;
 	s->var.bin = NULL;
+	s->var.count_bin = 0;
 	s->div_pipe = NULL;
 	s->pipe.count_commands = 0;
 	s->pipe.count_pipe = 0;
@@ -44,7 +44,10 @@ static void		sort_ft(t_mini *s, char **env1)
 	else if (ft_strcmp(s->mass3d[0][0], "unset") == 0)
 		mini_unset(s);
 	else
-		mini_bin(s);
+	{
+		// mini_bin(s);
+		exec_bin(s, s->mass3d[0], s->mass3d[0][0]);
+	}
 }
 
 static int		init_list_x(t_mini *s, char **env)
@@ -112,7 +115,6 @@ static int				check_line(t_mini *s, char *line)
 	res = check_pipes(s, line);
 	if (res == 0)
 		return (-1);
-	printf("pipe: |%d|\n", s->pipe.count_pipe);
 	if (s->pipe.count_pipe != 0)
 	{
 		s->div_pipe = ft_split(line, '|');
@@ -138,6 +140,7 @@ int			main(int ac, char **av, char **env)
 	int		j = 0;
 	int 	res = 0;
 
+	s.av = av[0];
 	s.mass3d = (char ***)ft_calloc(sizeof(char **), 100);
 	s.var.pwd = 0;
 	init_list(&s, env);
