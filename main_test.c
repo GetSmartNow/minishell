@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_test.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:35:14 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/03 19:44:52 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/05 16:54:46 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,6 @@ static int				check_line(t_mini *s, char *line)
 	res = check_pipes(s, line);
 	if (res == 0)
 		return (-1);
-	printf("pipe: |%d|\n", s->pipe.count_pipe);
 	if (s->pipe.count_pipe != 0)
 	{
 		s->div_pipe = ft_split(line, '|');
@@ -150,10 +149,21 @@ int			main(int ac, char **av, char **env)
 		ft_putstr_fd("\033[0;36m\033[1mminishell ▸ \033[0m", STDOUT);
 		status = get_next_line(&line);
 		// add lopp until ';'
-		res = check_line(&s, line);
-		free(line);
-		if (res > 0)
-			sort_ft(&s, env);
+		//separate commands ; should return command array
+		//then every command in array should be checked by check_line;
+		char **sep_commands = ft_split(line, ';');
+		while (*sep_commands)
+		{
+			printf("str: \"%s\"\n", *sep_commands);
+			res = check_line(&s, *sep_commands);
+			if (res > 0)
+				sort_ft(&s, env);
+			sep_commands++;
+		}
+		//res = check_line(&s, line);
+		//free(line);
+		//if (res > 0)
+		//	sort_ft(&s, env);
 	}
 	return (0);
 }

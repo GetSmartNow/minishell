@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/03 18:50:41 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/05 16:49:40 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,13 @@ typedef struct		s_env
 	int				shlvl;
 	int				pwd;
 }					t_env;
+
+typedef struct		s_obj
+{
+	char			*key;
+	char			*value;
+	char			*(* find_key)(char *key, t_mass **head);
+}					t_obj;
 
 typedef struct		s_mini
 {

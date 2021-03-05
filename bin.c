@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bin.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 15:50:33 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/03 19:16:48 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/05 16:50:37 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int		mini_bin(t_mini *s)
 	int				status;
 	char			*bin = NULL;
 
-	res = mini_bin1(s, 0);
+	res = mini_bin1(s);
 	pid = fork();
 	if (pid < 0)
 	{
