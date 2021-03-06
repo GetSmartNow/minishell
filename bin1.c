@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 11:36:22 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/04 18:51:58 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/06 21:10:11 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static void			ft_list_to_2d(t_mini *s)
 {
 	t_mass			*tmp;
+	char			*line;
 	int				i = 0;
 
 	tmp = s->head;
@@ -64,7 +65,7 @@ int				absolute_path(t_mini *s, char *bin, char *exec)
 
 	if (ft_strncmp(bin, exec, ft_strlen(bin)) == 0)
 		s->var.count_bin++; // we have a right directory
-	if (s->var.count_bin == 1)
+	if (s->var.count_bin == 2)
 	{
 		length_com = ft_strlen(exec);
 		length_dir = ft_strlen(bin);
@@ -80,26 +81,7 @@ int				absolute_path(t_mini *s, char *bin, char *exec)
 
 char				**exec_bin_2(t_mini *s, char **bin, char *exec)
 {
-	t_mass		*tmp;
-
-	tmp = s->head;
-	while (tmp != NULL && ft_strncmp(tmp->content, "PATH=", 5) != 0)
-		tmp = tmp->next;
-	if (ft_strncmp(exec, "minishell", 9) == 0 || \
-		ft_strncmp(exec, "./minishell", 11) == 0)
-	{
-		s->var.bin = s->av;
-		ft_list_to_2d(s);
-	}
-	else if (tmp == NULL)
-	{
-		 s->var.count_bin = -1;
-	}
-	else if (exec[0] == '/')
-		s->var.count_bin = 0;
-	else
-		s->var.count_bin = 4;
-	bin = ft_split(tmp->content + 5, ':');
+	// 
 	return (bin);
 }
 
@@ -108,21 +90,68 @@ int					exec_bin_1(t_mini *s, char *exec)
 	int			i = 0;
 	char		**bin;
 	char		*path;
-	
-	bin = exec_bin_2(s, bin, exec);
-	if (s->var.count_bin == -1)
-		return (-1);
-	printf("|%d|\n", s->var.count_bin);
-	while (bin[i])
+	t_mass		*tmp;
+
+	// printf("path |%s|\n", s->var.path);
+	// printf("av |%s|\n", s->av);
+	// printf("exe |%s|\n", exec);
+	tmp = s->head;
+	while (tmp != NULL && ft_strncmp(tmp->content, "PATH=", 5) != 0)
+		tmp = tmp->next;
+	if (ft_strncmp(exec,  s->av, ft_strlen(s->av)) == 0) //ft_strncmp(exec, s->av + 2, ft_strlen(s->av + 2)) == 0 || 
 	{
-		if (s->var.count_bin == 0)
+		// if (s->var.path == NULL)
+		// 	s->var.bin = ft_strjoin(s->head_local->content, s->av);
+		// else
+			s->var.bin = s->av;
+		ft_list_to_2d(s);
+		ft_memdel_1d(s->var.path);
+		return 0;
+	}
+	else if (exec[0] == '.' && exec[1] == '/')
+	{
+		s->var.bin = exec;
+		return 0;
+	}
+	else if (tmp == NULL)
+	{
+		if (exec[0] == '/')
+			bin = ft_split(s->var.path, ':');
+		else
+			return 1;
+	}
+	else
+		bin = ft_split(tmp->content + 5, ':');
+	if (exec[0] == '/')
+		s->var.count_bin = 1;
+	else
+		s->var.count_bin = 5;
+	while (bin[i + 1])
+	{
+		if (s->var.count_bin == 1)
 			absolute_path(s, bin[i], exec);
 		else
 			magic_box(s, bin[i], exec);
 		i++;
 	}
-	printf("exec |%s|\n", s->var.bin);
 	return (s->var.count_bin);
+}
+
+void				bin_error(t_mini *s, char *exec, int res)
+{
+	if (res == 4 || res == 6 || res == 0)
+		return ;
+	else
+	{
+		write(1, "bash: ", 6);
+		write(1, exec, ft_strlen(exec));
+		if (res == 1 || res == 3)
+			write(1, ": No such file or directory\n", 28);
+		else if (res == 2)
+			write(1, ": is a directory\n", 17);
+		else if (res == 5)
+			write(1, ": command not found\n", 20);
+	}
 }
 
 int					exec_bin(t_mini *s, char **arr, char *exec)
@@ -131,7 +160,7 @@ int					exec_bin(t_mini *s, char **arr, char *exec)
 	int				res = 0;
 	char			*bin = NULL;
 
-	exec_bin_1(s, exec);
+	res = exec_bin_1(s, exec);
 	pid = fork();
 	if (pid < 0)
 	{
@@ -147,5 +176,6 @@ int					exec_bin(t_mini *s, char **arr, char *exec)
 		wait(NULL);
 	if (res)
 		ft_memdel_1d(s->var.bin);
+	bin_error(s, exec, res);
 	return (0);
 }

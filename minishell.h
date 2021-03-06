@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/04 18:40:25 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/06 22:40:14 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,6 @@
 #define STDOUT 1
 #define STDERR 2
 
-// typedef struct		s_flag
-// {
-// 	int				oldpwd;
-// }					t_flag;
-
 typedef struct		s_pipe
 {
 	int				**fd;
@@ -54,13 +49,13 @@ typedef struct		s_env
 	char			*bin;
 	int				shlvl;
 	int				pwd;
+	char			*oldpwd;
 	char			*path;
 	int				count_bin;
 }					t_env;
 
 typedef struct		s_mini
 {
-	// t_flag			flag;
 	t_pipe			pipe;
 	t_mass			*head;
 	t_mass			*head_x;
@@ -74,8 +69,9 @@ typedef struct		s_mini
 
 int					exec_bin(t_mini *s, char **arr, char *command);
 int					mini_bin(t_mini *s);
-void				mini_cd(t_mini *s);
+void				mini_cd(t_mini *s, char *exec, char *arg);
 void				mini_pwd(t_mini	*s);
+void				mini_pwd_1(t_mini *s);
 void				mini_echo(char **s);
 void				mini_exit(char **s);
 void				mini_env(t_mini *s);
