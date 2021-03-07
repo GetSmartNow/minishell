@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:32:58 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/06 23:19:34 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/07 20:59:40 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,26 +128,32 @@ static void			mini_cd_minus_1(t_mini *s)
 static int			mini_cd_minus(t_mini *s, char *exec, char *arg)
 {
 	int				res;
-	int				i;
+	int				len;
 
-	i = 0;
-	while (arg[i] == '-')
-		i++;
-	printf("i: %d\n", i);
-	if (i != 1 && arg[1] != '-')
+	res = 1;
+	len = ft_strlen(arg);
+	if (arg[0] == '-' && len >= 1)
 	{
-		write(1, "bash: cd: ", 10);
-		write(1, &arg[0], 1);
-		write(1, &arg[1], 1);
-		write(1, ": invalid option\n", 17);
-		write(1, "cd: usage: cd [-L|-P] [dir]\n", 28);
+		if ((len == 2 && arg[1] == '-') || len == 1)
+		{
+			mini_cd_minus_1(s);
+		}
+		else
+		{
+			res = 0;
+			write(1, "bash: cd: ", 10);
+			write(1, arg, 2);
+			write(1, ": invalid option\n", 17);
+			write(1, "cd: usage: cd [-L|-P] [dir]\n", 28);
+		}
 	}
-	else if (arg[0] == '-')
-		mini_cd_minus_1(s);
-	if (s->var.oldpwd != NULL)
-		res = chdir(s->var.oldpwd);
-	else
-		res = chdir(arg);
+	if (res == 1)
+	{
+		if (s->var.oldpwd != NULL)
+			res = chdir(s->var.oldpwd);
+		else
+			res = chdir(arg);
+	}
 	return (res);
 }
 
@@ -169,7 +175,7 @@ void				mini_cd(t_mini *s, char *exec, char *arg)
 	}
 	else
 	{
-		if (s->var.pwd == 0)
+		if (s->var.pwd == 0 && s->mass3d[0][1][0] != '-')
 			mini_oldpwd(s);
 		else
 			empty_olpwd(s);

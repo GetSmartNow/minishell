@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:05:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/06 17:55:02 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/07 21:44:58 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,20 +52,15 @@ static int		mini_bin1(t_mini *s, int i)
 	}
 	else if (tmp == NULL)
 		return (-1);
-	// else if (ft_strncmp(s->mass3d[i][0], "minishell", 9) == 0 || \
-	// 		ft_strncmp(s->mass3d[i][0], "./minishell", 11) == 0)
-	// {
-	// 	s->var.bin = ft_strdup("minishell");
-	// 	ft_list_to_2d(s);
-	// }
 	else
 	{
 		line = ft_substr(tmp->content, 5, ft_strlen(tmp->content));
 		bin = ft_split(line, ':');
 		ft_memdel_1d(line);
 		m = 0;
-		while (bin[m] && flag == 0)
+		while (bin[m + 3] && flag == 0)
 		{
+			// printf("%s\n", bin[m]);
 			folder = opendir(bin[m]);
 			if (folder == NULL)
 			{

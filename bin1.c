@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 11:36:22 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/06 21:10:11 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/07 21:06:25 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int					magic_box(t_mini *s, char *dir, char *exec)
 	struct dirent	*command;
 	char			*line = NULL;
 
+	// printf("dir: %s\n", dir);
+	// printf("exe: %s\n", exec);
 	folder = opendir(dir);
 	if (folder == NULL)
 	{
@@ -126,7 +128,7 @@ int					exec_bin_1(t_mini *s, char *exec)
 		s->var.count_bin = 1;
 	else
 		s->var.count_bin = 5;
-	while (bin[i + 1])
+	while (bin[i + 3])
 	{
 		if (s->var.count_bin == 1)
 			absolute_path(s, bin[i], exec);
