@@ -1,19 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main_test.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/24 14:35:14 by ctycho            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2021/03/05 16:54:46 by mvernius         ###   ########.fr       */
-=======
-/*   Updated: 2021/03/06 22:40:29 by ctycho           ###   ########.fr       */
->>>>>>> origin/master
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 static void		ft_init(t_mini *s)
@@ -162,6 +146,7 @@ int			main(int ac, char **av, char **env)
 		while (*sep_commands)
 		{
 			printf("str: \"%s\"\n", *sep_commands);
+			*sep_commands = make_substitute(*sep_commands);
 			res = check_line(&s, *sep_commands);
 			if (res > 0)
 				sort_ft(&s, env);

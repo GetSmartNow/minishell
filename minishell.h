@@ -1,18 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2021/03/05 16:49:40 by mvernius         ###   ########.fr       */
-=======
-/*   Updated: 2021/03/07 21:49:59 by ctycho           ###   ########.fr       */
->>>>>>> origin/master
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -104,4 +89,8 @@ void				my_lstadd_back(t_mass **lst, t_mass *new);
 void				my_lstdelone(t_mass *lst, void (*del)(void *));
 t_mass				*deletelem(t_mass *lst);
 void				ft_list_sort(t_mass **lst);
+
+
+//________________PARSER
+char *make_substitute(char *sep_commands);
 #endif

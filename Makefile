@@ -31,7 +31,7 @@ INC_D	:=	./include/
 #files------------------------------------------------------------------------
 
 INC		:=	minishell.h
-SRCS	:=	main_test.c bin.c bin1.c mini_pipes.c \
+SRCS	:=	main_test.c bin.c bin1.c parser.c mini_pipes.c \
 			$(addprefix ${TOOL}, libft_utils.c ft_error.c mini_utils.c) \
 			$(addprefix $(ENV), ft_shlvl.c ft_pwd.c) \
 			$(addprefix ${BUILT}, mini_cd.c mini_echo.c mini_env.c mini_exit.c \
@@ -49,8 +49,14 @@ LBLUE	:=	\033[1;34m
 
 #rules------------------------------------------------------------------------
 
-all:		$(NAME)
-	
+all: makelib makegnl $(NAME)
+
+makelib:
+	@cd $(LIB_D) && make
+
+makegnl:
+	@cd $(GNL_D) && make
+
 ${NAME}: $(SRCS) ${INC}
 	@$(CC) -o $(NAME) $(SRCS) $(LIB_D)libft.a $(GNL_D)gnl.a $(FLAG)
 	@echo "${CYAN}Library "${NAME}" succesfully compiled"
@@ -58,10 +64,14 @@ ${NAME}: $(SRCS) ${INC}
 clean:		
 	@rm -f ${NAME}
 	@echo "${LGREEN}Everything is cleaned succesfully"
+	@cd $(LIB_D) && make clean
+	@cd $(GNL_D) && make clean
 
 fclean:
 	@rm -f ${NAME}
 	@echo "${LGREEN}Everything is cleaned succesfully"
+	@cd $(LIB_D) && make fclean
+	@cd $(GNL_D) && make fclean
 
 re:			fclean all
 	@echo "${LBLUE}Library successfuly rebuilt"
