@@ -109,6 +109,7 @@ static int				check_line(t_mini *s, char *line)
 	int					i = 0;
 	int					res = 0;
 
+	printf("%s\n", line);
 	res = check_pipes(s, line);
 	if (res == 0)
 		return (-1);
@@ -148,9 +149,6 @@ int			main(int ac, char **av, char **env)
 		ft_init(&s);
 		ft_putstr_fd("\033[0;36m\033[1mminishell ▸ \033[0m", STDOUT);
 		status = get_next_line(&line);
-		// add lopp until ';'
-		//separate commands ; should return command array
-		//then every command in array should be checked by check_line;
 		char **sep_commands = ft_split(line, ';');
 		while (*sep_commands)
 		{
@@ -160,10 +158,6 @@ int			main(int ac, char **av, char **env)
 				sort_ft(&s, env);
 			sep_commands++;
 		}
-		//res = check_line(&s, line);
-		//free(line);
-		//if (res > 0)
-		//	sort_ft(&s, env);
 	}
 	return (0);
 }
