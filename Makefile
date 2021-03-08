@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+         #
+#    By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/09 17:56:31 by ctycho            #+#    #+#              #
-#    Updated: 2021/03/04 11:55:04 by ctycho           ###   ########.fr        #
+#    Updated: 2021/03/08 23:05:31 by mvernius         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,10 +62,10 @@ ${NAME}: $(SRCS) ${INC}
 	@echo "${CYAN}Library "${NAME}" succesfully compiled"
 
 clean:		
-	@rm -f ${NAME}
-	@echo "${LGREEN}Everything is cleaned succesfully"
+	#@rm -f ${NAME}
 	@cd $(LIB_D) && make clean
 	@cd $(GNL_D) && make clean
+	@echo "${LGREEN}Everything is cleaned succesfully"
 
 fclean:
 	@rm -f ${NAME}

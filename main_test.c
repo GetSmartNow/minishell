@@ -146,7 +146,7 @@ int			main(int ac, char **av, char **env)
 		while (*sep_commands)
 		{
 //			printf("str: \"%s\"\n", *sep_commands);
-			*sep_commands = make_substitute(*sep_commands, &(s.head_x));
+			*sep_commands = make_substitute(*sep_commands, &(s.head));
 			res = check_line(&s, *sep_commands);
 			if (res > 0)
 				sort_ft(&s, env);
