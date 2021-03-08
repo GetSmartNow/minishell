@@ -101,7 +101,7 @@ static int				check_line(t_mini *s, char *line)
 	int					i = 0;
 	int					res = 0;
 
-	printf("%s\n", line);
+//	printf("%s\n", line);
 	res = check_pipes(s, line);
 	if (res == 0)
 		return (-1);
@@ -145,8 +145,8 @@ int			main(int ac, char **av, char **env)
 		char **sep_commands = ft_split(line, ';');
 		while (*sep_commands)
 		{
-			printf("str: \"%s\"\n", *sep_commands);
-			*sep_commands = make_substitute(*sep_commands);
+//			printf("str: \"%s\"\n", *sep_commands);
+			*sep_commands = make_substitute(*sep_commands, &(s.head_x));
 			res = check_line(&s, *sep_commands);
 			if (res > 0)
 				sort_ft(&s, env);

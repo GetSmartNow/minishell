@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   mini_pwd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 18:46:08 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/06 22:06:57 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/08 19:20:25 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void				mini_pwd_1(t_mini *s)
 {

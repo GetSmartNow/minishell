@@ -92,5 +92,5 @@ void				ft_list_sort(t_mass **lst);
 
 
 //________________PARSER
-char *make_substitute(char *sep_commands);
+char *make_substitute(char *sep_commands, t_mass **head);
 #endif

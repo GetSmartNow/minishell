@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   mini_export.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:46:29 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/06 21:57:16 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/08 19:20:22 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void				export_to_export(t_mini *s, int i, int equal)
 {
