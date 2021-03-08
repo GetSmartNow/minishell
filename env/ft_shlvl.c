@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 20:33:50 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/02 16:40:13 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/06 18:39:26 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ static int				check_shlvl(t_mini *s, char *line, int	sep)
 		while (line[i] != '=')
 			i++;
 		i++;
+		if (line[i] == '\0')
+			return (2);
 		while (line[i] != '\0')
 		{
 			if (line[i] >= '0' && line[i] <= '9')
@@ -56,6 +58,8 @@ static int				check_shlvl(t_mini *s, char *line, int	sep)
 		while (line[i] != '=')
 			i++;
 		i = i + 2;
+		if (line[i + 1] == '\0')
+			return (2);
 		while (line[i + 1] != '\0')
 		{
 			if (line[i] >= '0' && line[i] <= '9')
@@ -84,8 +88,16 @@ void				ft_shlvl(t_mini *s)
 			{
 				s->var.shlvl = mini_atoi(tmp->content);
 				s->var.shlvl++;
-				ft_bzero(tmp->content, ft_strlen(tmp->content));
-				tmp->content = ft_strjoin("SHLVL=", ft_itoa(s->var.shlvl));
+				if (s->var.shlvl == 1000)
+				{
+					ft_bzero(tmp->content, ft_strlen(tmp->content));
+					tmp->content = ft_strdup("SHLVL=");
+				}
+				else
+				{
+					ft_bzero(tmp->content, ft_strlen(tmp->content));
+					tmp->content = ft_strjoin("SHLVL=", ft_itoa(s->var.shlvl));
+				}
 			}
 			else if (flag == 2)
 			{
@@ -111,10 +123,18 @@ void				ft_shlvl(t_mini *s)
 			{
 				s->var.shlvl = mini_atoi(tmp->content);
 				s->var.shlvl++;
-				ft_bzero(tmp->content, ft_strlen(tmp->content));
-				line = ft_strjoin("SHLVL=", ft_itoa(s->var.shlvl));
-				tmp->content = put_quotes(line);
-				ft_memdel_1d(line);
+				if (s->var.shlvl == 1000)
+				{
+					ft_bzero(tmp->content, ft_strlen(tmp->content));
+					tmp->content = put_quotes("SHLVL=""");
+				}
+				else
+				{
+					ft_bzero(tmp->content, ft_strlen(tmp->content));
+					line = ft_strjoin("SHLVL=", ft_itoa(s->var.shlvl));
+					tmp->content = put_quotes(line);
+					ft_memdel_1d(line);
+				}
 			}
 			else if (flag == 2)
 			{

@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:32:58 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/27 17:01:13 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/07 20:59:40 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,17 @@ static void			mini_oldpwd(t_mini *s)
 	tmp = s->head;
 	while (tmp != NULL)
 	{
+		if (ft_strncmp(tmp->content, "PWD=", ft_strlen("PWD=")) == 0)
+			line = ft_strdup(tmp->content + 4);
+		tmp = tmp->next;
+	}
+	tmp = s->head;
+	while (tmp != NULL)
+	{
 		if (ft_strncmp(tmp->content, "OLDPWD=", ft_strlen("OLDPWD=")) == 0)
 		{
 			flag = 1;
 			free(tmp->content);
-			line = malloc(1000);
-			getcwd(line, 100);
 			tmp->content = ft_strjoin("OLDPWD=", line);
 			ft_memdel_1d(line);
 		}
@@ -35,12 +40,21 @@ static void			mini_oldpwd(t_mini *s)
 	}
 	if (flag == 0)
 	{
-		line = malloc(1000);
-		getcwd(line, 100);
 		line = ft_strjoin("OLDPWD=", line);
 		my_lstadd_back(&s->head, my_lstnew(line));
+		// ft_memdel_1d(line);
 	}
+
+
 	flag = 0;
+	line = NULL;
+	tmp = s->head_x;
+	while (tmp != NULL)
+	{
+		if (ft_strncmp(tmp->content, "PWD=", ft_strlen("PWD=")) == 0)
+			line = ft_strdup(tmp->content + 4);
+		tmp = tmp->next;
+	}
 	tmp = s->head_x;
 	while (tmp != NULL)
 	{
@@ -48,53 +62,16 @@ static void			mini_oldpwd(t_mini *s)
 		{
 			flag = 1;
 			free(tmp->content);
-			line = malloc(1000);
-			getcwd(line, 100);
 			tmp->content = ft_strjoin("OLDPWD=", line);
-			tmp->content = put_quotes(tmp->content);
 			ft_memdel_1d(line);
 		}
 		tmp = tmp->next;
 	}
 	if (flag == 0)
 	{
-		line = malloc(1000);
-		getcwd(line, 100);
 		line = ft_strjoin("OLDPWD=", line);
+		line = put_quotes(line);
 		my_lstadd_back(&s->head_x, my_lstnew(line));
-	}
-}
-
-static void			mini_pwd1(t_mini *s)
-{
-	t_mass			*tmp;
-	char			*line;
-
-	tmp = s->head;
-	while (tmp != NULL)
-	{
-		if (ft_strncmp(tmp->content, "PWD=", ft_strlen("PWD=")) == 0)
-		{
-			free(tmp->content);
-			line = malloc(1000);
-			getcwd(line, 100);
-			tmp->content = ft_strjoin("PWD=", line);
-			ft_memdel_1d(line);
-		}
-		tmp = tmp->next;
-	}
-	tmp = s->head_x;
-	while (tmp != NULL)
-	{
-		if (ft_strncmp(tmp->content, "PWD=", ft_strlen("PWD=")) == 0)
-		{
-			free(tmp->content);
-			line = malloc(1000);
-			getcwd(line, 100);
-			tmp->content = ft_strjoin("PWD=", line);
-			ft_memdel_1d(line);
-		}
-		tmp = tmp->next;
 	}
 }
 
@@ -125,25 +102,83 @@ static void			empty_olpwd(t_mini *s)
 	}
 }
 
-void				mini_cd(t_mini *s)
+static void			mini_cd_minus_1(t_mini *s)
+{
+	t_mass			*tmp;
+	char			*line;
+	int				flag = 0;
+
+	tmp = s->head;
+	while (tmp != NULL)
+	{
+		if (ft_strncmp(tmp->content, "OLDPWD=", ft_strlen("OLDPWD=")) == 0)
+		{
+			flag = 1;
+			if (ft_strlen(tmp->content) == ft_strlen("OLDPWD="))
+				write(1, "bash: cd: OLDPWD not set\n", 25);
+			else
+				s->var.oldpwd = ft_strdup(tmp->content + 7);
+		}
+		tmp = tmp->next;
+	}
+	if (flag == 0)
+		write(1, "bash: cd: OLDPWD not set\n", 25);
+}
+
+static int			mini_cd_minus(t_mini *s, char *exec, char *arg)
 {
 	int				res;
+	int				len;
+
+	res = 1;
+	len = ft_strlen(arg);
+	if (arg[0] == '-' && len >= 1)
+	{
+		if ((len == 2 && arg[1] == '-') || len == 1)
+		{
+			mini_cd_minus_1(s);
+		}
+		else
+		{
+			res = 0;
+			write(1, "bash: cd: ", 10);
+			write(1, arg, 2);
+			write(1, ": invalid option\n", 17);
+			write(1, "cd: usage: cd [-L|-P] [dir]\n", 28);
+		}
+	}
+	if (res == 1)
+	{
+		if (s->var.oldpwd != NULL)
+			res = chdir(s->var.oldpwd);
+		else
+			res = chdir(arg);
+	}
+	return (res);
+}
+
+void				mini_cd(t_mini *s, char *exec, char *arg)
+{
+	int				res;
+	int				flag;
 	t_mass			*tmp;
 
-	if (s->mass3d[0][1] == NULL)
-		return ;
 	res = 0;
-	if (s->var.pwd == 0)
-		mini_oldpwd(s);
-	else
-		empty_olpwd(s);
-	res = chdir(s->mass3d[0][1]);
-	if (res == -1)
+	if (arg == NULL)
+		return ;
+	res = mini_cd_minus(s, exec, arg);
+	if (res == -1 && s->mass3d[0][1][0] != '-')
 	{
-		write(1, "cd: ", 4);
-		write(1, s->mass3d[0][1], ft_strlen(s->mass3d[0][1]));
+		write(1, "bash: cd: ", 10);
+		write(1, arg, ft_strlen(arg));
 		write(1, ": No such file or directory\n", 28);
 	}
 	else
-		mini_pwd1(s);
+	{
+		if (s->var.pwd == 0 && s->mass3d[0][1][0] != '-')
+			mini_oldpwd(s);
+		else
+			empty_olpwd(s);
+		mini_pwd_1(s);
+	}
 }

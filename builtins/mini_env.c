@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:45:27 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/26 19:35:31 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/06 21:57:01 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void				mini_env(t_mini *s)
 	}
 	else
 	{
+		ft_list_sort(&s->head);
 		tmp = s->head;
 		while (tmp != NULL)
 		{

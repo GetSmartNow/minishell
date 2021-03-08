@@ -6,7 +6,11 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:35:14 by ctycho            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2021/03/05 16:54:46 by mvernius         ###   ########.fr       */
+=======
+/*   Updated: 2021/03/06 22:40:29 by ctycho           ###   ########.fr       */
+>>>>>>> origin/master
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +18,11 @@
 
 static void		ft_init(t_mini *s)
 {
-	s->arg = NULL;
 	s->env = NULL;
 	s->tmp = NULL;
 	s->var.bin = NULL;
+	s->var.oldpwd = NULL;
+	s->var.count_bin = 0;
 	s->div_pipe = NULL;
 	s->pipe.count_commands = 0;
 	s->pipe.count_pipe = 0;
@@ -36,7 +41,7 @@ static void		sort_ft(t_mini *s, char **env1)
 	else if (ft_strcmp(s->mass3d[0][0], "exit") == 0)
 		mini_exit(s->mass3d[0]);
 	else if (ft_strcmp(s->mass3d[0][0], "cd") == 0)
-		mini_cd(s);
+		mini_cd(s, s->mass3d[0][0], s->mass3d[0][1]);
 	else if (ft_strcmp(s->mass3d[0][0], "env") == 0)
 		mini_env(s);
 	else if (ft_strcmp(s->mass3d[0][0], "export") == 0)
@@ -44,7 +49,10 @@ static void		sort_ft(t_mini *s, char **env1)
 	else if (ft_strcmp(s->mass3d[0][0], "unset") == 0)
 		mini_unset(s);
 	else
-		mini_bin(s);
+	{
+		// mini_bin(s);
+		exec_bin(s, s->mass3d[0], s->mass3d[0][0]);
+	}
 }
 
 static int		init_list_x(t_mini *s, char **env)
@@ -66,7 +74,7 @@ static int		init_list_x(t_mini *s, char **env)
 	}
 	line = ft_strdup("OLDPWD");
 	my_lstadd_back(&s->head_x, my_lstnew(line));
-	ft_list_sort(&s->head_x);
+	// ft_list_sort(&s->head_x);
 	return (0);
 }
 
@@ -87,7 +95,7 @@ static int		init_list(t_mini *s, char **env)
 		}
 		i++;
 	}
-	ft_list_sort(&s->head);
+	// ft_list_sort(&s->head);
 	return (0);
 }
 
@@ -138,6 +146,7 @@ int			main(int ac, char **av, char **env)
 	int		j = 0;
 	int 	res = 0;
 
+	s.av = av[0];
 	s.mass3d = (char ***)ft_calloc(sizeof(char **), 100);
 	s.var.pwd = 0;
 	init_list(&s, env);

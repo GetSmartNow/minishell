@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:57:51 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/27 12:09:00 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/06 21:10:30 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void				mini_unset(t_mini *s)
 			length1 = length_to_equal(s, tmp->content);
 			if (ft_strncmp(tmp->content, s->mass3d[0][i], length) == 0 && length1 == length)
 			{
+				if (ft_strncmp(tmp->content, "PATH=", ft_strlen("PATH=")) == 0)
+					s->var.path = ft_strdup(tmp->content + 5);
 				if (count == 1)
 					s->head = s->head->next;
 				deletelem(tmp);

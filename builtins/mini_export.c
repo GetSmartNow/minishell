@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:46:29 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/27 00:00:54 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/06 21:57:16 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ void				mini_export(t_mini *s)
 	}
 	else
 	{
+		ft_list_sort(&s->head_x);
 		tmp = s->head_x;
 		while (tmp != NULL)
 		{
