@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:35:14 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/06 22:40:29 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/09 09:51:48 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,23 @@ static void		ft_init(t_mini *s)
 	s->div_pipe = NULL;
 }
 
+static void		exit_code(void) // signal goes to all proceses
+{
+	char		*nbr;
+
+	nbr = ft_itoa(g_sig.exit_status);
+	write(1, "bash: ", 6);
+	write(1, nbr, ft_strlen(nbr));
+	write(1, ": command not found\n", 20);
+	ft_memdel_1d(nbr);
+}
+
 static void		sort_ft(t_mini *s, char **env1)
 {
 	s->env = env1;
-	if (s->pipe.count_pipe != 0)
+	if (ft_strcmp(s->mass3d[0][0], "$?") == 0) // this thins is temporary here
+		exit_code();
+	else if (s->pipe.count_pipe != 0)
 		mini_pipes(s);
 	else if (ft_strcmp(s->mass3d[0][0], "echo") == 0)
 		mini_echo(s->mass3d[0]);
@@ -144,12 +157,16 @@ int			main(int ac, char **av, char **env)
 	s.av = av[0];
 	s.mass3d = (char ***)ft_calloc(sizeof(char **), 100);
 	s.var.pwd = 0;
+	s.var.path = NULL;
 	init_list(&s, env);
 	init_list_x(&s, env);
 	ft_shlvl(&s);
 	get_pwd(&s);
 	while (status)
 	{
+		init_signal();
+		signal(SIGINT, &sig_int); // Register signal handler
+		signal(SIGQUIT, &sig_quit);
 		ft_init(&s);
 		ft_putstr_fd("\033[0;36m\033[1mminishell ▸ \033[0m", STDOUT);
 		status = get_next_line(&line);
@@ -159,7 +176,7 @@ int			main(int ac, char **av, char **env)
 		if (res > 0)
 			sort_ft(&s, env);
 	}
-	return (0);
+	return (g_sig.exit_status);
 }
 
 

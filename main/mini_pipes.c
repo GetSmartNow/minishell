@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:05:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/07 21:44:58 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/09 08:03:52 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int		init_pipes(t_mini *s)
 	{
 		pipe(s->pipe.fd[i]);
 	}
-	s->pipe.pid = (pid_t *)malloc(sizeof(pid_t) * s->pipe.count_commands);
+	// s->pipe.pid = (pid_t *)malloc(sizeof(pid_t) * s->pipe.count_commands);
 	return (0);
 }
 
@@ -43,13 +43,9 @@ static int		mini_bin1(t_mini *s, int i)
 	flag = 0;
 	tmp = s->head;
 	while (tmp != NULL && ft_strncmp(tmp->content, "PATH=", 5) != 0)
-	{
 		tmp = tmp->next;
-	}
 	if (s->mass3d[i][0][0] == '/')
-	{
 		s->var.bin = ft_strdup(s->mass3d[i][0]);
-	}
 	else if (tmp == NULL)
 		return (-1);
 	else
@@ -58,7 +54,7 @@ static int		mini_bin1(t_mini *s, int i)
 		bin = ft_split(line, ':');
 		ft_memdel_1d(line);
 		m = 0;
-		while (bin[m + 3] && flag == 0)
+		while (bin[m] && flag == 0) //bin[m + 3]
 		{
 			// printf("%s\n", bin[m]);
 			folder = opendir(bin[m]);
@@ -94,8 +90,10 @@ int					mini_pipes(t_mini *s) //ps -a | cat -e | cat -e
 	for(int i = 0; i < s->pipe.count_commands; i++) // ls | cat -e | cat -e
 	{
 		res = mini_bin1(s, i);
-		s->pipe.pid[i] = fork();
-		if (s->pipe.pid[i] == 0)
+		// s->pipe.pid[i] = fork()
+		g_sig.pid = fork();
+		// if (s->pipe.pid[i] == 0)
+		if (g_sig.pid == 0)
 		{
 			if (i == 0) // first
 			{

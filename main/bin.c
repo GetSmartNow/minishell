@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bin1.c                                             :+:      :+:    :+:   */
+/*   bin.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 11:36:22 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/07 21:06:25 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/09 09:47:54 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,12 @@ int					magic_box(t_mini *s, char *dir, char *exec)
 	struct dirent	*command;
 	char			*line = NULL;
 
-	// printf("dir: %s\n", dir);
-	// printf("exe: %s\n", exec);
 	folder = opendir(dir);
 	if (folder == NULL)
 	{
-		write(1, "error\n", 6);
-		exit (127);
+		return (-10);
+		// write(1, "error\n", 6);
+		// exit (127);
 	}
 	while ((command = readdir(folder)))
 	{
@@ -128,8 +127,9 @@ int					exec_bin_1(t_mini *s, char *exec)
 		s->var.count_bin = 1;
 	else
 		s->var.count_bin = 5;
-	while (bin[i + 3])
-	{
+	while (bin[i]) //bin[i + 3]
+	{ //make it finish when command is found
+		// printf("%s\n", bin[i]);
 		if (s->var.count_bin == 1)
 			absolute_path(s, bin[i], exec);
 		else
@@ -142,40 +142,55 @@ int					exec_bin_1(t_mini *s, char *exec)
 void				bin_error(t_mini *s, char *exec, int res)
 {
 	if (res == 4 || res == 6 || res == 0)
+	{
+		g_sig.exit_status = 0;
 		return ;
+	}
 	else
 	{
 		write(1, "bash: ", 6);
 		write(1, exec, ft_strlen(exec));
 		if (res == 1 || res == 3)
-			write(1, ": No such file or directory\n", 28);
+		{
+			write(STDERR, ": No such file or directory\n", 28); // 127
+			g_sig.exit_status = 127;
+		}
 		else if (res == 2)
-			write(1, ": is a directory\n", 17);
+		{
+			write(STDERR, ": is a directory\n", 17); // 126
+			g_sig.exit_status = 126;
+		}
 		else if (res == 5)
-			write(1, ": command not found\n", 20);
+		{
+			write(STDERR, ": command not found\n", 20); // 127
+			g_sig.exit_status = 127;
+		}
 	}
 }
 
 int					exec_bin(t_mini *s, char **arr, char *exec)
 {
-	pid_t			pid;
+	// pid_t			pid;
 	int				res = 0;
 	char			*bin = NULL;
 
 	res = exec_bin_1(s, exec);
-	pid = fork();
-	if (pid < 0)
+	g_sig.pid = fork();
+	if (g_sig.pid < 0)
 	{
-		write(1, "error\n", 6);
+		write(STDERR, "error\n", 6);
 		exit (127);
 	}
-	else if (pid == 0)
+	else if (g_sig.pid == 0)
 	{
 		execve(s->var.bin, arr, s->env);
 		exit (1);
 	}
 	else
+	{
+		// we need to use waitpid instead of wait
 		wait(NULL);
+	}
 	if (res)
 		ft_memdel_1d(s->var.bin);
 	bin_error(s, exec, res);

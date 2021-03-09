@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/07 21:49:59 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/09 08:53:09 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 #define STDIN 0
 #define STDOUT 1
 #define STDERR 2
+
 
 typedef struct		s_pipe
 {
@@ -55,6 +56,14 @@ typedef struct		s_env
 	int				count_bin;
 }					t_env;
 
+typedef struct		s_sig
+{
+	int				sigint;
+	int				sigquit;
+	int				exit_status;
+	pid_t			pid;
+}					t_sig;
+
 typedef struct		s_mini
 {
 	t_pipe			pipe;
@@ -67,6 +76,7 @@ typedef struct		s_mini
 	char			**div_pipe;
 	char			*tmp;
 }					t_mini;
+t_sig	g_sig;
 
 int					exec_bin(t_mini *s, char **arr, char *command);
 int					mini_bin(t_mini *s);
@@ -82,6 +92,11 @@ int					mini_pipes(t_mini *s);
 
 void				ft_shlvl(t_mini *s);
 void				get_pwd(t_mini	*s);
+
+/*SIGNAL*/
+void				init_signal(void);
+void				sig_int(int signum);
+void				sig_quit(int code);
 
 int					length_to_equal(t_mini *s, char *line);
 char				*put_quotes(char *s1);
