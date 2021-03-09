@@ -21,18 +21,6 @@ char	*find_value_in_export(char *key, t_mass **head)
 		if (node != NULL)
 			tmp = node->content;
 	}
-	//while (node && ft_strncmp(key, tmp, key_len))
-	//{
-	//	node = node->next;
-	//	if (node != NULL)
-	//		tmp = node->content;
-	//}
-	//if (node != NULL)
-	//{
-	//	value = ft_substr(tmp, key_len + 1, (ft_strlen(tmp) - (key_len + 1)));
-	//	return (value);
-	//}
-//	printf("%s\n", value);
 	return ("");
 }
 
@@ -117,18 +105,93 @@ static char	*ft_concatenate(char *str1, char *str2)
 	return (res);
 }
 
+int		ft_count_quot(char *str)
+{
+	int	i;
+	int count;
 
+	i = 0;
+	count = 0;
+	while (str[i])
+	{
+		if (str[i] == '\"')
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+char	*extract_from_quotes(char *str)
+{
+	int		str_len;
+	int		count_quot;
+	int		i;
+	int		j;
+	char	*new;
+
+
+	str_len = ft_strlen_modif(str);
+	count_quot = ft_count_quot(str);
+	new = (char *)malloc((str_len - count_quot + 1) * sizeof(char));
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (str[i] == '\"' && ((i > 0 && str[i - 1] != '\\') || (i == 0)))
+			i++;
+		new[j] = str[i];
+		j++;
+		i++;
+	}
+	return (new);
+}
+
+int		ft_count_shields(char *str)
+{
+	int i;
+	int count;
+
+	i = 0;
+	count = 0;
+	while (str[i + 1])
+	{
+		if (str[i] == '\\' && str[i + 1] == '\\')
+		{
+			count++;
+			i++;
+		}
+		i++;
+	}
+	return (count);
+}
+
+char	*clean_from_shielding(char *str)
+{
+	int		str_len;
+	int		count_shield;
+	char	*new;
+	int		i;
+	int		j;
+
+	str_len = ft_strlen_modif(str);
+	count_shield = ft_count_shields(str);
+	new = (char *)malloc((str_len - (count_shield * 2) + 1) * sizeof(char));
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		while (str[i + 1] == '\\' && str[i] == '\\')
+			i += 2;
+		new[j] = str[i];
+		j++;
+		i++;
+	}
+	printf("%s\n", new);
+	return (new);
+}
 
 char	*make_substitute(char *sep_commands, t_mass **head)
 {
-	/*
-	 * 1. Если открывающий символ ' то дальше все воспринимается, как
-	 * написано. Только текст. Экранирования не работают в том числе. Сами
-	 * кавычки не печатаются (затираются)
-	 * 2. Если открывающий символ ", то дальше возможна подстановка переменных
-	 * экранирование будет работать.
-	 *
-	 * */
 	t_mass	*node;
 	char	*key;
 	int 	i;
@@ -140,9 +203,49 @@ char	*make_substitute(char *sep_commands, t_mass **head)
 	res = NULL;
 	key = NULL;
 	tmp = NULL;
+	sep_commands = extract_from_quotes(sep_commands);
+	sep_commands = clean_from_shielding(sep_commands);
 	while (sep_commands[i])
 	{
-		if (sep_commands[i] == '$')
+		if (sep_commands[i] == '\'' && (i > 0 && sep_commands[i - 1] == '\\'))
+		{
+			while (sep_commands[i])
+			{
+				if (sep_commands[i] == '$' && (i > 0 && sep_commands[i - 1] != '\\'))
+				{
+					key = extract_key(sep_commands, ++i);
+					printf("key ------ %s\n", key);
+					if (key != NULL)
+					{
+						tmp = find_value_in_export(key, head);
+						printf("tmp ------ %s\n", tmp);
+						i += ft_strlen(key);
+						res = ft_concatenate(res, tmp);
+					}
+					else
+					{
+						printf("Error: fucked up extracting key\n");
+					}
+				}
+				else if (sep_commands[i] != '\\')
+				{
+					res = ft_strnjoin_char(res, sep_commands[i], 1);
+					i++;
+				}
+				else
+					i++;
+			}
+		}
+		else if (sep_commands[i] == '\'' && ((i > 0 && sep_commands[i - 1] != '\\') || (i == 0)))
+		{
+			while (sep_commands[++i] != '\'')
+			{
+				res = ft_strnjoin_char(res, sep_commands[i], 1);
+			}
+			if (sep_commands[i] == '\'')
+				i++;
+		}
+		else if (sep_commands[i] == '$' && ((i > 0 && sep_commands[i - 1] != '\\') || (i == 0)))
 		{
 			key = extract_key(sep_commands, ++i);
 			printf("key ------ %s\n", key);
@@ -155,17 +258,19 @@ char	*make_substitute(char *sep_commands, t_mass **head)
 			}
 			else
 			{
-//				res = ft_strnjoin_char(res, sep_commands[i], 1);
-//				i++;
 				printf("Error: fucked up extracting key\n");
 			}
 		}
-		else
+		else if (sep_commands[i] != '\\')
 		{
 			res = ft_strnjoin_char(res, sep_commands[i], 1);
 			i++;
 		}
+		else
+			i++;
 	}
+	// res = extract_from_quotes(res);
 	printf("res ------ %s\n", res);
+
 	return (res);
 }
