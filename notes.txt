@@ -1,10 +1,18 @@
-1. Export works improperly. Example: export test="many words here".
+1. Error: Export works improperly. Example: export test="many words here".
 	ENV -> test="many
 	EXP -> test=""many"
 	ORIGINAL BASH
 	ENV -> test=many words here
 	EXP -> test="many words here"
+2. Error: Export let's to create variable which start from num;
+3. Need to modify split. When split by char ';' need to additionally inspect if it's not a part of the string like ".... ; ...";
+4. Error: system message "no such file or dir" works when no quotes only. But also should work like in (4, 5) examples
 
+CHECK on the school mac
+1. $1PWD works or not?
+
+TASKS:
+1. Rewrite split for avoiding separator (c) if it's in the quotes like '... c .... ' or " ... c....";
 
 
 
@@ -14,26 +22,26 @@ ORIGINAL BASH																				OUR MINISHELL
 														1. "\$HOME" (OK)
 $HOME: command not found									|								$HOME: command not found
 															|
-														2. "$HOME" (OK)
+														2. "$HOME" (ERR DIF)
 /Users/mvernius: is a directory								|								/Users/mvernius: No such file or directory
 															|
 														3. '$HOME' (OK)
 $HOME: command not found									|								$HOME: command not found
 															|
-														4. \'$HOME\' (OK)
+														4. \'$HOME\' (ERR DIF)
 '/Users/mvernius': NO such file or dir						|								'/Users/mvernius': command not found
 															|
-														5. \"$HOME\" (OK)
+														5. \"$HOME\" (ERR DIF)
 "/Users/mvernius": No such file or directory				|								"/Users/mvernius": command not found
 															|
-														6. echo $PWD\$HOME$1PWD
-/Users/mvernius/Desktop/minishell_test$HOMEPWD				|								96870 abort      ./minishell
+														6. echo $PWD\$HOME$1PWD (OK)
+/Users/mvernius/Desktop/minishell_test$HOMEPWD				|								/Users/mvernius/Desktop/minishell_test$HOMEPWD
 															|
 														7. echo '\$PWD' (OK)
 \$PWD														|								\$PWD
 															|
-														8. echo "$HOME\\$PWD" (not ok)
-/Users/mvernius\/Users/mvernius/Desktop/minishell_test 		|								/Users/mvernius/Users/mvernius/Desktop/minishell_test
+														8. echo "$HOME\\$PWD" (OK)
+/Users/mvernius\/Users/mvernius/Desktop/minishell_test 		|								/Users/mvernius\/Users/mvernius/Desktop/minishell_test
 															|
-														9. echo "2.   ;  Gh"
+														9. echo "2.   ;  Gh" (!!!!DIF)
 2.   ;  Gh													|								Gh: command not found

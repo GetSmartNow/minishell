@@ -24,6 +24,18 @@ char	*find_value_in_export(char *key, t_mass **head)
 	return ("");
 }
 
+static int	ft_strlen_modif(const char *str)
+{
+	int i;
+
+	i = 0;
+	if (str == NULL)
+		return (0);
+	while (str[i])
+		i++;
+	return (i);
+}
+
 static char	*ft_strnjoin_char(char *s1, char c, int quantity)
 {
 	char	*result;
@@ -33,7 +45,7 @@ static char	*ft_strnjoin_char(char *s1, char c, int quantity)
 	if (!s1)
 		s1 = ft_strdup("");
 	i = 0;
-	len = ft_strlen(s1) + quantity + 1;
+	len = ft_strlen_modif(s1) + quantity + 1;
 	result = (char *)malloc(len * sizeof(char));
 	if (NULL == result)
 		return (NULL);
@@ -49,31 +61,7 @@ static char	*ft_strnjoin_char(char *s1, char c, int quantity)
 	return (result);
 }
 
-static char	*extract_key(char *str, int pos)
-{
-	char	*res;
-
-	res = NULL;
-	while (str[pos] && ft_isalnum((int)str[pos]))
-	{
-		res = ft_strnjoin_char(res, str[pos], 1);
-		pos++;
-	}
-	return (res);
-}
-static int	ft_strlen_modif(const char *str)
-{
-	int i;
-
-	i = 0;
-	if (str == NULL)
-		return (0);
-	while (str[i])
-		i++;
-	return (i);
-}
-
-static char	*ft_concatenate(char *str1, char *str2)
+static char	*ft_concat(char *str1, char *str2)
 {
 	int		len;
 	int		i;
@@ -105,147 +93,97 @@ static char	*ft_concatenate(char *str1, char *str2)
 	return (res);
 }
 
-int		ft_count_quot(char *str)
+static char	*extract_key(char *str, int pos)
 {
-	int	i;
-	int count;
+	char	*res;
 
-	i = 0;
-	count = 0;
-	while (str[i])
+	res = NULL;
+	//while (str[pos] && ft_isdigit((int)str[pos]))
+	//	pos++;
+	if (ft_isdigit(str[pos]))
+		return (NULL);
+	while (str[pos] && ft_isalnum((int)str[pos]))
 	{
-		if (str[i] == '\"')
-			count++;
-		i++;
+		res = ft_strnjoin_char(res, str[pos], 1);
+		pos++;
 	}
-	return (count);
+	return (res);
 }
 
-char	*extract_from_quotes(char *str)
+char	*extract_from_quotes(char *str, int pos)
 {
-	int		str_len;
-	int		count_quot;
+	int		extract_start;
+
+	extract_start = pos + 1;
+	while (str[++pos])
+	{
+		if (str[pos] == '\'' && str[pos - 1] != '\\')
+			return (ft_substr(str, extract_start, pos - extract_start));
+	}
+	return (NULL);
+}
+
+static int	is_shielded(char c)
+{
+	char	*shielded_list;
 	int		i;
-	int		j;
-	char	*new;
 
-
-	str_len = ft_strlen_modif(str);
-	count_quot = ft_count_quot(str);
-	new = (char *)malloc((str_len - count_quot + 1) * sizeof(char));
+	shielded_list = "\\\"\'$"; //maybe need add some extra
 	i = 0;
-	j = 0;
-	while (str[i])
+	while (shielded_list[i])
 	{
-		if (str[i] == '\"' && ((i > 0 && str[i - 1] != '\\') || (i == 0)))
-			i++;
-		new[j] = str[i];
-		j++;
+		if (shielded_list[i] == c)
+			return (1);
 		i++;
 	}
-	return (new);
-}
-
-int		ft_count_shields(char *str)
-{
-	int i;
-	int count;
-
-	i = 0;
-	count = 0;
-	while (str[i + 1])
-	{
-		if (str[i] == '\\' && str[i + 1] == '\\')
-		{
-			count++;
-			i++;
-		}
-		i++;
-	}
-	return (count);
-}
-
-char	*clean_from_shielding(char *str)
-{
-	int		str_len;
-	int		count_shield;
-	char	*new;
-	int		i;
-	int		j;
-
-	str_len = ft_strlen_modif(str);
-	count_shield = ft_count_shields(str);
-	new = (char *)malloc((str_len - (count_shield * 2) + 1) * sizeof(char));
-	i = 0;
-	j = 0;
-	while (str[i])
-	{
-		while (str[i + 1] == '\\' && str[i] == '\\')
-			i += 2;
-		new[j] = str[i];
-		j++;
-		i++;
-	}
-	printf("%s\n", new);
-	return (new);
+	return (0);
 }
 
 char	*make_substitute(char *sep_commands, t_mass **head)
 {
-	t_mass	*node;
-	char	*key;
-	int 	i;
+	int		i;
 	char	*res;
-	char *tmp;
+	char	*tmp;
+	char	*key;
 
-	i = 0;
-	node = *head;
-	res = NULL;
-	key = NULL;
 	tmp = NULL;
-	sep_commands = extract_from_quotes(sep_commands);
-	sep_commands = clean_from_shielding(sep_commands);
-	while (sep_commands[i])
+	res = NULL;
+	i = 0;
+	while (sep_commands[i + 1])
 	{
-		if (sep_commands[i] == '\'' && (i > 0 && sep_commands[i - 1] == '\\'))
+		if (sep_commands[i] == '\\')
 		{
-			while (sep_commands[i])
+			if (is_shielded(sep_commands[i + 1]))
 			{
-				if (sep_commands[i] == '$' && (i > 0 && sep_commands[i - 1] != '\\'))
-				{
-					key = extract_key(sep_commands, ++i);
-					printf("key ------ %s\n", key);
-					if (key != NULL)
-					{
-						tmp = find_value_in_export(key, head);
-						printf("tmp ------ %s\n", tmp);
-						i += ft_strlen(key);
-						res = ft_concatenate(res, tmp);
-					}
-					else
-					{
-						printf("Error: fucked up extracting key\n");
-					}
-				}
-				else if (sep_commands[i] != '\\')
-				{
-					res = ft_strnjoin_char(res, sep_commands[i], 1);
-					i++;
-				}
-				else
-					i++;
+				res = ft_strnjoin_char(res, sep_commands[i + 1], 1);
+				i += 2;
 			}
-		}
-		else if (sep_commands[i] == '\'' && ((i > 0 && sep_commands[i - 1] != '\\') || (i == 0)))
-		{
-			while (sep_commands[++i] != '\'')
+			else
 			{
 				res = ft_strnjoin_char(res, sep_commands[i], 1);
-			}
-			if (sep_commands[i] == '\'')
 				i++;
+			}
 		}
-		else if (sep_commands[i] == '$' && ((i > 0 && sep_commands[i - 1] != '\\') || (i == 0)))
+		else if (sep_commands[i] == '\"')
+		{
+			i++;
+		}
+		else if (sep_commands[i] == '\'')
+		{
+			tmp = extract_from_quotes(sep_commands, i);
+			if (tmp)
+			{
+				res = ft_concat(res, tmp);
+				i += (ft_strlen_modif(tmp) + 2);
+			}
+			else
+			{
+				tmp = ft_substr(sep_commands, i, ft_strlen_modif(sep_commands) - i); //mb +1 need for 2 and 3 args
+				res = ft_concat(res, tmp);
+				i += ft_strlen_modif(tmp);
+			}
+		}
+		else if (sep_commands[i] == '$')
 		{
 			key = extract_key(sep_commands, ++i);
 			printf("key ------ %s\n", key);
@@ -253,24 +191,22 @@ char	*make_substitute(char *sep_commands, t_mass **head)
 			{
 				tmp = find_value_in_export(key, head);
 				printf("tmp ------ %s\n", tmp);
-				i += ft_strlen(key);
-				res = ft_concatenate(res, tmp);
+				i += ft_strlen_modif(key);
+				res = ft_concat(res, tmp);
 			}
 			else
 			{
+				i++;
 				printf("Error: fucked up extracting key\n");
 			}
 		}
-		else if (sep_commands[i] != '\\')
+		else
 		{
 			res = ft_strnjoin_char(res, sep_commands[i], 1);
 			i++;
 		}
-		else
-			i++;
 	}
-	// res = extract_from_quotes(res);
-	printf("res ------ %s\n", res);
-
+	res = ft_strnjoin_char(res, sep_commands[i], 1);
+	printf("res = |%s|\n", res);
 	return (res);
 }
