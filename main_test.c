@@ -142,7 +142,7 @@ int			main(int ac, char **av, char **env)
 		ft_init(&s);
 		ft_putstr_fd("\033[0;36m\033[1mminishell ▸ \033[0m", STDOUT);
 		status = get_next_line(&line);
-		char **sep_commands = ft_split(line, ';');
+		char **sep_commands = ft_split_new(line, ';');
 		while (*sep_commands)
 		{
 //			printf("str: \"%s\"\n", *sep_commands);

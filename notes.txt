@@ -5,7 +5,7 @@
 	ENV -> test=many words here
 	EXP -> test="many words here"
 2. Error: Export let's to create variable which start from num;
-3. Need to modify split. When split by char ';' need to additionally inspect if it's not a part of the string like ".... ; ...";
+3. echo "2.   ;  Gh". OUR: 2. ; Gh". ORIGINAL: 2.   ;  Gh
 4. Error: system message "no such file or dir" works when no quotes only. But also should work like in (4, 5) examples
 
 CHECK on the school mac
@@ -43,5 +43,5 @@ $HOME: command not found									|								$HOME: command not found
 														8. echo "$HOME\\$PWD" (OK)
 /Users/mvernius\/Users/mvernius/Desktop/minishell_test 		|								/Users/mvernius\/Users/mvernius/Desktop/minishell_test
 															|
-														9. echo "2.   ;  Gh" (!!!!DIF)
-2.   ;  Gh													|								Gh: command not found
+														9. echo "2.   ;  Gh" (DIF echo сжирает пробелы)
+2.   ;  Gh													|								2. ; Gh"
