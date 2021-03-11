@@ -8,7 +8,7 @@ static int		len_cur_word(char const *s, char c)
 
 	flag = 0;
 	length = 0;
-	while (*s && *s != c)
+	while (*s && (*s != c || *(s - 1) == '\\'))
 	{
 		if ((*s == '\'' || *s == '\"') && flag == 0)
 			flag = 1;
@@ -42,7 +42,7 @@ static size_t	count_words(char const *s, char c)
 			flag = 0;
 		else if ((s[i] == '\'' || s[i] == '\"') && flag == 0)
 			flag = 1;
-		if (s[i] == c && state == 1)
+		if (s[i] == c && state == 1 && (i > 0 && s[i - 1] != '\\'))
 			state = 0;
 		if (s[i] != c && state == 0 && flag != 1)
 		{
