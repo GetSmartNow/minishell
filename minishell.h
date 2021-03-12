@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/09 08:53:09 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/12 17:01:53 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct		s_mini
 	char			**div_pipe;
 	char			*tmp;
 }					t_mini;
+
 t_sig	g_sig;
 
 int					exec_bin(t_mini *s, char **arr, char *command);

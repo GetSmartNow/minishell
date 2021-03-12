@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 14:55:26 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/08 12:43:24 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/12 17:16:10 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,27 @@ int					get_next_line(char **line)
 		}
 		buf[byte_was_read] = '\0';
 		remainder = ft_join_str(remainder, buf);
+		if (byte_was_read == 0)
+		{
+			write(1, "  \b\b", 4);
+			if (ft_strlen_1(remainder) != 0)
+			{
+				// write(1, "*",1 );
+				byte_was_read = 1;
+			}
+			else
+			{
+				// write(1, "#",1 );
+				exit(0);
+			}
+		}
+		// printf("\nlen: %zu\n", ft_strlen_1(remainder));
+		// printf("\nlen: %s\n", remainder);
 	}
+	printf("in %d\n", sigint);
+	if (sigint == 1)
+		free(remainder);
+	write(1, remainder, ft_strlen_1(remainder));
 	free(buf);
 	*line = strdup_till_null(remainder);
 	remainder = find_null(remainder);

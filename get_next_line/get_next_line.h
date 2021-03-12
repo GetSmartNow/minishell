@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 14:56:13 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/08 12:43:29 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/12 17:01:58 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
+
+int		sigint;
 
 int			get_next_line(char **line);
 char		*strdup_till_null(char *s);
