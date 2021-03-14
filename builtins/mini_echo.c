@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:43:03 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/14 14:24:59 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/14 15:09:54 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,16 @@ void				mini_echo(char **s)
 	else if (ft_strcmp(s[1], "-n") == 0)
 	{
 		i = 1;
-		if (ft_strcmp(s[1], "-n") == 0)
-			i++;
-		else
+		while (s[i])
 		{
-			while (s[++i])
+			if (ft_strcmp(s[i], "-n") == 0)
+				i++;
+			else
 			{
 				write(1, s[i], ft_strlen(s[i]));
 				s[i + 1] != NULL ? write(1, " ", 1) : 0;
+				i++;
 			}
-
 		}
 	}
 	else

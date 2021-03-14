@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:35:14 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/14 14:16:10 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/14 15:27:57 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,7 @@ int			main(int ac, char **av, char **env)
 		status = get_next_line(&line);
 		// add lopp until ';'
 		res = check_line(&s, line);
-		if (sigint != 1)
+		// if (sigint != 1)
 			ft_memdel_1d(line);
 		if (res > 0)
 			sort_ft(&s, env);

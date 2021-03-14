@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 11:36:22 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/12 10:18:47 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/14 15:16:59 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,6 @@ int					exec_bin_1(t_mini *s, char *exec)
 	char		*path;
 	t_mass		*tmp;
 
-	// printf("path |%s|\n", s->var.path);
-	// printf("av |%s|\n", s->av);
-	// printf("exe |%s|\n", exec);
 	tmp = s->head;
 	while (tmp != NULL && ft_strncmp(tmp->content, "PATH=", 5) != 0)
 		tmp = tmp->next;

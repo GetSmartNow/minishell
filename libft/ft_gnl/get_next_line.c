@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 14:55:26 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/13 19:36:16 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/14 15:20:05 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,12 @@ int					get_next_line(char **line)
 			}
 		}
 	}
-	if (sigint == 1)
-	{
-		ft_memdel_1d(remainder);
-		// write(1, "*\n", 2);
-		ft_bzero(remainder, ft_strlen_1(remainder));
-	}
+	// if (sigint == 1)
+	// {
+	// 	ft_memdel_1d(remainder);
+	// 	// write(1, "*\n", 2);
+	// 	ft_bzero(remainder, ft_strlen_1(remainder));
+	// }
 	free(buf);
 	*line = strdup_till_null(remainder);
 	remainder = find_null(remainder);
