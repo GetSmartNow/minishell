@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 13:26:54 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/24 16:30:44 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/13 18:42:19 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,25 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+# include <fcntl.h>
+# include <stdio.h>
 
 typedef struct		s_list
 {
 	void			*content;
 	struct s_list	*next;
 }					t_list;
+
+int		sigint;
+
+/*--------GNL---------*/
+int					get_next_line(char **line);
+char				*strdup_till_null(char *s);
+size_t				ft_strlen_1(const char *s);
+char				*ft_join_str(char *s1, char *s2);
+char				*find_null(char *remainder);
+int					check_end(char *s);
+
 
 void				*ft_memset(void *str, int c, size_t len);
 void				ft_bzero(void *s, size_t n);

@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:35:14 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/12 17:02:18 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/14 14:16:10 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ static void		ft_init(t_mini *s)
 	s->div_pipe = NULL;
 }
 
-static void		exit_code(void) // signal goes to all proceses
+static void		exit_code(t_mini *s) // signal goes to all proceses
 {
 	char		*nbr;
 
-	nbr = ft_itoa(g_sig.exit_status);
+	nbr = ft_itoa(s->ret);
 	write(1, "bash: ", 6);
 	write(1, nbr, ft_strlen(nbr));
 	write(1, ": command not found\n", 20);
@@ -40,7 +40,7 @@ static void		sort_ft(t_mini *s, char **env1)
 {
 	s->env = env1;
 	if (ft_strcmp(s->mass3d[0][0], "$?") == 0) // this thins is temporary here
-		exit_code();
+		exit_code(s);
 	else if (s->pipe.count_pipe != 0)
 		mini_pipes(s);
 	else if (ft_strcmp(s->mass3d[0][0], "echo") == 0)
@@ -48,7 +48,7 @@ static void		sort_ft(t_mini *s, char **env1)
 	else if (ft_strcmp(s->mass3d[0][0], "pwd") == 0)
 		mini_pwd(s);
 	else if (ft_strcmp(s->mass3d[0][0], "exit") == 0)
-		mini_exit(s->mass3d[0]);
+		mini_exit(s, s->mass3d[0][0], s->mass3d[0][1]);
 	else if (ft_strcmp(s->mass3d[0][0], "cd") == 0)
 		mini_cd(s, s->mass3d[0][0], s->mass3d[0][1]);
 	else if (ft_strcmp(s->mass3d[0][0], "env") == 0)
@@ -58,10 +58,7 @@ static void		sort_ft(t_mini *s, char **env1)
 	else if (ft_strcmp(s->mass3d[0][0], "unset") == 0)
 		mini_unset(s);
 	else
-	{
-		// mini_bin(s);
 		exec_bin(s, s->mass3d[0], s->mass3d[0][0]);
-	}
 }
 
 static int		init_list_x(t_mini *s, char **env)
@@ -112,6 +109,8 @@ static int		check_pipes(t_mini *s, char *line)
 {
 	int			i = 0;
 
+	if (line == NULL)
+		return (0);
 	while (line[i] != '\0')
 	{
 		if (line[i] == '|')
@@ -148,7 +147,7 @@ static int				check_line(t_mini *s, char *line)
 int			main(int ac, char **av, char **env)
 {
 	t_mini	s;
-	char	*line;
+	char	*line = NULL;
 	int		status = 1;
 	int		i = 0;
 	int		j = 0;
@@ -157,12 +156,13 @@ int			main(int ac, char **av, char **env)
 	s.av = av[0];
 	s.mass3d = (char ***)ft_calloc(sizeof(char **), 100);
 	s.var.pwd = 0;
+	s.exit = 0;
 	s.var.path = NULL;
 	init_list(&s, env);
 	init_list_x(&s, env);
 	ft_shlvl(&s);
 	get_pwd(&s);
-	while (status)
+	while (status && s.exit == 0)
 	{
 		init_signal();
 		signal(SIGINT, &sig_int); // Register signal handler
@@ -172,11 +172,13 @@ int			main(int ac, char **av, char **env)
 		status = get_next_line(&line);
 		// add lopp until ';'
 		res = check_line(&s, line);
-		free(line);
+		if (sigint != 1)
+			ft_memdel_1d(line);
 		if (res > 0)
 			sort_ft(&s, env);
+		s.ret = g_sig.exit_status;
 	}
-	return (g_sig.exit_status);
+	return (s.ret);
 }
 
 

@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:05:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/09 08:03:52 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/14 14:44:25 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ static int		init_pipes(t_mini *s)
 	{
 		pipe(s->pipe.fd[i]);
 	}
-	// s->pipe.pid = (pid_t *)malloc(sizeof(pid_t) * s->pipe.count_commands);
 	return (0);
 }
 
@@ -90,9 +89,7 @@ int					mini_pipes(t_mini *s) //ps -a | cat -e | cat -e
 	for(int i = 0; i < s->pipe.count_commands; i++) // ls | cat -e | cat -e
 	{
 		res = mini_bin1(s, i);
-		// s->pipe.pid[i] = fork()
 		g_sig.pid = fork();
-		// if (s->pipe.pid[i] == 0)
 		if (g_sig.pid == 0)
 		{
 			if (i == 0) // first

@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 07:41:42 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/12 17:12:32 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/14 14:17:04 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void				sig_quit(int code)
 
 void				init_signal(void)
 {
+	g_sig.exit_status = 0;
 	g_sig.pid = 0;
 	sigint = 0;
 }

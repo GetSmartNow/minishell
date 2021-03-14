@@ -6,7 +6,7 @@
 #    By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/09 17:56:31 by ctycho            #+#    #+#              #
-#    Updated: 2021/03/12 15:58:01 by ctycho           ###   ########.fr        #
+#    Updated: 2021/03/14 13:57:11 by ctycho           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,19 +52,19 @@ LBLUE	:=	\033[1;34m
 
 all:		$(NAME)
 	
-${NAME}: $(SRCS) ${INC}
-	make -C $(GNL_D)
-	@$(CC) -o $(NAME) $(SRCS) $(LIB_D)libft.a $(GNL_D)gnl.a $(FLAG)
+${NAME}: $(SRCS) $(INC)
+	@make -C $(LIB_D)
+	@$(CC) -o $(NAME) $(SRCS) $(LIB_D)libft.a $(FLAG)
 	@echo "${CYAN}Library "${NAME}" succesfully compiled"
 
 clean:		
 	@rm -f ${NAME}
-	@make clean -C $(GNL_D)
+	@make clean -C $(LIB_D)
 	@echo "${LGREEN}Everything is cleaned succesfully"
 
 fclean:
 	@rm -f ${NAME}
-	@make fclean -C $(GNL_D)
+	@make fclean -C $(LIB_D)
 	@echo "${LGREEN}Everything is cleaned succesfully"
 
 re:			fclean all

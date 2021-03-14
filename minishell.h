@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/12 17:01:53 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/14 14:08:11 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define MINISHELL_H
 
 #include "libft/include/libft.h"
-#include "get_next_line/get_next_line.h"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -75,6 +74,8 @@ typedef struct		s_mini
 	char			**env;
 	char			**div_pipe;
 	char			*tmp;
+	int				ret;
+	int				exit;
 }					t_mini;
 
 t_sig	g_sig;
@@ -85,7 +86,7 @@ void				mini_cd(t_mini *s, char *exec, char *arg);
 void				mini_pwd(t_mini	*s);
 void				mini_pwd_1(t_mini *s);
 void				mini_echo(char **s);
-void				mini_exit(char **s);
+int					mini_exit(t_mini *s, char *exec, char *arg);
 void				mini_env(t_mini *s);
 void				mini_export(t_mini *s);
 void				mini_unset(t_mini *s);

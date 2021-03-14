@@ -6,11 +6,11 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 14:55:50 by ctycho            #+#    #+#             */
-/*   Updated: 2021/01/28 14:55:14 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/13 18:44:19 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "libft.h"
 
 char			*strdup_till_null(char *s)
 {

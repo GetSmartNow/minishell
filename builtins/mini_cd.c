@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:32:58 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/07 20:59:40 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/14 13:56:58 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,6 @@ static int			mini_cd_minus(t_mini *s, char *exec, char *arg)
 void				mini_cd(t_mini *s, char *exec, char *arg)
 {
 	int				res;
-	int				flag;
 	t_mass			*tmp;
 
 	res = 0;
@@ -172,6 +171,7 @@ void				mini_cd(t_mini *s, char *exec, char *arg)
 		write(1, "bash: cd: ", 10);
 		write(1, arg, ft_strlen(arg));
 		write(1, ": No such file or directory\n", 28);
+		g_sig.exit_status = 1;
 	}
 	else
 	{
