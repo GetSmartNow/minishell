@@ -1,3 +1,5 @@
+ gcc -g get_next_line/gnl.a libft/libft.a env/*.c builtins/*.c tools/*.c *.h *.c
+
 1. Error: Export works improperly. Example: export test="many words here".
 	ENV -> test="many
 	EXP -> test=""many"
@@ -43,5 +45,40 @@ $HOME: command not found									|								$HOME: command not found
 														8. echo "$HOME\\$PWD" (OK)
 /Users/mvernius\/Users/mvernius/Desktop/minishell_test 		|								/Users/mvernius\/Users/mvernius/Desktop/minishell_test
 															|
-														9. echo "2.   ;  Gh" (DIF echo сжирает пробелы)
+														9. echo "2.   ;  Gh" 
 2.   ;  Gh													|								2. ; Gh"
+															|
+														10. echo \"2.    ; ghs\" (ERROR)
+"2.															|
+bash: ghs": command not found								|								лишний раз вытаскивает по отдельности echo и 2.
+															|
+														11. echo "2.    ; ghs\" (DIFF)
+открывает цитирование, пока ковычку не закроешь				|								2. ; ghs"
+															|
+														12. echo 2.    \; ghs" (DIFF)
+точка с запятой экранируется, и открывается цитирование		|								2. ; ghs
+															|
+														13. echo 2.  \\; ghs (OK)
+2. \														|								2. \																			
+bash: ghs: command not found								|								bash: ghs: command not found								
+															|
+														14. $1PWD (OK)
+/Users/mvernius/Desktop/minishell_test														/Users/mvernius/Desktop/minishell_test
+
+														15. $home (ERROR)
+пустая строка возвращается																	[1]    40603 abort      ./minishell
+
+														16. echo "$HOME\\$1PWD" (OK)
+/Users/mvernius\PWD																			/Users/mvernius\PWD
+
+														17. $1234PWD (OK)
+bash: 234PWD: command not found																bash: 234PWD: command not found
+
+														18. $1234PWD$HOME (ERR DIF)
+bash: 234PWD/Users/mvernius: No such file or directory										bash: 234PWD/Users/mvernius: command not found
+
+														19. EcHo HeLlO (OK)
+HeLlO																						HeLlO
+
+														20. \\\\\\\\$HOME (ERR DIF)
+bash: \\\\/Users/mvernius: No such file or directory										bash: \\\\/Users/mvernius: command not found
