@@ -9,6 +9,7 @@
 2. Error: Export let's to create variable which start from num;
 3. echo "2.   ;  Gh". OUR: 2. ; Gh". ORIGINAL: 2.   ;  Gh
 4. Error: system message "no such file or dir" works when no quotes only. But also should work like in (4, 5) examples
+5. Pipe bug: echo "$HOME\\$home" | cat -e ---> DOES NOTHING.
 
 CHECK on the school mac
 1. $1PWD works or not?
@@ -65,8 +66,8 @@ bash: ghs: command not found								|								bash: ghs: command not found
 														14. $1PWD (OK)
 /Users/mvernius/Desktop/minishell_test														/Users/mvernius/Desktop/minishell_test
 
-														15. $home (ERROR)
-пустая строка возвращается																	[1]    40603 abort      ./minishell
+														15. $home (Ok)
+ничего не происходит																		ничего не происходит																
 
 														16. echo "$HOME\\$1PWD" (OK)
 /Users/mvernius\PWD																			/Users/mvernius\PWD

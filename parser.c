@@ -148,9 +148,6 @@ char	*make_substitute(char *command, t_mass **head)
 	int		count_shield;
 	int		flag;
 
-	//переписать цикл на человеческий (command[i])
-	//сделать скип экранирования, как в сплите
-
 	tmp = NULL;
 	res = NULL;
 	i = 0;
@@ -206,7 +203,10 @@ char	*make_substitute(char *command, t_mass **head)
 				tmp = find_value_in_export(key, head);
 				printf("TMP: |%s|\n", tmp);
 				i += ft_strlen_modif(key);
-				res = ft_concat(res, tmp);
+				if (NULL != tmp && ft_strcmp(tmp, ""))
+					res = ft_concat(res, tmp);
+				else
+					res = ft_strnjoin_char(res, '\0', 1);
 			}
 			else
 			{
@@ -227,64 +227,6 @@ char	*make_substitute(char *command, t_mass **head)
 			}
 		}
 	}
-	/*while (command[i + 1])
-	{
-		if (command[i] == '\\')
-		{
-			if (is_shielded(command[i + 1]))
-			{
-				res = ft_strnjoin_char(res, command[i + 1], 1);
-				i += 2;
-			}
-			else
-			{
-				res = ft_strnjoin_char(res, command[i], 1);
-				i++;
-			}
-		}
-		else if (command[i] == '\"')
-		{
-			i++;
-		}
-		else if (command[i] == '\'')
-		{
-			tmp = extract_from_quotes(command, i);
-			if (tmp)
-			{
-				res = ft_concat(res, tmp);
-				i += (ft_strlen_modif(tmp) + 2);
-			}
-			else
-			{
-				tmp = ft_substr(command, i, ft_strlen_modif(command) - i); //mb +1 need for 2 and 3 args
-				res = ft_concat(res, tmp);
-				i += ft_strlen_modif(tmp);
-			}
-		}
-		else if (command[i] == '$')
-		{
-			key = extract_key(command, ++i);
-			printf("key ------ %s\n", key);
-			if (key != NULL)
-			{
-				tmp = find_value_in_export(key, head);
-				printf("tmp ------ %s\n", tmp);
-				i += ft_strlen_modif(key);
-				res = ft_concat(res, tmp);
-			}
-			else
-			{
-				i++;
-				printf("Error: fucked up extracting key\n");
-			}
-		}
-		else
-		{
-			res = ft_strnjoin_char(res, command[i], 1);
-			i++;
-		}
-	}
-	res = ft_strnjoin_char(res, command[i], 1);*/
 	printf("RES: |%s|\n", res);
 	return (res);
 }
