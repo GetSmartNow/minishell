@@ -18,34 +18,20 @@ static void		sort_ft(t_mini *s, char **env1)
 	s->env = env1;
 	if (s->pipe.count_pipe != 0)
 		mini_pipes(s);
-	else if (ft_strcmp(s->mass3d[0][0], "ECHO") == 0)
+	else if (ft_strcmp(s->mass3d[0][0], "ECHO") == 0 || ft_strcmp(s->mass3d[0][0], "echo") == 0)
 		mini_echo(s->mass3d[0]);
-	else if (ft_strcmp(s->mass3d[0][0], "PWD") == 0) //|| ft_strcmp(s->mass3d[0][0], "PWD") == 0)
+	else if (ft_strcmp(s->mass3d[0][0], "PWD") == 0 || ft_strcmp(s->mass3d[0][0], "pwd") == 0) //|| ft_strcmp(s->mass3d[0][0], "PWD") == 0)
 		mini_pwd(s);
-	else if (ft_strcmp(s->mass3d[0][0], "EXIT") == 0)
+	else if (ft_strcmp(s->mass3d[0][0], "EXIT") == 0 || ft_strcmp(s->mass3d[0][0], "exit") == 0)
 		mini_exit(s->mass3d[0]);
-	else if (ft_strcmp(s->mass3d[0][0], "CD") == 0)
+	else if (ft_strcmp(s->mass3d[0][0], "CD") == 0 || ft_strcmp(s->mass3d[0][0], "cd") == 0)
 		mini_cd(s, s->mass3d[0][0], s->mass3d[0][1]);
-	else if (ft_strcmp(s->mass3d[0][0], "ENV") == 0)
+	else if (ft_strcmp(s->mass3d[0][0], "ENV") == 0 || ft_strcmp(s->mass3d[0][0], "env") == 0)
 		mini_env(s);
-	else if (ft_strcmp(s->mass3d[0][0], "EXPORT") == 0)
+	else if (ft_strcmp(s->mass3d[0][0], "EXPORT") == 0 || ft_strcmp(s->mass3d[0][0], "export") == 0)
 		mini_export(s);
-	else if (ft_strcmp(s->mass3d[0][0], "UNSET") == 0)
+	else if (ft_strcmp(s->mass3d[0][0], "UNSET") == 0 || ft_strcmp(s->mass3d[0][0], "unset") == 0)
 		mini_unset(s);
-	//else if (ft_strcmp(s->mass3d[0][0], "echo") == 0)
-	//	mini_echo(s->mass3d[0]);
-	//else if (ft_strcmp(s->mass3d[0][0], "pwd") == 0) //|| ft_strcmp(s->mass3d[0][0], "PWD") == 0)
-	//	mini_pwd(s);
-	//else if (ft_strcmp(s->mass3d[0][0], "exit") == 0)
-	//	mini_exit(s->mass3d[0]);
-	//else if (ft_strcmp(s->mass3d[0][0], "cd") == 0)
-	//	mini_cd(s, s->mass3d[0][0], s->mass3d[0][1]);
-	//else if (ft_strcmp(s->mass3d[0][0], "env") == 0)
-	//	mini_env(s);
-	//else if (ft_strcmp(s->mass3d[0][0], "export") == 0)
-	//	mini_export(s);
-	//else if (ft_strcmp(s->mass3d[0][0], "unset") == 0)
-	//	mini_unset(s);
 	else
 	{
 		// mini_bin(s);

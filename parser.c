@@ -139,6 +139,28 @@ static int	is_shielded(char c)
 	return (0);
 }
 
+int	ft_isspace(char c)
+{
+	int	result;
+
+	result = 0;
+	if (c == '\t' || c == '\n' || c == '\v' || \
+		c == '\f' || c == '\r' || c == ' ')
+		result = 1;
+	return (result);
+}
+
+int		ft_isemptystr(char *str)
+{
+	while (*str)
+	{
+		if (!ft_isspace(*str))
+			return 0;
+		str++;
+	}
+	return (1);
+}
+
 char	*make_substitute(char *command, t_mass **head)
 {
 	int		i;
@@ -205,8 +227,9 @@ char	*make_substitute(char *command, t_mass **head)
 				i += ft_strlen_modif(key);
 				if (NULL != tmp && ft_strcmp(tmp, ""))
 					res = ft_concat(res, tmp);
-				else
-					res = ft_strnjoin_char(res, '\0', 1);
+				// else
+					// res = ft_strnjoin_char(res, '\0', 1);
+					
 			}
 			else
 			{
@@ -217,7 +240,7 @@ char	*make_substitute(char *command, t_mass **head)
 		{
 			if (!flag)
 			{
-				res = ft_strnjoin_char(res, ft_toupper(command[i]), 1);
+				res = ft_strnjoin_char(res, command[i], 1);
 				i++;
 			}
 			else
@@ -227,6 +250,12 @@ char	*make_substitute(char *command, t_mass **head)
 			}
 		}
 	}
+
+	//additional checks
+	if (res != NULL && ft_isemptystr(res))
+		res = ft_concat(res, ft_strdup(""));
+	if (res == NULL)
+		res = ft_strdup("");
 	printf("RES: |%s|\n", res);
 	return (res);
 }

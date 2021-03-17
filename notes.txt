@@ -11,11 +11,15 @@
 4. Error: system message "no such file or dir" works when no quotes only. But also should work like in (4, 5) examples
 5. Pipe bug: echo "$HOME\\$home" | cat -e ---> DOES NOTHING.
 
-CHECK on the school mac
-1. $1PWD works or not?
 
-TASKS:
-1. Rewrite split for avoiding separator (c) if it's in the quotes like '... c .... ' or " ... c....";
+TODO:
+1. ' $home' - segmentation fault; (add additional check if string is empty);
+
+
+
+REDIRECTS:
+
+1. (echo | cat test2.txt | grep 1 > result.txt)  ==  (cat test1.txt | echo | grep 1 < test2.txt > result.txt) == (grep 1 < test2.txt > result.txt) == (cat test2.txt | grep 1 > result.txt) == cat test1.txt | grep 1 < test2.txt > result.txt
 
 
 
@@ -49,9 +53,9 @@ $HOME: command not found									|								$HOME: command not found
 														9. echo "2.   ;  Gh" 
 2.   ;  Gh													|								2. ; Gh"
 															|
-														10. echo \"2.    ; ghs\" (ERROR)
-"2.															|
-bash: ghs": command not found								|								лишний раз вытаскивает по отдельности echo и 2.
+														10. echo \"2.    ; ghs\" (OK)
+"2.															|								
+bash: ghs": command not found								|								
 															|
 														11. echo "2.    ; ghs\" (DIFF)
 открывает цитирование, пока ковычку не закроешь				|								2. ; ghs"
@@ -66,7 +70,7 @@ bash: ghs: command not found								|								bash: ghs: command not found
 														14. $1PWD (OK)
 /Users/mvernius/Desktop/minishell_test														/Users/mvernius/Desktop/minishell_test
 
-														15. $home (Ok)
+														15. $home (OK)
 ничего не происходит																		ничего не происходит																
 
 														16. echo "$HOME\\$1PWD" (OK)
@@ -78,8 +82,11 @@ bash: 234PWD: command not found																bash: 234PWD: command not found
 														18. $1234PWD$HOME (ERR DIF)
 bash: 234PWD/Users/mvernius: No such file or directory										bash: 234PWD/Users/mvernius: command not found
 
-														19. EcHo HeLlO (OK)
+														19. EcHo HeLlO (OK) (обработать по mass3d)
 HeLlO																						HeLlO
 
 														20. \\\\\\\\$HOME (ERR DIF)
 bash: \\\\/Users/mvernius: No such file or directory										bash: \\\\/Users/mvernius: command not found
+
+														21. empty string
+NOTHING																						

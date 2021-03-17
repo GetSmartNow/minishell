@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_pipes.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:05:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/07 21:44:58 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/17 11:49:40 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,10 @@ int					mini_pipes(t_mini *s) //ps -a | cat -e | cat -e
 	int		res;
 
 	init_pipes(s);
-	for(int i = 0; i < s->pipe.count_commands; i++) // ls | cat -e | cat -e
+	for(i = 0; i < s->pipe.count_commands; i++) // ls | cat -e | cat -e
 	{
 		res = mini_bin1(s, i);
+		printf("bin: |%s|\n", s->var.bin);
 		s->pipe.pid[i] = fork();
 		if (s->pipe.pid[i] == 0)
 		{
@@ -130,7 +131,7 @@ int					mini_pipes(t_mini *s) //ps -a | cat -e | cat -e
 		close(s->pipe.fd[i][0]);
 		close(s->pipe.fd[i][1]);
 	}
-	for (int i = 0; i < s->pipe.count_commands; i++)
+	for (i = 0; i < s->pipe.count_commands; i++)
 		wait(NULL);
 	return (0);
 }
