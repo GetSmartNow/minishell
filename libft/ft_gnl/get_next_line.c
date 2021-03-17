@@ -6,11 +6,11 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 14:55:26 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/08 12:43:24 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/16 13:43:41 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "libft.h"
 
 char				*find_null(char *remainder)
 {
@@ -70,7 +70,27 @@ int					get_next_line(char **line)
 		}
 		buf[byte_was_read] = '\0';
 		remainder = ft_join_str(remainder, buf);
+		if (byte_was_read == 0)
+		{
+			write(1, "  \b\b", 4);
+			if (ft_strlen_1(remainder) != 0)
+			{
+				byte_was_read = 1;
+			}
+			else
+			{
+				write(1, "exit\n", 5);
+				return (0);
+				// exit(0);
+			}
+		}
 	}
+	// if (sigint == 1)
+	// {
+	// 	ft_memdel_1d(remainder);
+	// 	// write(1, "*\n", 2);
+	// 	ft_bzero(remainder, ft_strlen_1(remainder));
+	// }
 	free(buf);
 	*line = strdup_till_null(remainder);
 	remainder = find_null(remainder);

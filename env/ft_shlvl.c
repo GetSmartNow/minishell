@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 20:33:50 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/08 19:20:37 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/17 15:05:23 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void				ft_shlvl(t_mini *s)
 	t_mass			*tmp;
 	int				flag = 0;
 	char			*line;
+	char			*tmp_sh = NULL;
 
 	tmp = s->head;
 	while (tmp != NULL)
@@ -90,18 +91,22 @@ void				ft_shlvl(t_mini *s)
 				s->var.shlvl++;
 				if (s->var.shlvl == 1000)
 				{
-					ft_bzero(tmp->content, ft_strlen(tmp->content));
+					ft_memdel_1d(tmp->content);
+					// ft_bzero(tmp->content, ft_strlen(tmp->content));
 					tmp->content = ft_strdup("SHLVL=");
 				}
 				else
 				{
-					ft_bzero(tmp->content, ft_strlen(tmp->content));
-					tmp->content = ft_strjoin("SHLVL=", ft_itoa(s->var.shlvl));
+					tmp_sh = ft_itoa(s->var.shlvl);
+					ft_memdel_1d(tmp->content);
+					// ft_bzero(tmp->content, ft_strlen(tmp->content));
+					tmp->content = ft_strjoin_free("SHLVL=", tmp_sh, tmp_sh);
 				}
 			}
 			else if (flag == 2)
 			{
-				ft_bzero(tmp->content, ft_strlen(tmp->content));
+				ft_memdel_1d(tmp->content);
+				// ft_bzero(tmp->content, ft_strlen(tmp->content));
 				tmp->content = ft_strdup("SHLVL=1");
 			}
 		}
@@ -113,6 +118,7 @@ void				ft_shlvl(t_mini *s)
 		my_lstadd_back(&s->head, my_lstnew(line));
 	}
 	flag = 0;
+	tmp_sh = NULL;
 	tmp = s->head_x;
 	while (tmp != NULL)
 	{
@@ -125,20 +131,24 @@ void				ft_shlvl(t_mini *s)
 				s->var.shlvl++;
 				if (s->var.shlvl == 1000)
 				{
-					ft_bzero(tmp->content, ft_strlen(tmp->content));
+					ft_memdel_1d(tmp->content);
+					// ft_bzero(tmp->content, ft_strlen(tmp->content));
 					tmp->content = put_quotes("SHLVL=""");
 				}
 				else
 				{
-					ft_bzero(tmp->content, ft_strlen(tmp->content));
-					line = ft_strjoin("SHLVL=", ft_itoa(s->var.shlvl));
+					tmp_sh = ft_itoa(s->var.shlvl);
+					ft_memdel_1d(tmp->content);
+					// ft_bzero(tmp->content, ft_strlen(tmp->content));
+					line = ft_strjoin_free("SHLVL=", tmp_sh, tmp_sh);
 					tmp->content = put_quotes(line);
 					ft_memdel_1d(line);
 				}
 			}
 			else if (flag == 2)
 			{
-				ft_bzero(tmp->content, ft_strlen(tmp->content));
+				ft_memdel_1d(tmp->content);
+				// ft_bzero(tmp->content, ft_strlen(tmp->content));
 				tmp->content = put_quotes("SHLVL=1");
 			}
 		}

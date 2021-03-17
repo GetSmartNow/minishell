@@ -1,28 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strjoin_free.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/18 14:56:13 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/08 12:43:29 by ctycho           ###   ########.fr       */
+/*   Created: 2021/03/16 15:40:58 by ctycho            #+#    #+#             */
+/*   Updated: 2021/03/16 15:52:32 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <fcntl.h>
-# include <stdio.h>
-# include <stdlib.h>
+char			*ft_strjoin_free(char *s1, char *s2, char *free_str)
+{
+	size_t		i;
+	size_t		m;
+	char		*arr;
 
-int			get_next_line(char **line);
-char		*strdup_till_null(char *s);
-size_t		ft_strlen_1(const char *s);
-char		*ft_join_str(char *s1, char *s2);
-char		*find_null(char *remainder);
-int			check_end(char *s);
-
-#endif
+	i = ft_strlen_1(s1);
+	m = ft_strlen_1(s2);
+	if (!(arr = (char *)malloc(sizeof(char) * (i + m + 1))))
+		return (NULL);
+	i = 0;
+	m = 0;
+	if (s1)
+		while (s1[i])
+		{
+			arr[i] = s1[i];
+			i++;
+		}
+	while (s2[m])
+		arr[i++] = s2[m++];
+	ft_memdel_1d(free_str);
+	arr[i] = '\0';
+	return (arr);
+}

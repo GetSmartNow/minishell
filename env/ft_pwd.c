@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/27 11:53:47 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/08 19:20:32 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/17 15:05:20 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void			get_pwd(t_mini	*s)
 		if (ft_strncmp(tmp->content, "PWD=", ft_strlen("PWD=")) == 0)
 		{
 			flag = 1;
-			ft_bzero(tmp->content, ft_strlen(tmp->content));
+			ft_memdel_1d(tmp->content);
+			// ft_bzero(tmp->content, ft_strlen(tmp->content));
 			line = malloc(1000);
 			getcwd(line, 100);
 			tmp->content = ft_strjoin("PWD=", line);
@@ -47,12 +48,12 @@ void			get_pwd(t_mini	*s)
 		if (ft_strncmp(tmp->content, "PWD=", ft_strlen("PWD=")) == 0)
 		{
 			flag = 1;
-			ft_bzero(tmp->content, ft_strlen(tmp->content));
+			ft_memdel_1d(tmp->content);
 			line = malloc(1000);
 			getcwd(line, 100);
-			free_str = ft_strjoin("PWD=", line);
-			ft_memdel_1d(line);
+			free_str = ft_strjoin_free("PWD=", line, line);
 			tmp->content = put_quotes(free_str);
+			ft_memdel_1d(free_str);
 		}
 		tmp = tmp->next;
 	}
@@ -60,7 +61,7 @@ void			get_pwd(t_mini	*s)
 	{
 		line = malloc(1000);
 		getcwd(line, 100);
-		free_str = ft_strjoin("PWD=", line);
+		free_str = ft_strjoin_free("PWD=", line, line);
 		ft_memdel_1d(line);
 		free_str = put_quotes(free_str);
 		my_lstadd_back(&s->head_x, my_lstnew(free_str));

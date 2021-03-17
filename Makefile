@@ -6,7 +6,11 @@
 #    By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/09 17:56:31 by ctycho            #+#    #+#              #
+<<<<<<< HEAD
 #    Updated: 2021/03/10 18:34:36 by mvernius         ###   ########.fr        #
+=======
+#    Updated: 2021/03/14 13:57:11 by ctycho           ###   ########.fr        #
+>>>>>>> master
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +25,7 @@ AR		:=	ar rc
 
 #directories------------------------------------------------------------------
 
+MAIN_D	:=	./main/
 LIB_D	:=	./libft/
 GNL_D	:=	./get_next_line/
 BUILT	:=	./builtins/
@@ -31,7 +36,11 @@ INC_D	:=	./include/
 #files------------------------------------------------------------------------
 
 INC		:=	minishell.h
+<<<<<<< HEAD
 SRCS	:=	main_test.c bin.c bin1.c parser.c mini_pipes.c new_split.c\
+=======
+SRCS	:=	$(addprefix ${MAIN_D}, main_test.c bin.c mini_pipes.c signal.c) \
+>>>>>>> master
 			$(addprefix ${TOOL}, libft_utils.c ft_error.c mini_utils.c) \
 			$(addprefix $(ENV), ft_shlvl.c ft_pwd.c) \
 			$(addprefix ${BUILT}, mini_cd.c mini_echo.c mini_env.c mini_exit.c \
@@ -49,6 +58,7 @@ LBLUE	:=	\033[1;34m
 
 #rules------------------------------------------------------------------------
 
+<<<<<<< HEAD
 all: makelib makegnl $(NAME)
 
 makelib:
@@ -65,10 +75,23 @@ clean:
 	#@rm -f ${NAME}
 	@cd $(LIB_D) && make clean
 	@cd $(GNL_D) && make clean
+=======
+all:		$(NAME)
+	
+${NAME}: $(SRCS) $(INC)
+	@make -C $(LIB_D)
+	@$(CC) -o $(NAME) $(SRCS) $(LIB_D)libft.a $(FLAG)
+	@echo "${CYAN}Library "${NAME}" succesfully compiled"
+
+clean:		
+	@rm -f ${NAME}
+	@make clean -C $(LIB_D)
+>>>>>>> master
 	@echo "${LGREEN}Everything is cleaned succesfully"
 
 fclean:
 	@rm -f ${NAME}
+	@make fclean -C $(LIB_D)
 	@echo "${LGREEN}Everything is cleaned succesfully"
 	@cd $(LIB_D) && make fclean
 	@cd $(GNL_D) && make fclean

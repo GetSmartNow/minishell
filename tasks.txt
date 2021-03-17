@@ -1,0 +1,6 @@
+1. redir
+2. seg fault ';' when we use pipes
+3. $? mistakes test in parser
+4. test pipe shielding
+5. leaks
+6. $ digit

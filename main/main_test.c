@@ -2,6 +2,7 @@
 
 static void		ft_init(t_mini *s)
 {
+	s->free_line = NULL;
 	s->env = NULL;
 	s->tmp = NULL;
 	s->var.bin = NULL;
@@ -13,10 +14,24 @@ static void		ft_init(t_mini *s)
 	s->div_pipe = NULL;
 }
 
+static void		exit_code(t_mini *s) // signal goes to all proceses
+{
+	char		*nbr;
+
+	nbr = ft_itoa(g_sig.exit_status);
+	write(1, "bash: ", 6);
+	write(1, nbr, ft_strlen(nbr));
+	write(1, ": command not found\n", 20);
+	ft_memdel_1d(nbr);
+	g_sig.exit_status = 127;
+}
+
 static void		sort_ft(t_mini *s, char **env1)
 {
 	s->env = env1;
-	if (s->pipe.count_pipe != 0)
+	if (ft_strcmp(s->mass3d[0][0], "$?") == 0) // this thins is temporary here
+		exit_code(s);
+	else if (s->pipe.count_pipe != 0)
 		mini_pipes(s);
 	else if (ft_strcmp(s->mass3d[0][0], "ECHO") == 0 || ft_strcmp(s->mass3d[0][0], "echo") == 0)
 		mini_echo(s->mass3d[0]);
@@ -33,10 +48,7 @@ static void		sort_ft(t_mini *s, char **env1)
 	else if (ft_strcmp(s->mass3d[0][0], "UNSET") == 0 || ft_strcmp(s->mass3d[0][0], "unset") == 0)
 		mini_unset(s);
 	else
-	{
-		// mini_bin(s);
 		exec_bin(s, s->mass3d[0], s->mass3d[0][0]);
-	}
 }
 
 static int		init_list_x(t_mini *s, char **env)
@@ -87,6 +99,8 @@ static int		check_pipes(t_mini *s, char *line)
 {
 	int			i = 0;
 
+	if (line == NULL)
+		return (0);
 	while (line[i] != '\0')
 	{
 		if (line[i] == '|')
@@ -124,7 +138,7 @@ static int				check_line(t_mini *s, char *line)
 int			main(int ac, char **av, char **env)
 {
 	t_mini	s;
-	char	*line;
+	char	*line = NULL;
 	int		status = 1;
 	int		i = 0;
 	int		j = 0;
@@ -133,12 +147,18 @@ int			main(int ac, char **av, char **env)
 	s.av = av[0];
 	s.mass3d = (char ***)ft_calloc(sizeof(char **), 100);
 	s.var.pwd = 0;
+	s.exit = 0;
+	g_sig.exit_status = 0;
+	s.var.path = NULL;
 	init_list(&s, env);
 	init_list_x(&s, env);
 	ft_shlvl(&s);
 	get_pwd(&s);
-	while (status)
+	while (status && s.exit == 0)
 	{
+		init_signal();
+		signal(SIGINT, &sig_int); // Register signal handler
+		signal(SIGQUIT, &sig_quit);
 		ft_init(&s);
 		ft_putstr_fd("\033[0;36m\033[1mminishell ▸ \033[0m", STDOUT);
 		status = get_next_line(&line);
@@ -152,8 +172,9 @@ int			main(int ac, char **av, char **env)
 				sort_ft(&s, env);
 			sep_commands++;
 		}
+		ft_memdel_1d(line);
 	}
-	return (0);
+	return (g_sig.exit_status);
 }
 
 

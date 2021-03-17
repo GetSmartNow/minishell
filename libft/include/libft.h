@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 13:26:54 by ctycho            #+#    #+#             */
-/*   Updated: 2021/02/24 16:30:44 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/16 15:48:28 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,25 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+# include <fcntl.h>
+# include <stdio.h>
 
 typedef struct		s_list
 {
 	void			*content;
 	struct s_list	*next;
 }					t_list;
+
+int		sigint;
+
+/*--------GNL---------*/
+int					get_next_line(char **line);
+char				*strdup_till_null(char *s);
+size_t				ft_strlen_1(const char *s);
+char				*ft_join_str(char *s1, char *s2);
+char				*find_null(char *remainder);
+int					check_end(char *s);
+
 
 void				*ft_memset(void *str, int c, size_t len);
 void				ft_bzero(void *s, size_t n);
@@ -39,6 +52,8 @@ char				*ft_strchr(const char *s, int c);
 char				*ft_strrchr(const char *s, int c);
 char				*ft_strnstr(const char *haystack, const char *needle,
 					size_t len);
+char				*ft_strjoin_free_all(char *s1, char *s2);
+char				*ft_strjoin_free(char *s1, char *s2, char *free_str);
 int					ft_strcmp(const char *s1, const char *s2);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 int					ft_atoi(const char *str);

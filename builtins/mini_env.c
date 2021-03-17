@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:45:27 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/08 19:20:16 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/17 15:05:10 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void				mini_env(t_mini *s)
 		write(1, "env: ", 5);
 		write(1, s->mass3d[0][1], ft_strlen(s->mass3d[0][1]));
 		write(1, ": No such file or directory\n", 28);
+		g_sig.exit_status = 127;
 	}
 	else
 	{

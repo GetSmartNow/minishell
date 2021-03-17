@@ -1,9 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
+/*   Updated: 2021/03/17 15:08:44 by mvernius         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
 #include "libft/include/libft.h"
-#include "get_next_line/get_next_line.h"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -18,6 +28,7 @@
 #define STDIN 0
 #define STDOUT 1
 #define STDERR 2
+
 
 typedef struct		s_pipe
 {
@@ -44,12 +55,13 @@ typedef struct		s_env
 	int				count_bin;
 }					t_env;
 
-typedef struct		s_obj
+typedef struct		s_sig
 {
-	char			*key;
-	char			*value;
-	char			*(* find_key)(char *key, t_mass **head);
-}					t_obj;
+	int				sigint;
+	int				sigquit;
+	int				exit_status;
+	pid_t			pid;
+}					t_sig;
 
 typedef struct		s_mini
 {
@@ -62,7 +74,12 @@ typedef struct		s_mini
 	char			**env;
 	char			**div_pipe;
 	char			*tmp;
+	int				ret;
+	int				exit;
+	char			*free_line;
 }					t_mini;
+
+t_sig	g_sig;
 
 int					exec_bin(t_mini *s, char **arr, char *command);
 int					mini_bin(t_mini *s);
@@ -70,7 +87,7 @@ void				mini_cd(t_mini *s, char *exec, char *arg);
 void				mini_pwd(t_mini	*s);
 void				mini_pwd_1(t_mini *s);
 void				mini_echo(char **s);
-void				mini_exit(char **s);
+int					mini_exit(t_mini *s, char *exec, char *arg);
 void				mini_env(t_mini *s);
 void				mini_export(t_mini *s);
 void				mini_unset(t_mini *s);
@@ -78,6 +95,11 @@ int					mini_pipes(t_mini *s);
 
 void				ft_shlvl(t_mini *s);
 void				get_pwd(t_mini	*s);
+
+/*SIGNAL*/
+void				init_signal(void);
+void				sig_int(int signum);
+void				sig_quit(int code);
 
 int					length_to_equal(t_mini *s, char *line);
 char				*put_quotes(char *s1);

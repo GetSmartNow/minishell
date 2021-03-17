@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:46:29 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/08 19:20:22 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/17 15:05:16 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,28 +86,46 @@ void				export_to_env(t_mini *s, int i)
 	ft_list_sort(&s->head);
 }
 
+int					valid_arg(t_mini *s, char *arg)
+{
+	int				i = 0;
+	int				res = 0;
+
+	while (arg[i])
+	{
+		if (arg[0] >= '0' && arg[0] <= '9')
+			return (-1);
+		if (arg[i] == '+' || arg[i] == '-' || arg[i] == ':' || \
+			arg[i] == '.' || arg[i] == ',' || \
+			arg[i] == '$' || arg[i] == '*' || arg[i] == '#')
+			return (-1);
+		i++;
+	}
+	return (res);
+}
+
 void				mini_export(t_mini *s)
 {
 	t_mass			*tmp;
 	int				i = 1;
 
-	// tmp = s->head_x;
 	if (s->mass3d[0][1])
 	{
 		while (s->mass3d[0][i])
 		{
-			// printf("1|%s|\n", s->mass3d[0][i]);
-			if (ft_strchr(s->mass3d[0][i], '='))
+			if (valid_arg(s, s->mass3d[0][i]) == -1)
 			{
-				// write(1, "*\n", 2);
+				write(STDERR, "bash: export: `", 15);
+				write(STDERR, s->mass3d[0][i], ft_strlen(s->mass3d[0][i]));
+				write(STDERR, "': not a valid identifier\n", 26);
+			}
+			else if (ft_strchr(s->mass3d[0][i], '='))
+			{
 				export_to_env(s, i);
 				export_to_export(s, i, 1);
 			}
 			else
-			{
-				// write(1, "#\n", 2);
 				export_to_export(s, i, 0);
-			}
 			i++;
 		}
 	}

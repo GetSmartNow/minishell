@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:32:58 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/08 19:20:10 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/17 14:36:08 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ static void			mini_oldpwd(t_mini *s)
 		my_lstadd_back(&s->head, my_lstnew(line));
 		// ft_memdel_1d(line);
 	}
-
-
 	flag = 0;
 	line = NULL;
 	tmp = s->head_x;
@@ -70,8 +68,9 @@ static void			mini_oldpwd(t_mini *s)
 	if (flag == 0)
 	{
 		line = ft_strjoin("OLDPWD=", line);
-		line = put_quotes(line);
-		my_lstadd_back(&s->head_x, my_lstnew(line));
+		s->free_line = put_quotes(line);
+		my_lstadd_back(&s->head_x, my_lstnew(s->free_line));
+		ft_memdel_1d(s->free_line);
 	}
 }
 
@@ -160,7 +159,6 @@ static int			mini_cd_minus(t_mini *s, char *exec, char *arg)
 void				mini_cd(t_mini *s, char *exec, char *arg)
 {
 	int				res;
-	int				flag;
 	t_mass			*tmp;
 
 	res = 0;
@@ -172,6 +170,7 @@ void				mini_cd(t_mini *s, char *exec, char *arg)
 		write(1, "bash: cd: ", 10);
 		write(1, arg, ft_strlen(arg));
 		write(1, ": No such file or directory\n", 28);
+		g_sig.exit_status = 1;
 	}
 	else
 	{
