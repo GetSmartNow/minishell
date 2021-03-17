@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:35:14 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/14 15:27:57 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/17 11:00:20 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static void		ft_init(t_mini *s)
 {
+	s->free_line = NULL;
 	s->env = NULL;
 	s->tmp = NULL;
 	s->var.bin = NULL;
@@ -29,11 +30,12 @@ static void		exit_code(t_mini *s) // signal goes to all proceses
 {
 	char		*nbr;
 
-	nbr = ft_itoa(s->ret);
+	nbr = ft_itoa(g_sig.exit_status);
 	write(1, "bash: ", 6);
 	write(1, nbr, ft_strlen(nbr));
 	write(1, ": command not found\n", 20);
 	ft_memdel_1d(nbr);
+	g_sig.exit_status = 127;
 }
 
 static void		sort_ft(t_mini *s, char **env1)
@@ -157,6 +159,7 @@ int			main(int ac, char **av, char **env)
 	s.mass3d = (char ***)ft_calloc(sizeof(char **), 100);
 	s.var.pwd = 0;
 	s.exit = 0;
+	g_sig.exit_status = 0;
 	s.var.path = NULL;
 	init_list(&s, env);
 	init_list_x(&s, env);
@@ -172,13 +175,12 @@ int			main(int ac, char **av, char **env)
 		status = get_next_line(&line);
 		// add lopp until ';'
 		res = check_line(&s, line);
-		// if (sigint != 1)
-			ft_memdel_1d(line);
-		if (res > 0)
+		if (res > 0 && status)
 			sort_ft(&s, env);
-		s.ret = g_sig.exit_status;
+		// if (sigint != 1)
+			ft_memdel_1d(line); // ls ctrl D malloc error
 	}
-	return (s.ret);
+	return (g_sig.exit_status);
 }
 
 

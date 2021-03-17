@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:44:29 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/14 11:48:27 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/16 14:25:52 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int				mini_exit(t_mini *s, char *exec, char *arg)
 	{
 		res = check_number(arg);
 		g_sig.exit_status = res;
-		printf("%d\n", res);
 		if (res == 255)
 		{
 			write(STDOUT, "bash: exit: ", 12);

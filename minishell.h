@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/14 14:08:11 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/17 10:52:19 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct		s_mini
 	char			*tmp;
 	int				ret;
 	int				exit;
+	char			*free_line;
 }					t_mini;
 
 t_sig	g_sig;

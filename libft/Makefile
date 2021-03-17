@@ -6,7 +6,7 @@
 #    By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/31 11:32:38 by ctycho            #+#    #+#              #
-#    Updated: 2021/03/14 11:08:23 by ctycho           ###   ########.fr        #
+#    Updated: 2021/03/16 15:49:05 by ctycho           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,8 @@ SRCS	=	$(addprefix $(GNL_D), get_next_line.c get_next_line_utils.c) \
 			ft_strlcpy.c ft_strlcat.c ft_strchr.c \
 			ft_strrchr.c ft_strnstr.c ft_strcmp.c \
 			ft_strncmp.c ft_strjoin.c ft_strtrim.c ft_split.c \
-			ft_strdup.c ft_substr.c ft_strmapi.c) \
+			ft_strdup.c ft_substr.c ft_strmapi.c \
+			ft_strjoin_free.c ft_strjoin_free_all.c) \
 			$(addprefix $(TO_D), ft_atoi.c ft_toupper.c ft_tolower.c \
 			ft_itoa.c)
 

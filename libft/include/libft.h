@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 13:26:54 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/13 18:42:19 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/16 15:48:28 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ char				*ft_strchr(const char *s, int c);
 char				*ft_strrchr(const char *s, int c);
 char				*ft_strnstr(const char *haystack, const char *needle,
 					size_t len);
+char				*ft_strjoin_free_all(char *s1, char *s2);
+char				*ft_strjoin_free(char *s1, char *s2, char *free_str);
 int					ft_strcmp(const char *s1, const char *s2);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 int					ft_atoi(const char *str);

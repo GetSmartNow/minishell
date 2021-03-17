@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:32:58 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/14 13:56:58 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/17 11:02:10 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ static void			mini_oldpwd(t_mini *s)
 		my_lstadd_back(&s->head, my_lstnew(line));
 		// ft_memdel_1d(line);
 	}
-
-
 	flag = 0;
 	line = NULL;
 	tmp = s->head_x;
@@ -70,8 +68,9 @@ static void			mini_oldpwd(t_mini *s)
 	if (flag == 0)
 	{
 		line = ft_strjoin("OLDPWD=", line);
-		line = put_quotes(line);
-		my_lstadd_back(&s->head_x, my_lstnew(line));
+		s->free_line = put_quotes(line);
+		my_lstadd_back(&s->head_x, my_lstnew(s->free_line));
+		ft_memdel_1d(s->free_line);
 	}
 }
 
