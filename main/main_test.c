@@ -26,7 +26,7 @@ static void		exit_code(t_mini *s) // signal goes to all proceses
 	g_sig.exit_status = 127;
 }
 
-static void		sort_ft(t_mini *s, char **env1)
+void		sort_ft(t_mini *s, char **env1)
 {
 	s->env = env1;
 	if (ft_strcmp(s->mass3d[0][0], "$?") == 0) // this thins is temporary here
@@ -95,47 +95,80 @@ static int		init_list(t_mini *s, char **env)
 	return (0);
 }
 
-static int		check_pipes(t_mini *s, char *line)
-{
-	int			i = 0;
+// static int		check_pipes(t_mini *s, char *line)
+// {
+// 	int			i = 0;
 
-	if (line == NULL)
-		return (0);
-	while (line[i] != '\0')
-	{
-		if (line[i] == '|')
-			s->pipe.count_pipe++;
-		i++;
-	}
-	return (i);
-}
+// 	if (line == NULL)
+// 		return (0);
+// 	while (line[i] != '\0')
+// 	{
+// 		if (line[i] == '|')
+// 			s->pipe.count_pipe++;
+// 		i++;
+// 	}
+// 	return (i);
+// }
 
-static int				check_line(t_mini *s, char *line)
-{
-	int					i = 0;
-	int					res = 0;
+// static int				check_line(t_mini *s, char *line)
+// {
+// 	int					i = 0;
+// 	int					res = 0;
 
-//	printf("%s\n", line);
-	res = check_pipes(s, line);
-	if (res == 0)
-		return (-1);
-	if (s->pipe.count_pipe != 0)
-	{
-		s->div_pipe = ft_split(line, '|');
-		while (s->div_pipe[i])
-		{
-			s->mass3d[i] = ft_split(s->div_pipe[i], ' ');
-			s->pipe.count_commands++;
-			i++;
-		}
-		ft_memdel_2d((void**)s->div_pipe);
-	}
-	else
-		s->mass3d[i] = ft_split(line, ' ');
-	return (res);
-}
+// //	printf("%s\n", line);
+// 	res = check_pipes(s, line);
+// 	if (res == 0)
+// 		return (-1);
+// 	if (s->pipe.count_pipe != 0)
+// 	{
+// 		s->div_pipe = ft_split(line, '|');
+// 		while (s->div_pipe[i])
+// 		{
+// 			s->mass3d[i] = ft_split(s->div_pipe[i], ' ');
+// 			s->pipe.count_commands++;
+// 			i++;
+// 		}
+// 		ft_memdel_2d((void**)s->div_pipe);
+// 	}
+// 	else
+// 		s->mass3d[i] = ft_split(line, ' ');
+// 	return (res);
+// }
 
 int			main(int ac, char **av, char **env)
+{
+	t_mini	s;
+	char	*line = NULL;
+	int		status = 1;
+	int		i = 0;
+	int		j = 0;
+	int 	res = 0;
+
+	s.av = av[0];
+	s.var.pwd = 0;
+	s.exit = 0;
+	g_sig.exit_status = 0;
+	s.var.path = NULL;
+	init_list(&s, env);
+	init_list_x(&s, env);
+	ft_shlvl(&s);
+	get_pwd(&s);
+	while (status && s.exit == 0)
+	{
+		init_signal();
+		signal(SIGINT, &sig_int); // Register signal handler
+		signal(SIGQUIT, &sig_quit);
+		ft_init(&s);
+		ft_putstr_fd("\033[0;36m\033[1mminishell ▸ \033[0m", STDOUT);
+		status = get_next_line(&line);
+		ft_parser(&s, line, env);
+		ft_memdel_1d(line);
+	}
+	return (g_sig.exit_status);
+}
+
+
+/* int			main(int ac, char **av, char **env)
 {
 	t_mini	s;
 	char	*line = NULL;
@@ -165,9 +198,8 @@ int			main(int ac, char **av, char **env)
 		char **sep_commands = ft_split_new(line, ';');
 		while (*sep_commands)
 		{
-//			printf("str: \"%s\"\n", *sep_commands);
+			printf("str: \"%s\"\n", *sep_commands);
 			*sep_commands = make_substitute(*sep_commands, &(s.head));
-//			s.fd = find_fd(*sep_commands);
 			res = check_line(&s, *sep_commands);
 			if (res > 0)
 				sort_ft(&s, env);
@@ -177,7 +209,7 @@ int			main(int ac, char **av, char **env)
 	}
 	return (g_sig.exit_status);
 }
-
+ */
 
 
 

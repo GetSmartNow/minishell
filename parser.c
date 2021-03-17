@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/17 16:49:51 by mvernius          #+#    #+#             */
+/*   Updated: 2021/03/17 17:23:39 by mvernius         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	*find_value_in_export(char *key, t_mass **head)
@@ -24,7 +36,7 @@ char	*find_value_in_export(char *key, t_mass **head)
 	return ("");
 }
 
-static int	ft_strlen_modif(const char *str)
+int	ft_strlen_modif(const char *str)
 {
 	int i;
 
@@ -36,7 +48,7 @@ static int	ft_strlen_modif(const char *str)
 	return (i);
 }
 
-static char	*ft_strnjoin_char(char *s1, char c, int quantity)
+char	*ft_strnjoin_char(char *s1, char c, int quantity)
 {
 	char	*result;
 	size_t	len;

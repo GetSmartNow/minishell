@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/17 15:11:23 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/17 17:23:27 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,14 @@ typedef struct		s_mini
 	int				ret;
 	int				exit;
 	char			*free_line;
-	int				fd;
+	int				fdout;
+
+
+
+	char 			**command_elems;
+	char 			**pipes;
+	char 			**commands;
+
 }					t_mini;
 
 t_sig	g_sig;
@@ -115,6 +122,11 @@ void				ft_list_sort(t_mass **lst);
 
 
 //________________PARSER
-char *make_substitute(char *sep_commands, t_mass **head);
-char			**ft_split_new(char const *s, char c);
+void				ft_parser(t_mini *s, char *line, char **env);
+char 				*make_substitute(char *sep_commands, t_mass **head);
+char				**ft_split_new(char const *s, char c);
+int					ft_strlen_modif(const char *str);
+void				sort_ft(t_mini *s, char **env1);
+int					ft_isspace(char c);
+char				*ft_strnjoin_char(char *s1, char c, int quantity);
 #endif
