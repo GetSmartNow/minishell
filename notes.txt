@@ -1,10 +1,21 @@
-1. Export works improperly. Example: export test="many words here".
+ gcc -g get_next_line/gnl.a libft/libft.a env/*.c builtins/*.c tools/*.c *.h *.c
+
+1. Error: Export works improperly. Example: export test="many words here".
 	ENV -> test="many
 	EXP -> test=""many"
 	ORIGINAL BASH
 	ENV -> test=many words here
 	EXP -> test="many words here"
+2. Error: Export let's to create variable which start from num;
+3. echo "2.   ;  Gh". OUR: 2. ; Gh". ORIGINAL: 2.   ;  Gh
+4. Error: system message "no such file or dir" works when no quotes only. But also should work like in (4, 5) examples
+5. Pipe bug: echo "$HOME\\$home" | cat -e ---> DOES NOTHING.
 
+CHECK on the school mac
+1. $1PWD works or not?
+
+TASKS:
+1. Rewrite split for avoiding separator (c) if it's in the quotes like '... c .... ' or " ... c....";
 
 
 
@@ -14,26 +25,61 @@ ORIGINAL BASH																				OUR MINISHELL
 														1. "\$HOME" (OK)
 $HOME: command not found									|								$HOME: command not found
 															|
-														2. "$HOME" (OK)
+														2. "$HOME" (ERR DIF)
 /Users/mvernius: is a directory								|								/Users/mvernius: No such file or directory
 															|
 														3. '$HOME' (OK)
 $HOME: command not found									|								$HOME: command not found
 															|
-														4. \'$HOME\' (OK)
+														4. \'$HOME\' (ERR DIF)
 '/Users/mvernius': NO such file or dir						|								'/Users/mvernius': command not found
 															|
-														5. \"$HOME\" (OK)
+														5. \"$HOME\" (ERR DIF)
 "/Users/mvernius": No such file or directory				|								"/Users/mvernius": command not found
 															|
-														6. echo $PWD\$HOME$1PWD
-/Users/mvernius/Desktop/minishell_test$HOMEPWD				|								96870 abort      ./minishell
+														6. echo $PWD\$HOME$1PWD (OK)
+/Users/mvernius/Desktop/minishell_test$HOMEPWD				|								/Users/mvernius/Desktop/minishell_test$HOMEPWD
 															|
 														7. echo '\$PWD' (OK)
 \$PWD														|								\$PWD
 															|
-														8. echo "$HOME\\$PWD" (not ok)
-/Users/mvernius\/Users/mvernius/Desktop/minishell_test 		|								/Users/mvernius/Users/mvernius/Desktop/minishell_test
+														8. echo "$HOME\\$PWD" (OK)
+/Users/mvernius\/Users/mvernius/Desktop/minishell_test 		|								/Users/mvernius\/Users/mvernius/Desktop/minishell_test
 															|
-														9. echo "2.   ;  Gh"
-2.   ;  Gh													|								Gh: command not found
+														9. echo "2.   ;  Gh" 
+2.   ;  Gh													|								2. ; Gh"
+															|
+														10. echo \"2.    ; ghs\" (ERROR)
+"2.															|
+bash: ghs": command not found								|								лишний раз вытаскивает по отдельности echo и 2.
+															|
+														11. echo "2.    ; ghs\" (DIFF)
+открывает цитирование, пока ковычку не закроешь				|								2. ; ghs"
+															|
+														12. echo 2.    \; ghs" (DIFF)
+точка с запятой экранируется, и открывается цитирование		|								2. ; ghs
+															|
+														13. echo 2.  \\; ghs (OK)
+2. \														|								2. \																			
+bash: ghs: command not found								|								bash: ghs: command not found								
+															|
+														14. $1PWD (OK)
+/Users/mvernius/Desktop/minishell_test														/Users/mvernius/Desktop/minishell_test
+
+														15. $home (Ok)
+ничего не происходит																		ничего не происходит																
+
+														16. echo "$HOME\\$1PWD" (OK)
+/Users/mvernius\PWD																			/Users/mvernius\PWD
+
+														17. $1234PWD (OK)
+bash: 234PWD: command not found																bash: 234PWD: command not found
+
+														18. $1234PWD$HOME (ERR DIF)
+bash: 234PWD/Users/mvernius: No such file or directory										bash: 234PWD/Users/mvernius: command not found
+
+														19. EcHo HeLlO (OK)
+HeLlO																						HeLlO
+
+														20. \\\\\\\\$HOME (ERR DIF)
+bash: \\\\/Users/mvernius: No such file or directory										bash: \\\\/Users/mvernius: command not found
