@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/17 15:08:44 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/17 15:11:23 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ typedef struct		s_mini
 	int				ret;
 	int				exit;
 	char			*free_line;
+	int				fd;
 }					t_mini;
 
 t_sig	g_sig;

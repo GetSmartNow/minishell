@@ -38,7 +38,7 @@ static void		sort_ft(t_mini *s, char **env1)
 	else if (ft_strcmp(s->mass3d[0][0], "PWD") == 0 || ft_strcmp(s->mass3d[0][0], "pwd") == 0) //|| ft_strcmp(s->mass3d[0][0], "PWD") == 0)
 		mini_pwd(s);
 	else if (ft_strcmp(s->mass3d[0][0], "EXIT") == 0 || ft_strcmp(s->mass3d[0][0], "exit") == 0)
-		mini_exit(s->mass3d[0]);
+		mini_exit(s, s->mass3d[0][0], s->mass3d[0][1]);
 	else if (ft_strcmp(s->mass3d[0][0], "CD") == 0 || ft_strcmp(s->mass3d[0][0], "cd") == 0)
 		mini_cd(s, s->mass3d[0][0], s->mass3d[0][1]);
 	else if (ft_strcmp(s->mass3d[0][0], "ENV") == 0 || ft_strcmp(s->mass3d[0][0], "env") == 0)
@@ -167,6 +167,7 @@ int			main(int ac, char **av, char **env)
 		{
 //			printf("str: \"%s\"\n", *sep_commands);
 			*sep_commands = make_substitute(*sep_commands, &(s.head));
+//			s.fd = find_fd(*sep_commands);
 			res = check_line(&s, *sep_commands);
 			if (res > 0)
 				sort_ft(&s, env);
