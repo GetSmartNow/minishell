@@ -6,7 +6,7 @@
 #    By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/09 17:56:31 by ctycho            #+#    #+#              #
-#    Updated: 2021/03/18 12:25:22 by mvernius         ###   ########.fr        #
+#    Updated: 2021/03/18 22:40:06 by mvernius         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,7 +58,7 @@ ${NAME}: $(SRCS) $(INC)
 	@echo "${CYAN}Library "${NAME}" succesfully compiled"
 
 clean:		
-	@#rm -f ${NAME}
+	#@#rm -f ${NAME}
 	@make clean -C $(LIB_D)
 	@echo "${LGREEN}Everything is cleaned succesfully"
 

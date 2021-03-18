@@ -162,7 +162,7 @@ int			main(int ac, char **av, char **env)
 		ft_putstr_fd("\033[0;36m\033[1mminishell ▸ \033[0m", STDOUT);
 		status = get_next_line(&line);
 		ft_parser(&s, line, env);
-		ft_memdel_1d(line);
+		//ft_memdel_1d(line);  сегается
 	}
 	return (g_sig.exit_status);
 }

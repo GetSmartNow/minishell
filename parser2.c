@@ -1,7 +1,5 @@
-
-
 #include "minishell.h"
-
+//UTILS
 int	ft_arrlen(char **matrix)
 {
 	int	i;
@@ -13,11 +11,7 @@ int	ft_arrlen(char **matrix)
 	}
 	return (i);
 }
-
-// if (type == TRUNC)
-//         mini->fdout = open(token->str, O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
-//     else
-//         mini->fdout = open(token->str, O_CREAT | O_WRONLY | O_APPEND, S_IRWXU);
+//UTILS
 int		detect_type(char *str, int position)
 {
 	int	out;
@@ -26,11 +20,11 @@ int		detect_type(char *str, int position)
 	if (str[position] == '>' && str[position + 1] == '>')
 		out = 2;
 	else if (str[position + 1] != '>')
-		out = 3;
+		out = 1;
 	return (out);
 }
 
-
+//СУПЕР ЕРЕСЬ, МБ МОЖНО СОКРАТИТЬ 
 int		find_redir(char *str, char c)
 {
 	int		iter;
@@ -76,17 +70,6 @@ int		find_redir(char *str, char c)
 			shield_count = 0;
 			flag2 = 0;
 		}
-			// else if (str[iter] == c && !flag2)
-			// {
-			// 	pos = iter;
-			// 	flag2 = 1;
-			// 	iter++;
-			// }
-			// else if (str[iter] == c && flag2 == 1)
-			// {
-			// 	iter++;
-			// 	flag2 = 0;
-			// }
 		else if (str[iter] == c)
 		{
 			pos = iter;
@@ -125,6 +108,11 @@ char	*find_file_name(char *line, int position, int *len)
 		position++;
 		*len += 1;
 	}
+	while (ft_isspace(line[position]))
+	{
+		*len += 1;
+		position++;
+	}
 	return (ft_substr(line, start, counter));
 }
 
@@ -143,13 +131,14 @@ void	define_fd_out(t_mini *s, char *line)
 		position = find_redir(line + iter, '>');
 		if (position >= 0)
 		{
-			file_name = find_file_name(line + iter, position, &len);
+			len = 0;
+			file_name = find_file_name(line + iter, position, &len); //free
 			fd_type = detect_type(line + iter, position);
 			if (fd_type == 2)
-				s->fdout = open(file_name, O_CREAT | O_WRONLY | O_APPEND, S_IRWXU);
-			else if (fd_type == 3)
+				s->fdout = open(file_name, O_CREAT | O_WRONLY | O_APPEND, S_IRWXU); //add check if opened and close previous
+			else if (fd_type == 1)
 				s->fdout = open(file_name, O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
-			iter += position + 1;
+			iter += position + fd_type;
 		}
 		else
 		{
@@ -158,8 +147,6 @@ void	define_fd_out(t_mini *s, char *line)
 			break ;
 		}
 	}
-
-	//do free
 }
 
 void	define_fd_in(t_mini *s, char *line)
@@ -171,11 +158,13 @@ void	define_fd_in(t_mini *s, char *line)
 	int		len;
 
 	iter = 0;
+	s->fdin = -1;
 	while (line[iter])
 	{
 		position = find_redir(line + iter, '<');
 		if (position >= 0)
 		{
+			len = 0;
 			file_name = find_file_name(line + iter, position, &len);
 			fd = open(file_name, O_RDONLY);
 			if (fd < 0)
@@ -186,14 +175,43 @@ void	define_fd_in(t_mini *s, char *line)
 		}
 		else
 		{
-			s->fdin = STDIN;
+			if (s->fdin == -1)
+				s->fdin = STDIN;
 			break ;
 		}
-	}
-	
+	}	
 }
 
-char	*extract_command(char *line)
+char	*ft_strcut(char *line, int start, int len)
+{
+	char	*res;
+	int		iter;
+	int		i;
+
+	i = 0;
+	iter = 0;
+	res = ft_strdup("");
+	while (iter < start)
+	{
+		res = ft_strnjoin_char(res, line[i], 1);
+		iter++;
+		i++;
+	}
+	iter = 0;
+	while (iter < len)
+	{
+		iter++;
+		i++;
+	}
+	while (line[i])
+	{
+		res = ft_strnjoin_char(res, line[i], 1);
+		i++;
+	}
+	return (res);
+}
+
+char	*extract_command(char *line, char redir)
 {
 	int		len;
 	char	*res;
@@ -201,22 +219,19 @@ char	*extract_command(char *line)
 	int		position;
 
 	iter = 0;
-	len = 0;
-	res = ft_strdup("");
-	while (line[iter])
+	res = ft_strdup(line);
+	position = 0;
+	while (*res && position >= 0)
 	{
-		position = find_redir(line + iter, '>');
+		position = find_redir(res, redir);
 		if (position >= 0)
 		{
-			find_file_name(line + iter, position, &len);
-			// if (position - 1 > 0)
-			res = ft_strjoin(res, ft_substr(line, iter, position - 1)); // -1 точно?
-			iter += len + 1;
+			len = 0;
+			find_file_name(res, position, &len);
+			res = ft_strcut(res, iter + position, len); //love this function, add later to my lib;
 		}
-		else
-			return (line);
 	}
-
+	return (res);
 }
 
 void	ft_parser(t_mini *s, char *line, char **env)
@@ -227,31 +242,40 @@ void	ft_parser(t_mini *s, char *line, char **env)
 	char	*tmp;
 
 	iter_commands = 0;
+
+	//ДРОБИМ НА КОМАНДЫ
 	s->commands = ft_split_new(line, ';');
 	while ((s->commands)[iter_commands])
 	{
-//		s->pipe.count_pipe = ft_count_pipe((s->commands)[iter_commands]);
+		//ДРОБИМ НА ПАЙПЫ, СЧИТАЕМ ПАЙПЫ, ВЫДЕЛЯЕМ ПОД КОЛИЧЕСТВО ПАЙПОВ ПАМЯТЬ В МАС3Д
 		s->pipes = ft_split_new((s->commands)[iter_commands], '|');
 		s->pipe.count_pipe = ft_arrlen(s->pipes) - 1;
-		s->mass3d = (char ***)malloc((s->pipe.count_pipe + 1) * sizeof(char **));
+		s->mass3d = (char ***)malloc((s->pipe.count_pipe + 1) * sizeof(char **)); //free
 		iter_pipes = 0;
 		while ((s->pipes)[iter_pipes])
 		{
+			//ОПРЕДЕЛЯЕМ FD IN & OUT
 			define_fd_out(s, (s->pipes)[iter_pipes]);
 			define_fd_in(s, (s->pipes)[iter_pipes]);
+
 			//ИЗВЛЕЧЕНИЕ СТРОКИ БЕЗ РЕДИРЕКТОВ
-			//s->pipes[iter_pipes] = extract_command(s->pipes[iter_pipes]);
+			s->pipes[iter_pipes] = extract_command(s->pipes[iter_pipes], '>'); //free
+			s->pipes[iter_pipes] = extract_command(s->pipes[iter_pipes], '<'); //free
+
+			//РАЗБИЕНИЕ И ЗАМЕНА ЭЛЕМЕНТОВ
 			s->command_elems = ft_split_new((s->pipes)[iter_pipes], ' '); 
 			iter_elems = 0;
 			while ((s->command_elems)[iter_elems])
 			{
 				tmp = (s->command_elems)[iter_elems];
-				(s->command_elems)[iter_elems] = make_substitute((s->command_elems)[iter_elems], &(s->head));
+				(s->command_elems)[iter_elems] = make_substitute((s->command_elems)[iter_elems], &(s->head)); 
 				iter_elems++;
 				free(tmp);
 				tmp = NULL;
 			}
-			(s->mass3d)[iter_pipes] = s->command_elems; //s->command_elems потеря указателя
+
+			//ЗАКИДЫВАЮ В MASS3D И НАЧИНАЕМ КВН
+			(s->mass3d)[iter_pipes] = s->command_elems; //free
 			if (ft_strlen_modif((s->pipes)[iter_pipes]) > 0)
 			{
 				sort_ft(s, env);
@@ -260,5 +284,5 @@ void	ft_parser(t_mini *s, char *line, char **env)
 		}
 		iter_commands++;
 	}
-	ft_memdel_1d(line);
+	ft_memdel_1d(line); // всё еще сегает
 }

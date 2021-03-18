@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 16:49:51 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/17 17:23:39 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/19 00:29:02 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ char	*ft_strnjoin_char(char *s1, char c, int quantity)
 		result[i++] = c;
 	result[i] = '\0';
 	free(s1);
+	s1 = NULL; //some addition
 	return (result);
 }
 
@@ -215,37 +216,38 @@ char	*make_substitute(char *command, t_mass **head)
 		}
 		else if (command[i] == '\'')
 		{
-			tmp = extract_from_quotes(command, i);
+			tmp = extract_from_quotes(command, i); //no need in free cause of concat
 			if (tmp)
 			{
 				res = ft_concat(res, tmp);
-				i += (ft_strlen_modif(tmp) + 2); //сомневаюсь насчет 2
+				i += (ft_strlen_modif(tmp) + 2); //сомневаюсь насчет 2, но пока до сих пор работает
 			}
 			else
 			{
-				tmp = ft_substr(command, i, ft_strlen_modif(command) - i);
+				tmp = ft_substr(command, i, ft_strlen_modif(command) - i); //no need in free cause of concat
 				res = ft_concat(res, tmp);
 				i += ft_strlen_modif(tmp);
 			}
 		}
 		else if (command[i] == '$')
 		{
-			key = extract_key(command, ++i);
+			key = extract_key(command, ++i); //free
+
+			//DELETE SOMEDAY
 			printf("KEY: |%s|\n", key);
 			if (NULL != key)
 			{
-				tmp = find_value_in_export(key, head);
+				tmp = find_value_in_export(key, head); //free
+				
+				//DELETE SOMEDAY
 				printf("TMP: |%s|\n", tmp);
 				i += ft_strlen_modif(key);
 				if (NULL != tmp && ft_strcmp(tmp, ""))
 					res = ft_concat(res, tmp);
-				// else
-					// res = ft_strnjoin_char(res, '\0', 1);
-					
 			}
 			else
 			{
-				i++; //no such key, just symbol, or mistake?
+				i++;
 			}
 		}
 		else
@@ -262,12 +264,11 @@ char	*make_substitute(char *command, t_mass **head)
 			}
 		}
 	}
-
-	//additional checks
 	if (res != NULL && ft_isemptystr(res))
 		res = ft_concat(res, ft_strdup(""));
 	if (res == NULL)
 		res = ft_strdup("");
+	//DELETE SOMEDAY
 	printf("RES: |%s|\n", res);
 	return (res);
 }
