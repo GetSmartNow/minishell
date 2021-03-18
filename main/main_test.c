@@ -6,14 +6,36 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:35:14 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/17 11:00:20 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/18 15:49:16 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void		ft_init(t_mini *s)
+static void		ft_init_before_loop(t_mini *s, char *av)
 {
+	g_sig.exit_status = 0;
+	s->av = av;
+	s->var.pwd = 0;
+	s->exit = 0;
+	s->var.path = NULL;
+}
+
+static void		ft_init_in_loop(t_mini *s)
+{
+	int			i = 0;
+	int			j = 0;
+	while (s->mass3d[i])
+	{
+		j = 0;
+		while (s->mass3d[i][j])
+		{
+			s->mass3d[i][j] = NULL;
+			j++;
+		}
+		i++;
+	}
+	s->file = NULL;
 	s->free_line = NULL;
 	s->env = NULL;
 	s->tmp = NULL;
@@ -146,45 +168,99 @@ static int				check_line(t_mini *s, char *line)
 	return (res);
 }
 
+int			skip_space(char *line, int i)
+{
+	while (line[i] == ' ' && line[i] != '\0')
+	{
+		i++;
+	}
+	return (i);
+}
+
+char		*get_filename(char *line, int i)
+{
+	int		m;
+	int		j = 0;
+	char	*file;
+
+	m = i;
+	i = skip_space(line, i);
+	printf("m: %d\n", m);
+	printf("i: %d\n", i);
+	file = (char *)malloc(sizeof(char) * (i - m + 1));
+	
+	while (m < i)
+	{
+		file[j] = line[m];
+		j++;
+		m++; 
+	}
+	return (file);
+}
+
+int			parse_redir(t_mini *s, char *line)
+{
+	int		i = 0;
+
+	while (line[i])
+	{
+		if (line[i] == '>')
+		{
+			line[i] = ' ';
+			printf("i: %d\n", i);
+			i = skip_space(line, i);
+			printf("i: %d\n", i);
+			s->file = get_filename(line, i);
+			printf("file: %s\n", s->file);
+			s->fd_redir = open(s->file, O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
+		}
+		i++;
+	}
+	printf("line: %s\n", line);
+	return (0);
+}
+
 int			main(int ac, char **av, char **env)
 {
 	t_mini	s;
 	char	*line = NULL;
 	int		status = 1;
 	int		i = 0;
-	int		j = 0;
 	int 	res = 0;
 
-	s.av = av[0];
-	s.mass3d = (char ***)ft_calloc(sizeof(char **), 100);
-	s.var.pwd = 0;
-	s.exit = 0;
-	g_sig.exit_status = 0;
-	s.var.path = NULL;
+	ft_init_before_loop(&s, av[0]);
 	init_list(&s, env);
 	init_list_x(&s, env);
 	ft_shlvl(&s);
 	get_pwd(&s);
 	while (status && s.exit == 0)
 	{
+		s.mass3d = (char ***)ft_calloc(sizeof(char **), 50);
+		i = 0;
 		init_signal();
 		signal(SIGINT, &sig_int); // Register signal handler
 		signal(SIGQUIT, &sig_quit);
-		ft_init(&s);
+		ft_init_in_loop(&s);
 		ft_putstr_fd("\033[0;36m\033[1mminishell ▸ \033[0m", STDOUT);
 		status = get_next_line(&line);
-		// add lopp until ';'
+		parse_redir(&s, line);
 		res = check_line(&s, line);
 		if (res > 0 && status)
+		{
 			sort_ft(&s, env);
-		// if (sigint != 1)
 			ft_memdel_1d(line); // ls ctrl D malloc error
+			while (s.mass3d[i])
+			{
+				ft_memdel_2d((void**)s.mass3d[i]);
+				i++;
+			}
+		}
 	}
 	return (g_sig.exit_status);
 }
 
 
-
+// ls | cat -e | grep m
 
 
 

@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:05:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/14 14:44:25 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/17 17:05:07 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,8 @@ int					mini_pipes(t_mini *s) //ps -a | cat -e | cat -e
 			// ft_error(s->mass3d[i][0], 1);
 			exit (1);
 		}
+		if (res)
+			ft_memdel_1d(s->var.bin);
 	}
 	i = -1;
 	while (++i < s->pipe.count_pipe)
