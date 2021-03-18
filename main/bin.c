@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 11:36:22 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/18 19:04:52 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/18 20:09:03 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,7 @@ int					exec_bin(t_mini *s, char **arr, char *exec)
 			dup2(s->fdin, STDIN);
 		
 		}
+		else
 		if (s->in_file)
 		{
 			dup2(s->fdout, STDOUT);

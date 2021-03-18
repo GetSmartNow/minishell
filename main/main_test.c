@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:35:14 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/18 19:03:51 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/18 20:12:25 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,7 +223,7 @@ int			parse_redir(t_mini *s, char *line)
 			line[i] = ' ';
 			i = skip_space(line, i);
 			s->from_file = get_filename(line, i);
-			s->fdin = open(s->from_file, O_WRONLY | S_IRWXU);
+			s->fdin = open(s->from_file, O_RDONLY | S_IRWXU);
 			printf("fromfile: %s\n", s->from_file);
 			
 		}
