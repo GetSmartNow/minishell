@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   bin.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 11:36:22 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/14 15:16:59 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/18 12:24:25 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 static void			ft_list_to_2d(t_mini *s)
 {

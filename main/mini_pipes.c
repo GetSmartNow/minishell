@@ -6,11 +6,11 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:05:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/17 15:08:09 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/18 12:24:30 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 static int		init_pipes(t_mini *s)
 {

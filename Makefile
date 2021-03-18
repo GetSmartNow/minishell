@@ -6,7 +6,7 @@
 #    By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/09 17:56:31 by ctycho            #+#    #+#              #
-#    Updated: 2021/03/17 16:45:03 by mvernius         ###   ########.fr        #
+#    Updated: 2021/03/18 12:25:22 by mvernius         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,7 +67,6 @@ fclean:
 	@make fclean -C $(LIB_D)
 	@echo "${LGREEN}Everything is cleaned succesfully"
 	@cd $(LIB_D) && make fclean
-	@cd $(GNL_D) && make fclean
 
 re:			fclean all
 	@echo "${LBLUE}Library successfuly rebuilt"
