@@ -6,40 +6,40 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:43:03 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/14 15:09:54 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/18 17:17:20 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void				mini_echo(char **s)
+void				mini_echo(char **str)
 {
 	int				i;
 
 	i = 0;
-	if (s[1] == NULL)
+	if (str[1] == NULL)
 		write(1, "\n", 1);
-	else if (ft_strcmp(s[1], "-n") == 0)
+	else if (ft_strcmp(str[1], "-n") == 0)
 	{
 		i = 1;
-		while (s[i])
+		while (str[i])
 		{
-			if (ft_strcmp(s[i], "-n") == 0)
+			if (ft_strcmp(str[i], "-n") == 0)
 				i++;
 			else
 			{
-				write(1, s[i], ft_strlen(s[i]));
-				s[i + 1] != NULL ? write(1, " ", 1) : 0;
+				write(1, str[i], ft_strlen(str[i]));
+				str[i + 1] != NULL ? write(1, " ", 1) : 0;
 				i++;
 			}
 		}
 	}
 	else
 	{
-		while (s[++i])
+		while (str[++i])
 		{
-			write(1, s[i], ft_strlen(s[i]));
-			s[i + 1] != NULL ? write(1, " ", 1) : 0;
+			write(1, str[i], ft_strlen(str[i]));
+			str[i + 1] != NULL ? write(1, " ", 1) : 0;
 		}
 		write(1, "\n", 1);
 	}

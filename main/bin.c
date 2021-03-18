@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 11:36:22 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/18 15:01:06 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/18 19:04:52 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,12 +181,18 @@ int					exec_bin(t_mini *s, char **arr, char *exec)
 	}
 	else if (g_sig.pid == 0)
 	{
-		// if (type == TRUNC)
-		// 	s->fdout = open(s->str, O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
-		// else
-		// 	s->fdout = open(s->str, O_CREAT | O_WRONLY | O_APPEND, S_IRWXU);
-		if (s->file)
-			dup2(s->fd_redir, STDOUT);
+		printf("fdin: %d\n", s->fdin);
+		printf("fdout: %d\n", s->fdout);
+		if (s->from_file)
+		{
+			dup2(s->fdin, STDIN);
+		
+		}
+		if (s->in_file)
+		{
+			dup2(s->fdout, STDOUT);
+			
+		}
 		execve(s->var.bin, arr, s->env);
 		exit (1);
 	}

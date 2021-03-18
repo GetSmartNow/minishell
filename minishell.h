@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/18 15:01:45 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/18 17:58:33 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,10 @@ typedef struct		s_mini
 	t_mass			*head;
 	t_mass			*head_x;
 	t_env			var;
-	char			*file;
-	int				fd_redir;
+	char			*in_file;
+	char			*from_file;
+	int				fdin;
+	int				fdout;
 	char			*av;
 	char			***mass3d;
 	char			**env;
@@ -88,7 +90,7 @@ int					mini_bin(t_mini *s);
 void				mini_cd(t_mini *s, char *exec, char *arg);
 void				mini_pwd(t_mini	*s);
 void				mini_pwd_1(t_mini *s);
-void				mini_echo(char **s);
+void				mini_echo(char **str);
 int					mini_exit(t_mini *s, char *exec, char *arg);
 void				mini_env(t_mini *s);
 void				mini_export(t_mini *s);

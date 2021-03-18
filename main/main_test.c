@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:35:14 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/18 15:49:16 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/18 19:03:51 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ static void		ft_init_in_loop(t_mini *s)
 		}
 		i++;
 	}
-	s->file = NULL;
+	s->fdin = 0;
+	s->fdout = 0;
+	s->in_file = NULL;
+	s->from_file = NULL;
 	s->free_line = NULL;
 	s->env = NULL;
 	s->tmp = NULL;
@@ -67,8 +70,8 @@ static void		sort_ft(t_mini *s, char **env1)
 		exit_code(s);
 	else if (s->pipe.count_pipe != 0)
 		mini_pipes(s);
-	else if (ft_strcmp(s->mass3d[0][0], "echo") == 0)
-		mini_echo(s->mass3d[0]);
+	// else if (ft_strcmp(s->mass3d[0][0], "echo") == 0)
+	// 	mini_echo(s->mass3d[0]);
 	else if (ft_strcmp(s->mass3d[0][0], "pwd") == 0)
 		mini_pwd(s);
 	else if (ft_strcmp(s->mass3d[0][0], "exit") == 0)
@@ -168,9 +171,20 @@ static int				check_line(t_mini *s, char *line)
 	return (res);
 }
 
+//-------------------MY PARSER START----------------------------------------
+
 int			skip_space(char *line, int i)
 {
 	while (line[i] == ' ' && line[i] != '\0')
+	{
+		i++;
+	}
+	return (i);
+}
+
+int			name_length(char *line, int i)
+{
+	while (line[i] != ' ' && line[i] != '\0')
 	{
 		i++;
 	}
@@ -184,17 +198,17 @@ char		*get_filename(char *line, int i)
 	char	*file;
 
 	m = i;
-	i = skip_space(line, i);
-	printf("m: %d\n", m);
-	printf("i: %d\n", i);
+	i = name_length (line, i);
 	file = (char *)malloc(sizeof(char) * (i - m + 1));
 	
 	while (m < i)
 	{
 		file[j] = line[m];
+		line[m] = ' ';
 		j++;
 		m++; 
 	}
+	file[j] = '\0';
 	return (file);
 }
 
@@ -204,21 +218,42 @@ int			parse_redir(t_mini *s, char *line)
 
 	while (line[i])
 	{
-		if (line[i] == '>')
+		if (line[i] == '<')
 		{
 			line[i] = ' ';
-			printf("i: %d\n", i);
 			i = skip_space(line, i);
-			printf("i: %d\n", i);
-			s->file = get_filename(line, i);
-			printf("file: %s\n", s->file);
-			s->fd_redir = open(s->file, O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
+			s->from_file = get_filename(line, i);
+			s->fdin = open(s->from_file, O_WRONLY | S_IRWXU);
+			printf("fromfile: %s\n", s->from_file);
+			
+		}
+		if (line[i] == '>' && line[i + 1] == '>')
+		{
+			line[i] = ' ';
+			i++;
+			line[i] = ' ';
+			i = skip_space(line, i);
+			s->in_file = get_filename(line, i);
+			printf("infile>>: %s\n", s->in_file);
+			
+			s->fdout = open(s->in_file, O_CREAT | O_WRONLY | O_APPEND, S_IRWXU);
+		}
+		else if (line[i] == '>')
+		{
+			line[i] = ' ';
+			i = skip_space(line, i);
+			s->in_file = get_filename(line, i);
+			printf("infile>: %s\n", s->in_file);
+			
+			s->fdout = open(s->in_file, O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
 		}
 		i++;
 	}
 	printf("line: %s\n", line);
 	return (0);
 }
+
+//-------------------MY PARSER END----------------------------------------
 
 int			main(int ac, char **av, char **env)
 {
