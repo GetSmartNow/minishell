@@ -106,20 +106,24 @@ int		find_redir(char *str, char c)
 }
 
 
-char	*find_file_name(char *line, int position)
+char	*find_file_name(char *line, int position, int *len)
 {
 	int	counter;
 	int	start;
 
 	counter = 0;
 
-	while (!ft_isalnum(line[position]))
+	while (!ft_isalnum(line[position])) //возможно другой скип нужен, только пробелов
+	{
 		position++;
+		*len += 1;
+	}	
 	start = position;
 	while (ft_isalnum(line[position]) || line[position] == '.')
 	{
 		counter++;
 		position++;
+		*len += 1;
 	}
 	return (ft_substr(line, start, counter));
 }
@@ -130,6 +134,7 @@ void	define_fd_out(t_mini *s, char *line)
 	int		fd_type;
 	char	*file_name;
 	int		iter;
+	int		len;
 
 	iter = 0;
 	s->fdout = -1;
@@ -138,7 +143,7 @@ void	define_fd_out(t_mini *s, char *line)
 		position = find_redir(line + iter, '>');
 		if (position >= 0)
 		{
-			file_name = find_file_name(line + iter, position);
+			file_name = find_file_name(line + iter, position, &len);
 			fd_type = detect_type(line + iter, position);
 			if (fd_type == 2)
 				s->fdout = open(file_name, O_CREAT | O_WRONLY | O_APPEND, S_IRWXU);
@@ -150,6 +155,7 @@ void	define_fd_out(t_mini *s, char *line)
 		{
 			if (s->fdout == -1)
 				s->fdout = STDOUT;
+			break ;
 		}
 	}
 
@@ -162,6 +168,7 @@ void	define_fd_in(t_mini *s, char *line)
 	char	*file_name;
 	int		iter;
 	int		fd;
+	int		len;
 
 	iter = 0;
 	while (line[iter])
@@ -169,12 +176,47 @@ void	define_fd_in(t_mini *s, char *line)
 		position = find_redir(line + iter, '<');
 		if (position >= 0)
 		{
-			file_name = find_file_name(line + iter, position);
+			file_name = find_file_name(line + iter, position, &len);
 			fd = open(file_name, O_RDONLY);
 			if (fd < 0)
+				printf("input file error\n");
+			else
+				s->fdin = fd;
+			iter += position + 1;
+		}
+		else
+		{
+			s->fdin = STDIN;
+			break ;
 		}
 	}
 	
+}
+
+char	*extract_command(char *line)
+{
+	int		len;
+	char	*res;
+	int		iter;
+	int		position;
+
+	iter = 0;
+	len = 0;
+	res = ft_strdup("");
+	while (line[iter])
+	{
+		position = find_redir(line + iter, '>');
+		if (position >= 0)
+		{
+			find_file_name(line + iter, position, &len);
+			// if (position - 1 > 0)
+			res = ft_strjoin(res, ft_substr(line, iter, position - 1)); // -1 точно?
+			iter += len + 1;
+		}
+		else
+			return (line);
+	}
+
 }
 
 void	ft_parser(t_mini *s, char *line, char **env)
@@ -197,6 +239,8 @@ void	ft_parser(t_mini *s, char *line, char **env)
 		{
 			define_fd_out(s, (s->pipes)[iter_pipes]);
 			define_fd_in(s, (s->pipes)[iter_pipes]);
+			//ИЗВЛЕЧЕНИЕ СТРОКИ БЕЗ РЕДИРЕКТОВ
+			//s->pipes[iter_pipes] = extract_command(s->pipes[iter_pipes]);
 			s->command_elems = ft_split_new((s->pipes)[iter_pipes], ' '); 
 			iter_elems = 0;
 			while ((s->command_elems)[iter_elems])

@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/18 14:59:23 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/18 15:30:35 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,11 @@ typedef struct		s_mini
 	int				ret;
 	int				exit;
 	char			*free_line;
+	
+	
+	
 	int				fdout;
-
-
-
+	int				fdin;
 	char 			**command_elems;
 	char 			**pipes;
 	char 			**commands;
@@ -129,7 +130,7 @@ int					ft_strlen_modif(const char *str);
 void				sort_ft(t_mini *s, char **env1);
 int					ft_isspace(char c);
 char				*ft_strnjoin_char(char *s1, char c, int quantity);
-char				*find_file_name(char *line, int position);
+char				*find_file_name(char *line, int position, int *len);
 int					find_redir(char *str, char c);
 void				define_fd_in(t_mini *s, char *line);
 void				define_fd_out(t_mini *s, char *line);
