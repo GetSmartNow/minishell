@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/19 15:42:21 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/19 18:38:59 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int					mini_bin(t_mini *s);
 void				mini_cd(t_mini *s, char *exec, char *arg);
 void				mini_pwd(t_mini	*s);
 void				mini_pwd_1(t_mini *s);
-void				mini_echo(char **str);
+void				mini_echo(char **str, t_mini *s);
 int					mini_exit(t_mini *s, char *exec, char *arg);
 void				mini_env(t_mini *s);
 void				mini_export(t_mini *s);

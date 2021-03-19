@@ -6,19 +6,19 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:43:03 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/19 14:57:57 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/19 18:39:33 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void				mini_echo(char **str)
+void				mini_echo(char **str, t_mini *s)
 {
 	int				i;
 
 	i = 0;
 	if (str[1] == NULL)
-		write(1, "\n", 1);
+		write(s->fdout, "\n", 1);
 	else if (ft_strcmp(str[1], "-n") == 0)
 	{
 		i = 1;
@@ -28,8 +28,8 @@ void				mini_echo(char **str)
 				i++;
 			else
 			{
-				write(1, str[i], ft_strlen(str[i]));
-				str[i + 1] != NULL ? write(1, " ", 1) : 0;
+				write(s->fdout, str[i], ft_strlen(str[i]));
+				str[i + 1] != NULL ? write(s->fdout, " ", 1) : 0;
 				i++;
 			}
 		}
@@ -38,9 +38,9 @@ void				mini_echo(char **str)
 	{
 		while (str[++i])
 		{
-			write(1, str[i], ft_strlen(str[i]));
-			str[i + 1] != NULL ? write(1, " ", 1) : 0;
+			write(s->fdout, str[i], ft_strlen(str[i]));
+			str[i + 1] != NULL ? write(s->fdout, " ", 1) : 0;
 		}
-		write(1, "\n", 1);
+		write(s->fdout, "\n", 1);
 	}
 }
