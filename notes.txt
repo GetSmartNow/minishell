@@ -1,4 +1,4 @@
- gcc -g libft/libft.a env/*.c builtins/*.c tool*.h *.c
+ gcc -g libft/libft.a env/*.c builtins/*.c tools/*.c main/*.c *.h *.c
 
 1. Error: Export works improperly. Example: export test="many words here".
 	ENV -> test="many

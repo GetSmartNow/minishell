@@ -253,13 +253,23 @@ void	ft_parser(t_mini *s, char *line, char **env)
 		s->pipes = ft_split_new((s->commands)[iter_commands], '|');
 		s->pipe.count_pipe = ft_arrlen(s->pipes) - 1;
 		s->pipe.count_commands = s->pipe.count_pipe + 1;
+
+		//выделение памяти под мас3д, массивы фдшников
 		s->mass3d = (char ***)malloc((s->pipe.count_pipe + 1) * sizeof(char **)); //free
+		s->array_fdin = (int *)malloc(ft_arrlen(s->pipes) * sizeof(int));
+		s->array_fdout = (int *)malloc(ft_arrlen(s->pipes) * sizeof(int));
+
+		//цикл по коммандам с пайпов
 		iter_pipes = 0;
 		while ((s->pipes)[iter_pipes])
 		{
 			//ОПРЕДЕЛЯЕМ FD IN & OUT
 			define_fd_out(s, (s->pipes)[iter_pipes]);
+			(s->array_fdout)[iter_pipes] = s->fdout;
+			printf("%d\n", (s->array_fdout)[iter_pipes]);
 			define_fd_in(s, (s->pipes)[iter_pipes]);
+			(s->array_fdin)[iter_pipes] = s->fdin;
+			printf("%d\n", (s->array_fdin)[iter_pipes]);
 
 			//ИЗВЛЕЧЕНИЕ СТРОКИ БЕЗ РЕДИРЕКТОВ
 			s->pipes[iter_pipes] = extract_command(s->pipes[iter_pipes], '>'); //free можно внутри extract сделать
@@ -285,6 +295,14 @@ void	ft_parser(t_mini *s, char *line, char **env)
 			//}
 			iter_pipes++;
 		}
+		// (s->array_fdout)[iter_pipes] = -1;
+		// (s->array_fdin)[iter_pipes] = -1;
+		// int j = 0;
+		// while (s->array_fdout[j])
+		// {
+		// 	printf("%d\n", s->array_fdout[j]);
+		// 	j++;
+		// }
 		if (ft_strlen_modif((s->commands)[iter_commands]) > 0)
 		{
 			sort_ft(s, env);

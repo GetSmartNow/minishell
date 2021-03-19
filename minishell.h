@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/19 18:38:59 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/19 19:15:24 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ typedef struct		s_mini
 	
 	int				fdout;
 	int				fdin;
+	int				*array_fdout;
+	int				*array_fdin;
 	char 			**command_elems;
 	char 			**pipes;
 	char 			**commands;
