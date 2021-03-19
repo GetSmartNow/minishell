@@ -6,11 +6,11 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 11:36:22 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/19 18:19:27 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/19 19:26:08 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 static void			ft_list_to_2d(t_mini *s)
 {
@@ -168,7 +168,6 @@ void				bin_error(t_mini *s, char *exec, int res)
 
 int					exec_bin(t_mini *s, char **arr, char *exec)
 {
-	// pid_t			pid;
 	int				res = 0;
 	char			*bin = NULL;
 
@@ -184,25 +183,16 @@ int					exec_bin(t_mini *s, char **arr, char *exec)
 		printf("fdin: %d\n", s->fdin);
 		printf("fdout: %d\n", s->fdout);
 		if (s->from_file)
-		{
 			dup2(s->fdin, STDIN);
-		
-		}
 		if (s->in_file)
-		{
 			dup2(s->fdout, STDOUT);
-			
-		}
 		execve(s->var.bin, arr, s->env);
 		exit (1);
 	}
 	else
-	{
-		// we need to use waitpid instead of wait`
 		wait(NULL);
-	}
-	if (res)
-		ft_memdel_1d(s->var.bin);
+	//if (res)
+		//ft_memdel_1d(s->var.bin);
 	bin_error(s, exec, res);
 	return (0);
 }

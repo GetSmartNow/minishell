@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   bin.c                                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/12 15:50:33 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/04 11:59:01 by ctycho           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 // static int			magic_box()
@@ -138,8 +126,9 @@ int		mini_bin(t_mini *s)
 	int				status;
 	char			*bin = NULL;
 
-	// res = mini_bin1(s, 0);
-	// printf("|%s|\n", s->var.bin);
+
+	res = mini_bin1(s, 0);
+	//printf("|%s|\n", s->var.bin);
 	pid = fork();
 	if (pid < 0)
 	{
