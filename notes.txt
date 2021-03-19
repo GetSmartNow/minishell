@@ -10,10 +10,8 @@
 3. echo "2.   ;  Gh". OUR: 2. ; Gh". ORIGINAL: 2.   ;  Gh
 4. Error: system message "no such file or dir" works when no quotes only. But also should work like in (4, 5) examples
 5. Pipe bug: echo "$HOME\\$home" | cat -e ---> DOES NOTHING.
-
-
-TODO:
-1. ' $home' - segmentation fault; (add additional check if string is empty);
+6. exit : malloc error. 
+7. $home: лишний текст ошибки. Когда пришла пустая строка, просто скип должен быть. 
 
 
 
@@ -89,7 +87,7 @@ bash: \\\\/Users/mvernius: No such file or directory
 21. empty string (OK)
 Nothing
 
-22. echo > a1 > a2 > a3 HeLlO
+22. echo > a1 > a2 > a3 HeLlO (ERROR: вывод в STDOUT)
 создаст три файла
 запишет HeLlO в а3
 

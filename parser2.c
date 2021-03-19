@@ -259,7 +259,7 @@ void	ft_parser(t_mini *s, char *line, char **env)
 			define_fd_in(s, (s->pipes)[iter_pipes]);
 
 			//ИЗВЛЕЧЕНИЕ СТРОКИ БЕЗ РЕДИРЕКТОВ
-			s->pipes[iter_pipes] = extract_command(s->pipes[iter_pipes], '>'); //free
+			s->pipes[iter_pipes] = extract_command(s->pipes[iter_pipes], '>'); //free можно внутри extract сделать
 			s->pipes[iter_pipes] = extract_command(s->pipes[iter_pipes], '<'); //free
 
 			//РАЗБИЕНИЕ И ЗАМЕНА ЭЛЕМЕНТОВ

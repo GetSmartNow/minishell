@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:35:14 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/19 14:57:17 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/19 15:50:26 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,19 @@ static void		ft_init_before_loop(t_mini *s, char *av)
 
 static void		ft_init_in_loop(t_mini *s)
 {
-	int			i = 0;
-	int			j = 0;
-	while (s->mass3d[i])
-	{
-		j = 0;
-		while (s->mass3d[i][j])
-		{
-			s->mass3d[i][j] = NULL;
-			j++;
-		}
-		i++;
-	}
+	//мб перенести в место выделения
+	//int			i = 0;
+	//int			j = 0;
+	//while (s->mass3d[i])
+	//{
+	//	j = 0;
+	//	while (s->mass3d[i][j])
+	//	{
+	//		s->mass3d[i][j] = NULL;
+	//		j++;
+	//	}
+	//	i++;
+	//}
 	s->fdin = 0;
 	s->fdout = 0;
 	s->in_file = NULL;
@@ -195,7 +196,7 @@ int			main(int ac, char **av, char **env)
 		init_signal();
 		signal(SIGINT, &sig_int); // Register signal handler
 		signal(SIGQUIT, &sig_quit);
-		ft_init(&s);
+		ft_init_in_loop(&s);
 		ft_putstr_fd("\033[0;36m\033[1mminishell ▸ \033[0m", STDOUT);
 		status = get_next_line(&line);
 		ft_parser(&s, line, env);

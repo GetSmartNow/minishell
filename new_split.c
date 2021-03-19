@@ -12,32 +12,58 @@ static int		len_cur_word(char const *s, char sep)
 	shield_count = 0;
 	while (*s)
 	{
-		if (*s == '\\')
+		while (*s && *s == '\\')
 		{
 			shield_count++;
 			length++;
 			s++;
 		}
-		else if (*s != '\\' && *s != sep)
+		if (*s && *s != sep)
 		{
-			if ((*s == '\'' || *s == '\"') && shield_count % 2 == 1)
+			//if (shield_count % 2 == 1)
+			//{
+			//	if (*s == '\'' || *s == '\"')
+			//	{
+			//		s++;
+			//		length++;
+			//		shield_count = 0;
+			//	}
+			//}
+			if (shield_count % 2 == 0)
 			{
-				flag = 0;
-				shield_count = 0;
+				if ((*s == '\'' || *s == '\"') && flag == 1)
+				{
+					flag = 0;
+					shield_count = 0;
+				}
+				else if ((*s == '\'' || *s == '\"') && flag == 0)
+				{
+					flag = 1;
+					shield_count = 0;
+				}
 			}
-			else if ((*s == '\'' || *s == '\"') && shield_count % 2 != 1)
-			{
-				flag = 1;
+			else
 				shield_count = 0;
-			}
 			s++;
 			length++;
-			if (*s == sep && (flag == 1 || shield_count % 2 == 1))
-			{
-				printf("SH COUNT: |%d|\n", shield_count);
-				s++;
-				length++;
-			}
+			//if ((*s == '\'' || *s == '\"') && shield_count % 2 == 1)
+			//{
+			//	flag = 0;
+			//	shield_count = 0;
+			//}
+			//else if ((*s == '\'' || *s == '\"') && shield_count % 2 == 0)
+			//{
+			//	flag = 1;
+			//	shield_count = 0;
+			//}
+			//s++;
+			//length++;
+			//if (*s == sep && (flag == 1 || shield_count % 2 == 1))
+			//{
+			//	printf("SH COUNT: |%d|\n", shield_count);
+			//	s++;
+			//	length++;
+			//}
 		}
 		else if (*s == sep && shield_count % 2 == 1)
 		{
@@ -45,7 +71,7 @@ static int		len_cur_word(char const *s, char sep)
 			length++;
 			shield_count = 0;
 		}
-		else if (*s == sep)
+		else if (*s == sep && flag == 0)
 			return (length);
 	}
 	printf("LENGTH: |%d|\n", length);
@@ -151,13 +177,16 @@ char			**ft_split_new(char const *s, char c)
 	return (arr);
 }
 
-//int main(void)
+//int main(int argc, char *argv[])
 //{
-//	char **splited = ft_split_new("hello \\; world", ';');
-//	while (*splited)
+//	if (argc)
 //	{
+//		char **splited = ft_split_new(argv[1], '|');
+//		while (*splited)
+//		{
+//			printf("%s\n", *splited);
+//			splited++;
+//		}
 //		printf("%s\n", *splited);
-//		splited++;
 //	}
-//	printf("%s\n", *splited);
 //}
