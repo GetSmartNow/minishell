@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/19 14:58:01 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/19 15:42:21 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ typedef struct		s_mini
 	t_env			var;
 	char			*in_file;
 	char			*from_file;
-	int				fdin;
-	int				fdout;
+	//int				fdin;
+	//int				fdout;
 	char			*av;
 	char			***mass3d;
 	char			**env;

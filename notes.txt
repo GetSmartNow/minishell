@@ -1,4 +1,4 @@
- gcc -g get_next_line/gnl.a libft/libft.a env/*.c builtins/*.c tools/*.c *.h *.c
+ gcc -g libft/libft.a env/*.c builtins/*.c tool*.h *.c
 
 1. Error: Export works improperly. Example: export test="many words here".
 	ENV -> test="many
@@ -17,76 +17,104 @@ TODO:
 
 
 
-REDIRECTS:
 
-1. (echo | cat test2.txt | grep 1 > result.txt)  ==  (cat test1.txt | echo | grep 1 < test2.txt > result.txt) == (grep 1 < test2.txt > result.txt) == (cat test2.txt | grep 1 > result.txt) == cat test1.txt | grep 1 < test2.txt > result.txt
 
 
 
 		____________________PARSER______________________
 
-ORIGINAL BASH																				OUR MINISHELL
-														1. "\$HOME" (OK)
-$HOME: command not found									|								$HOME: command not found
+ORIGINAL BASH						
+1. "\$HOME" (OK)
+$HOME: command not found									|					
 															|
-														2. "$HOME" (ERR DIF)
-/Users/mvernius: is a directory								|								/Users/mvernius: No such file or directory
+2. "$HOME" (ERR DIF)
+/Users/mvernius: is a directory								|						
 															|
-														3. '$HOME' (OK)
-$HOME: command not found									|								$HOME: command not found
+3. '$HOME' (OK)
+$HOME: command not found									|					
 															|
-														4. \'$HOME\' (ERR DIF)
-'/Users/mvernius': NO such file or dir						|								'/Users/mvernius': command not found
+4. \'$HOME\' (ERR DIF)
+'/Users/mvernius': NO such file or dir						|								
 															|
-														5. \"$HOME\" (ERR DIF)
-"/Users/mvernius": No such file or directory				|								"/Users/mvernius": command not found
+5. \"$HOME\" (ERR DIF)
+"/Users/mvernius": No such file or directory				|					
 															|
-														6. echo $PWD\$HOME$1PWD (OK)
-/Users/mvernius/Desktop/minishell_test$HOMEPWD				|								/Users/mvernius/Desktop/minishell_test$HOMEPWD
+6. echo $PWD\$HOME$1PWD (OK)
+/Users/mvernius/Desktop/minishell_test$HOMEPWD				|						
 															|
-														7. echo '\$PWD' (OK)
-\$PWD														|								\$PWD
+7. echo '\$PWD' (OK)
+\$PWD	
 															|
-														8. echo "$HOME\\$PWD" (OK)
-/Users/mvernius\/Users/mvernius/Desktop/minishell_test 		|								/Users/mvernius\/Users/mvernius/Desktop/minishell_test
+8. echo "$HOME\\$PWD" (OK)
+/Users/mvernius\/Users/mvernius/Desktop/minishell_test 		|							
 															|
-														9. echo "2.   ;  Gh" 
-2.   ;  Gh													|								2. ; Gh"
+9. echo "2.   ;  Gh" 
+2.   ;  Gh			
 															|
-														10. echo \"2.    ; ghs\" (OK)
+10. echo \"2.    ; ghs\" (OK)
 "2.															|								
 bash: ghs": command not found								|								
 															|
-														11. echo "2.    ; ghs\" (DIFF)
-открывает цитирование, пока ковычку не закроешь				|								2. ; ghs"
+11. echo "2.    ; ghs\" (DIFF)
+открывает цитирование, пока ковычку не зак
 															|
-														12. echo 2.    \; ghs" (DIFF)
-точка с запятой экранируется, и открывается цитирование		|								2. ; ghs
+12. echo 2.    \; ghs" (DIFF)
+точка с запятой экранируется, и открывается цит
 															|
-														13. echo 2.  \\; ghs (OK)
-2. \														|								2. \																			
-bash: ghs: command not found								|								bash: ghs: command not found								
+13. echo 2.  \\; ghs (OK)
+2. \																			
+bash: ghs: command not found								|												
 															|
-														14. $1PWD (OK)
-/Users/mvernius/Desktop/minishell_test														/Users/mvernius/Desktop/minishell_test
+14. $1PWD (OK)
+/Users/mvernius/Desktop/minishell_test										
 
-														15. $home (OK)
-ничего не происходит																		ничего не происходит																
+15. $home (OK)
+ничего не происходит																											
 
-														16. echo "$HOME\\$1PWD" (OK)
-/Users/mvernius\PWD																			/Users/mvernius\PWD
+16. echo "$HOME\\$1PWD" (OK)
+/Users/mvernius\PWD											
 
-														17. $1234PWD (OK)
-bash: 234PWD: command not found																bash: 234PWD: command not found
+17. $1234PWD (OK)
+bash: 234PWD: command not found																
 
-														18. $1234PWD$HOME (ERR DIF)
-bash: 234PWD/Users/mvernius: No such file or directory										bash: 234PWD/Users/mvernius: command not found
+18. $1234PWD$HOME (ERR DIF)
+bash: 234PWD/Users/mvernius: No such file or directory									
 
-														19. EcHo HeLlO (OK) (обработать по mass3d)
-HeLlO																						HeLlO
+19. EcHo HeLlO (OK) (обработать по mass3d)
+HeLlO
 
-														20. \\\\\\\\$HOME (ERR DIF)
-bash: \\\\/Users/mvernius: No such file or directory										bash: \\\\/Users/mvernius: command not found
+20. \\\\\\\\$HOME (ERR DIF)
+bash: \\\\/Users/mvernius: No such file or directory									
 
-														21. empty string
-NOTHING																						
+21. empty string (OK)
+Nothing
+
+22. echo > a1 > a2 > a3 HeLlO
+создаст три файла
+запишет HeLlO в а3
+
+23. echo 123 > a1 > a2 >> a3
+будет дополнять а3
+
+24. echo 1ABCD > a1 | cat a1 | grep 1 < a3
+запишет 1ABCD  в а1
+выведет пересечения по 1 из а3
+
+25. echo "1ABCD > a1 | cat a1 | grep 1 < a3"
+вывод: 1ABCD > a1 | cat a1 | grep 1 < a3
+
+26. echo '1ABCD > a1 | cat a1 | grep 1 < a3'
+вывод: 1ABCD > a1 | cat a1 | grep 1 < a3
+
+27. echo > a1 \> a2
+запишет в а1 строку: > a2
+
+28. echo $HOME > a1 | cat < a1 > a2 | echo >> a1 $PWD
+и в a1 и в a2 будет лежать:
+/Users/mvernius
+/Users/mvernius/Desktop/minishell_test
+
+29. echo $HOME > a1 | cat < a1 > a2 | echo >> a1 '$PWD'
+и в a1 и в a2 будет лежать:
+/Users/mvernius
+$PWD
