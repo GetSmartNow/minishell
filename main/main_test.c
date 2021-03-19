@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:35:14 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/19 17:19:39 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/19 18:15:20 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ void		sort_ft(t_mini *s, char **env1)
 		exit_code(s);
 	else if (s->pipe.count_pipe != 0)
 		mini_pipes(s);
-	else if (ft_strcmp(s->mass3d[0][0], "ECHO") == 0 || ft_strcmp(s->mass3d[0][0], "echo") == 0)
-		mini_echo(s->mass3d[0]);
+	// else if (ft_strcmp(s->mass3d[0][0], "ECHO") == 0 || ft_strcmp(s->mass3d[0][0], "echo") == 0)
+	// 	mini_echo(s->mass3d[0]);
 	else if (ft_strcmp(s->mass3d[0][0], "PWD") == 0 || ft_strcmp(s->mass3d[0][0], "pwd") == 0) //|| ft_strcmp(s->mass3d[0][0], "PWD") == 0)
 		mini_pwd(s);
 	else if (ft_strcmp(s->mass3d[0][0], "EXIT") == 0 || ft_strcmp(s->mass3d[0][0], "exit") == 0)
