@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 11:36:22 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/18 12:24:25 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/19 14:57:34 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ int					exec_bin_1(t_mini *s, char *exec)
 			magic_box(s, bin[i], exec);
 		i++;
 	}
+	ft_memdel_2d((void**)bin);
 	return (s->var.count_bin);
 }
 
@@ -180,6 +181,19 @@ int					exec_bin(t_mini *s, char **arr, char *exec)
 	}
 	else if (g_sig.pid == 0)
 	{
+		printf("fdin: %d\n", s->fdin);
+		printf("fdout: %d\n", s->fdout);
+		if (s->from_file)
+		{
+			dup2(s->fdin, STDIN);
+		
+		}
+		else
+		if (s->in_file)
+		{
+			dup2(s->fdout, STDOUT);
+			
+		}
 		execve(s->var.bin, arr, s->env);
 		exit (1);
 	}

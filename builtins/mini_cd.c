@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:32:58 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/17 14:36:08 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/17 16:01:16 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,16 @@ static void			mini_oldpwd(t_mini *s)
 {
 	t_mass			*tmp;
 	char			*line;
+	char			*tmp_1;
 	int				flag = 0;
 
+	tmp_1 = NULL;
 	line = NULL;
 	tmp = s->head;
 	while (tmp != NULL)
 	{
 		if (ft_strncmp(tmp->content, "PWD=", ft_strlen("PWD=")) == 0)
-			line = ft_strdup(tmp->content + 4);
+			tmp_1 = ft_strdup(tmp->content + 4);
 		tmp = tmp->next;
 	}
 	tmp = s->head;
@@ -32,17 +34,16 @@ static void			mini_oldpwd(t_mini *s)
 		if (ft_strncmp(tmp->content, "OLDPWD=", ft_strlen("OLDPWD=")) == 0)
 		{
 			flag = 1;
-			free(tmp->content);
-			tmp->content = ft_strjoin("OLDPWD=", line);
-			ft_memdel_1d(line);
+			ft_memdel_1d(tmp->content);
+			tmp->content = ft_strjoin("OLDPWD=", tmp_1);
+			ft_memdel_1d(tmp_1);
 		}
 		tmp = tmp->next;
 	}
 	if (flag == 0)
 	{
-		line = ft_strjoin("OLDPWD=", line);
+		line = ft_strjoin_free("OLDPWD=", tmp_1, tmp_1);
 		my_lstadd_back(&s->head, my_lstnew(line));
-		// ft_memdel_1d(line);
 	}
 	flag = 0;
 	line = NULL;
@@ -84,7 +85,8 @@ static void			empty_olpwd(t_mini *s)
 	{
 		if (ft_strncmp(tmp->content, "OLDPWD=", ft_strlen("OLDPWD=")) == 0)
 		{
-			ft_bzero(tmp->content, ft_strlen(tmp->content));
+			ft_memdel_1d(tmp->content);
+			// ft_bzero(tmp->content, ft_strlen(tmp->content));
 			tmp->content = ft_strdup("OLDPWD=");
 		}
 		tmp = tmp->next;
@@ -94,7 +96,8 @@ static void			empty_olpwd(t_mini *s)
 	{
 		if (ft_strncmp(tmp->content, "OLDPWD=", ft_strlen("OLDPWD=")) == 0)
 		{
-			ft_bzero(tmp->content, ft_strlen(tmp->content));
+			ft_memdel_1d(tmp->content);
+			// ft_bzero(tmp->content, ft_strlen(tmp->content));
 			tmp->content = put_quotes("OLDPWD=");
 		}
 		tmp = tmp->next;
@@ -149,9 +152,14 @@ static int			mini_cd_minus(t_mini *s, char *exec, char *arg)
 	if (res == 1)
 	{
 		if (s->var.oldpwd != NULL)
+		{
+			write(STDOUT, s->var.oldpwd, ft_strlen(s->var.oldpwd));
+			write(STDOUT, "\n", 1);
 			res = chdir(s->var.oldpwd);
+		}
 		else
 			res = chdir(arg);
+		ft_memdel_1d(s->var.oldpwd);
 	}
 	return (res);
 }
@@ -174,7 +182,7 @@ void				mini_cd(t_mini *s, char *exec, char *arg)
 	}
 	else
 	{
-		if (s->var.pwd == 0 && s->mass3d[0][1][0] != '-')
+		if (s->var.pwd == 0) //&& s->mass3d[0][1][0] != '-'
 			mini_oldpwd(s);
 		else
 			empty_olpwd(s);

@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 14:55:26 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/16 13:43:41 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/17 18:57:22 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ int					check_end(char *s)
 
 int					get_next_line(char **line)
 {
-	char			*buf;
+	char			*buf = NULL;
 	int				byte_was_read;
-	static char		*remainder;
+	static char		*remainder = NULL;
 
 	byte_was_read = 1;
 	if (!(buf = (char *)malloc(sizeof(char) * 1)))
@@ -81,16 +81,14 @@ int					get_next_line(char **line)
 			{
 				write(1, "exit\n", 5);
 				return (0);
-				// exit(0);
 			}
 		}
 	}
-	// if (sigint == 1)
-	// {
-	// 	ft_memdel_1d(remainder);
-	// 	// write(1, "*\n", 2);
-	// 	ft_bzero(remainder, ft_strlen_1(remainder));
-	// }
+	if (sigint == 1)
+	{
+		ft_memdel_1d(remainder);
+		ft_bzero(remainder, ft_strlen_1(remainder));
+	}
 	free(buf);
 	*line = strdup_till_null(remainder);
 	remainder = find_null(remainder);

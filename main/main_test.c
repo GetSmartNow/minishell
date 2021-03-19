@@ -1,7 +1,44 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main_test.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/24 14:35:14 by ctycho            #+#    #+#             */
+/*   Updated: 2021/03/19 14:57:17 by mvernius         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
-static void		ft_init(t_mini *s)
+static void		ft_init_before_loop(t_mini *s, char *av)
 {
+	g_sig.exit_status = 0;
+	s->av = av;
+	s->var.pwd = 0;
+	s->exit = 0;
+	s->var.path = NULL;
+}
+
+static void		ft_init_in_loop(t_mini *s)
+{
+	int			i = 0;
+	int			j = 0;
+	while (s->mass3d[i])
+	{
+		j = 0;
+		while (s->mass3d[i][j])
+		{
+			s->mass3d[i][j] = NULL;
+			j++;
+		}
+		i++;
+	}
+	s->fdin = 0;
+	s->fdout = 0;
+	s->in_file = NULL;
+	s->from_file = NULL;
 	s->free_line = NULL;
 	s->env = NULL;
 	s->tmp = NULL;
@@ -174,25 +211,21 @@ int			main(int ac, char **av, char **env)
 	char	*line = NULL;
 	int		status = 1;
 	int		i = 0;
-	int		j = 0;
 	int 	res = 0;
 
-	s.av = av[0];
-	s.mass3d = (char ***)ft_calloc(sizeof(char **), 100);
-	s.var.pwd = 0;
-	s.exit = 0;
-	g_sig.exit_status = 0;
-	s.var.path = NULL;
+	ft_init_before_loop(&s, av[0]);
 	init_list(&s, env);
 	init_list_x(&s, env);
 	ft_shlvl(&s);
 	get_pwd(&s);
 	while (status && s.exit == 0)
 	{
+		s.mass3d = (char ***)ft_calloc(sizeof(char **), 50);
+		i = 0;
 		init_signal();
 		signal(SIGINT, &sig_int); // Register signal handler
 		signal(SIGQUIT, &sig_quit);
-		ft_init(&s);
+		ft_init_in_loop(&s);
 		ft_putstr_fd("\033[0;36m\033[1mminishell ▸ \033[0m", STDOUT);
 		status = get_next_line(&line);
 		char **sep_commands = ft_split_new(line, ';');
@@ -211,7 +244,7 @@ int			main(int ac, char **av, char **env)
 }
  */
 
-
+// ls | cat -e | grep m
 
 
 
