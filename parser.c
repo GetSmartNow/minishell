@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 16:49:51 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/19 00:29:02 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/19 17:16:49 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,13 +234,13 @@ char	*make_substitute(char *command, t_mass **head)
 			key = extract_key(command, ++i); //free
 
 			//DELETE SOMEDAY
-			printf("KEY: |%s|\n", key);
+			//printf("KEY: |%s|\n", key);
 			if (NULL != key)
 			{
 				tmp = find_value_in_export(key, head); //free
 				
 				//DELETE SOMEDAY
-				printf("TMP: |%s|\n", tmp);
+				//printf("TMP: |%s|\n", tmp);
 				i += ft_strlen_modif(key);
 				if (NULL != tmp && ft_strcmp(tmp, ""))
 					res = ft_concat(res, tmp);
@@ -269,6 +269,6 @@ char	*make_substitute(char *command, t_mass **head)
 	if (res == NULL)
 		res = ft_strdup("");
 	//DELETE SOMEDAY
-	printf("RES: |%s|\n", res);
+	//printf("RES: |%s|\n", res);
 	return (res);
 }

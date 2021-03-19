@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 11:36:22 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/19 14:57:34 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/19 17:17:47 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,8 +202,8 @@ int					exec_bin(t_mini *s, char **arr, char *exec)
 		// we need to use waitpid instead of wait
 		wait(NULL);
 	}
-	if (res)
-		ft_memdel_1d(s->var.bin);
+	//if (res)
+		//ft_memdel_1d(s->var.bin);
 	bin_error(s, exec, res);
 	return (0);
 }

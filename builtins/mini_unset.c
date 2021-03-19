@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:57:51 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/08 19:20:28 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/19 17:17:03 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void				mini_unset(t_mini *s)
 
 	while (s->mass3d[0][i])
 	{
-		printf("1|%s|\n", s->mass3d[0][i]);
+		//printf("1|%s|\n", s->mass3d[0][i]);
 		count = 0;
 		if (ft_strncmp("PWD", s->mass3d[0][i], ft_strlen("PWD")) == 0)
 			s->var.pwd = 1;

@@ -74,7 +74,7 @@ static int		len_cur_word(char const *s, char sep)
 		else if (*s == sep && flag == 0)
 			return (length);
 	}
-	printf("LENGTH: |%d|\n", length);
+	//printf("LENGTH: |%d|\n", length);
 	return (length);
 }
 
@@ -123,7 +123,7 @@ static size_t	count_words(char const *s, char sep)
 			i++;
 		}
 	}
-	printf("COUNT: |%d|\n", count);
+	//printf("COUNT: |%d|\n", count);
 	return (count);
 }
 
@@ -147,14 +147,17 @@ static size_t	create_str(const char *s, char c, char **arr, size_t *iter)
 		else
 		{
 			len_word = len_cur_word(s, c);
-			arr[*iter] = (char *)malloc(len_word + 1);
-			if (NULL == arr[*iter])
-				return (1);
-			i = 0;
-			while (i < len_word && *s)
-				arr[*iter][i++] = *s++;
-			arr[(*iter)++][i] = '\0';
-			printf("FROM SPLIT: |%s|\n", arr[*iter - 1]);
+			arr[*iter] = ft_substr(s, 0, len_word);
+			s += len_word;
+			*iter += 1;
+			//arr[*iter] = (char *)malloc(len_word + 1);
+			//if (NULL == arr[*iter])
+			//	return (1);
+			//i = 0;
+			//while (i < len_word && *s)
+			//	arr[*iter][i++] = *s++;
+			//arr[(*iter)++][i] = '\0';
+			//printf("FROM SPLIT: |%s|\n", arr[*iter - 1]);
 		}
 	}
 	return (0);

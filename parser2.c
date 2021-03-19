@@ -133,6 +133,7 @@ void	define_fd_out(t_mini *s, char *line)
 		{
 			len = 0;
 			file_name = find_file_name(line + iter, position, &len); //free
+			s->in_file = ft_strdup(file_name); //free
 			fd_type = detect_type(line + iter, position);
 			if (fd_type == 2)
 				s->fdout = open(file_name, O_CREAT | O_WRONLY | O_APPEND, S_IRWXU); //add check if opened and close previous
@@ -166,6 +167,7 @@ void	define_fd_in(t_mini *s, char *line)
 		{
 			len = 0;
 			file_name = find_file_name(line + iter, position, &len);
+			s->from_file = ft_strdup(file_name); //free
 			fd = open(file_name, O_RDONLY);
 			if (fd < 0)
 				printf("input file error\n");
@@ -241,15 +243,16 @@ void	ft_parser(t_mini *s, char *line, char **env)
 	int		iter_elems;
 	char	*tmp;
 
-	iter_commands = 0;
 
 	//ДРОБИМ НА КОМАНДЫ
 	s->commands = ft_split_new(line, ';');
+	iter_commands = 0;
 	while ((s->commands)[iter_commands])
 	{
 		//ДРОБИМ НА ПАЙПЫ, СЧИТАЕМ ПАЙПЫ, ВЫДЕЛЯЕМ ПОД КОЛИЧЕСТВО ПАЙПОВ ПАМЯТЬ В МАС3Д
 		s->pipes = ft_split_new((s->commands)[iter_commands], '|');
 		s->pipe.count_pipe = ft_arrlen(s->pipes) - 1;
+		s->pipe.count_commands = s->pipe.count_pipe + 1;
 		s->mass3d = (char ***)malloc((s->pipe.count_pipe + 1) * sizeof(char **)); //free
 		iter_pipes = 0;
 		while ((s->pipes)[iter_pipes])
@@ -269,20 +272,24 @@ void	ft_parser(t_mini *s, char *line, char **env)
 			{
 				tmp = (s->command_elems)[iter_elems];
 				(s->command_elems)[iter_elems] = make_substitute((s->command_elems)[iter_elems], &(s->head)); 
-				iter_elems++;
 				free(tmp);
 				tmp = NULL;
+				iter_elems++;
 			}
 
 			//ЗАКИДЫВАЮ В MASS3D И НАЧИНАЕМ КВН
 			(s->mass3d)[iter_pipes] = s->command_elems; //free
-			if (ft_strlen_modif((s->pipes)[iter_pipes]) > 0)
-			{
-				sort_ft(s, env);
-			}
+			//if (ft_strlen_modif((s->pipes)[iter_pipes]) > 0)
+			//{
+			//	sort_ft(s, env);
+			//}
 			iter_pipes++;
+		}
+		if (ft_strlen_modif((s->commands)[iter_commands]) > 0)
+		{
+			sort_ft(s, env);
 		}
 		iter_commands++;
 	}
-	ft_memdel_1d(line); // всё еще сегает
+	//ft_memdel_1d(line); // всё еще сегает
 }

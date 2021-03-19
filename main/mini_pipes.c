@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:05:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/17 17:05:07 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/19 17:00:45 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,12 @@ static int		mini_bin1(t_mini *s, int i)
 
 int					mini_pipes(t_mini *s) //ps -a | cat -e | cat -e
 {
-	int		i = 0;
+	//int		i = 0;
 	int		res;
+	int		j;
 
 	init_pipes(s);
-	for(i = 0; i < s->pipe.count_commands; i++) // ls | cat -e | cat -e
+	for(int i = 0; i < s->pipe.count_commands; i++) // ls | cat -e | cat -e
 	{
 		res = mini_bin1(s, i);
 		g_sig.pid = fork();
@@ -121,13 +122,13 @@ int					mini_pipes(t_mini *s) //ps -a | cat -e | cat -e
 		if (res)
 			ft_memdel_1d(s->var.bin);
 	}
-	i = -1;
-	while (++i < s->pipe.count_pipe)
+	j = -1;
+	while (++j < s->pipe.count_pipe)
 	{
-		close(s->pipe.fd[i][0]);
-		close(s->pipe.fd[i][1]);
+		close(s->pipe.fd[j][0]);
+		close(s->pipe.fd[j][1]);
 	}
-	for (i = 0; i < s->pipe.count_commands; i++)
+	for (int i = 0; i < s->pipe.count_commands; i++)
 		wait(NULL);
 	return (0);
 }

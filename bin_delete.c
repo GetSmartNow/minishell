@@ -128,7 +128,7 @@ int		mini_bin(t_mini *s)
 
 
 	res = mini_bin1(s, 0);
-	printf("|%s|\n", s->var.bin);
+	//printf("|%s|\n", s->var.bin);
 	pid = fork();
 	if (pid < 0)
 	{
