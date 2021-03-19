@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   mini_unset.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:57:51 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/06 21:10:30 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/19 17:17:03 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void				mini_unset(t_mini *s)
 {
@@ -24,7 +24,7 @@ void				mini_unset(t_mini *s)
 
 	while (s->mass3d[0][i])
 	{
-		printf("1|%s|\n", s->mass3d[0][i]);
+		//printf("1|%s|\n", s->mass3d[0][i]);
 		count = 0;
 		if (ft_strncmp("PWD", s->mass3d[0][i], ft_strlen("PWD")) == 0)
 			s->var.pwd = 1;

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   mini_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/21 21:13:20 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/16 16:00:10 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/17 15:08:33 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int					length_to_equal(t_mini *s, char *line)
 {

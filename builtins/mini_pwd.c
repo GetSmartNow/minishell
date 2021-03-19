@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   mini_pwd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 18:46:08 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/06 22:06:57 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/19 18:34:56 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void				mini_pwd_1(t_mini *s)
 {
@@ -52,7 +52,7 @@ void				mini_pwd(t_mini	*s)
 	s1 = NULL;
 	s1 = malloc(1000);
 	getcwd(s1, 100);
-	write(1, s1, ft_strlen(s1));
-	write(1, "\n", 1);
+	write(s->fdout, s1, ft_strlen(s1));
+	write(s->fdout, "\n", 1);
 	ft_memdel_1d(s1);
 }

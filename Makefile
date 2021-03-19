@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+         #
+#    By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/09 17:56:31 by ctycho            #+#    #+#              #
-#    Updated: 2021/03/14 13:57:11 by ctycho           ###   ########.fr        #
+#    Updated: 2021/03/19 18:28:20 by mvernius         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ SRCS	:=	$(addprefix ${MAIN_D}, main_test.c bin.c mini_pipes.c signal.c) \
 			$(addprefix ${TOOL}, libft_utils.c ft_error.c mini_utils.c) \
 			$(addprefix $(ENV), ft_shlvl.c ft_pwd.c) \
 			$(addprefix ${BUILT}, mini_cd.c mini_echo.c mini_env.c mini_exit.c \
-			mini_export.c mini_pwd.c mini_unset.c)
+			mini_export.c mini_pwd.c mini_unset.c) parser.c new_split.c parser2.c
 
 #colors----------------------------------------------------------------------
 
@@ -57,8 +57,7 @@ ${NAME}: $(SRCS) $(INC)
 	@$(CC) -o $(NAME) $(SRCS) $(LIB_D)libft.a $(FLAG)
 	@echo "${CYAN}Library "${NAME}" succesfully compiled"
 
-clean:		
-	@rm -f ${NAME}
+clean:	
 	@make clean -C $(LIB_D)
 	@echo "${LGREEN}Everything is cleaned succesfully"
 
@@ -66,6 +65,7 @@ fclean:
 	@rm -f ${NAME}
 	@make fclean -C $(LIB_D)
 	@echo "${LGREEN}Everything is cleaned succesfully"
+	@cd $(LIB_D) && make fclean
 
 re:			fclean all
 	@echo "${LBLUE}Library successfuly rebuilt"

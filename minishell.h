@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/18 17:58:33 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/19 18:38:59 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ typedef struct		s_mini
 	t_env			var;
 	char			*in_file;
 	char			*from_file;
-	int				fdin;
-	int				fdout;
+	//int				fdin;
+	//int				fdout;
 	char			*av;
 	char			***mass3d;
 	char			**env;
@@ -81,6 +81,15 @@ typedef struct		s_mini
 	int				ret;
 	int				exit;
 	char			*free_line;
+	
+	
+	
+	int				fdout;
+	int				fdin;
+	char 			**command_elems;
+	char 			**pipes;
+	char 			**commands;
+
 }					t_mini;
 
 t_sig	g_sig;
@@ -90,7 +99,7 @@ int					mini_bin(t_mini *s);
 void				mini_cd(t_mini *s, char *exec, char *arg);
 void				mini_pwd(t_mini	*s);
 void				mini_pwd_1(t_mini *s);
-void				mini_echo(char **str);
+void				mini_echo(char **str, t_mini *s);
 int					mini_exit(t_mini *s, char *exec, char *arg);
 void				mini_env(t_mini *s);
 void				mini_export(t_mini *s);
@@ -115,4 +124,18 @@ void				my_lstadd_back(t_mass **lst, t_mass *new);
 void				my_lstdelone(t_mass *lst, void (*del)(void *));
 t_mass				*deletelem(t_mass *lst);
 void				ft_list_sort(t_mass **lst);
+
+
+//________________PARSER
+void				ft_parser(t_mini *s, char *line, char **env);
+char 				*make_substitute(char *sep_commands, t_mass **head);
+char				**ft_split_new(char const *s, char c);
+int					ft_strlen_modif(const char *str);
+void				sort_ft(t_mini *s, char **env1);
+int					ft_isspace(char c);
+char				*ft_strnjoin_char(char *s1, char c, int quantity);
+char				*find_file_name(char *line, int position, int *len);
+int					find_redir(char *str, char c);
+void				define_fd_in(t_mini *s, char *line);
+void				define_fd_out(t_mini *s, char *line);
 #endif
