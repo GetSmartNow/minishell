@@ -345,7 +345,7 @@ void	ft_parser(t_mini *s, char *line, char **env)
 		s->array_fdout = (int *)malloc(ft_arrlen(s->pipes) * sizeof(int));
 		
 		//Сортировка пайпов
-		//ft_sort_pipes(s);
+		ft_sort_pipes(s);
 
 		//цикл по коммандам с пайпов
 		iter_pipes = 0;
@@ -353,12 +353,12 @@ void	ft_parser(t_mini *s, char *line, char **env)
 		{
 			//---Перенес в сортировку ft_sort_pipes
 			//ОПРЕДЕЛЯЕМ FD IN & OUT
-			define_fd_out(s, (s->pipes)[iter_pipes]);
-			(s->array_fdout)[iter_pipes] = s->fdout;
-			printf("%d\n", (s->array_fdout)[iter_pipes]);
-			define_fd_in(s, (s->pipes)[iter_pipes]);
-			(s->array_fdin)[iter_pipes] = s->fdin;
-			printf("%d\n", (s->array_fdin)[iter_pipes]);
+			//define_fd_out(s, (s->pipes)[iter_pipes]);
+			//(s->array_fdout)[iter_pipes] = s->fdout;
+			//printf("%d\n", (s->array_fdout)[iter_pipes]);
+			//define_fd_in(s, (s->pipes)[iter_pipes]);
+			//(s->array_fdin)[iter_pipes] = s->fdin;
+			//printf("%d\n", (s->array_fdin)[iter_pipes]);
 
 			//ИЗВЛЕЧЕНИЕ СТРОКИ БЕЗ РЕДИРЕКТОВ
 			s->pipes[iter_pipes] = extract_command(s->pipes[iter_pipes], '>'); //free можно внутри extract сделать
@@ -375,11 +375,11 @@ void	ft_parser(t_mini *s, char *line, char **env)
 				tmp = NULL;
 				iter_elems++;
 			}
-
 			//ЗАКИДЫВАЮ В MASS3D И НАЧИНАЕМ КВН
 			(s->mass3d)[iter_pipes] = s->command_elems; //free
 			iter_pipes++;
 		}
+		//ft_memdel_2d((void **)s->pipes);
 
 		
 
@@ -389,5 +389,6 @@ void	ft_parser(t_mini *s, char *line, char **env)
 		}
 		iter_commands++;
 	}
+	//ft_memdel_2d((void **)s->commands);
 	//ft_memdel_1d(line); // всё еще сегает
 }
