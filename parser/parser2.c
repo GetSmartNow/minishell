@@ -12,7 +12,7 @@ int	ft_arrlen(char **matrix)
 	return (i);
 }
 //UTILS
-int		detect_type(char *str, int position)
+int		detect_out_redirect_type(char *str, int position)
 {
 	int	out;
 
@@ -119,10 +119,27 @@ char	*find_file_name(char *line, int position, int *len)
 	return (ft_substr(line, start, counter));
 }
 
+
+int ft_fill_fd(t_mini *s, char *line, char *file_name, int position)
+{
+	int fd_type;
+
+	s->in_file = ft_strdup(file_name); //free
+	fd_type = detect_out_redirect_type(line, position);
+	if (s->fdout != -1)
+		close(s->fdout);
+	if (fd_type == 2)
+		s->fdout = open(file_name, O_CREAT | O_WRONLY | O_APPEND, S_IRWXU); //add check if opened and close previous
+	else if (fd_type == 1)
+		s->fdout = open(file_name, O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
+	if (s->fdout < 0)
+		printf("error in open (ft_fill_fd)\n");
+	return (fd_type);
+}
+
 void	define_fd_out(t_mini *s, char *line)
 {
 	int		position;
-	int		fd_type;
 	char	*file_name;
 	int		iter;
 	int		len;
@@ -136,13 +153,7 @@ void	define_fd_out(t_mini *s, char *line)
 		{
 			len = 0;
 			file_name = find_file_name(line + iter, position, &len); //free
-			s->in_file = ft_strdup(file_name); //free
-			fd_type = detect_type(line + iter, position);
-			if (fd_type == 2)
-				s->fdout = open(file_name, O_CREAT | O_WRONLY | O_APPEND, S_IRWXU); //add check if opened and close previous
-			else if (fd_type == 1)
-				s->fdout = open(file_name, O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
-			iter += position + fd_type;
+			iter += position + ft_fill_fd(s, line + iter, file_name, position);
 		}
 		else
 		{

@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/20 21:08:39 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/21 01:44:14 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,8 @@ typedef struct		s_mini
 	t_mass			*head;
 	t_mass			*head_x;
 	t_env			var;
-	char			*in_file;
-	char			*from_file;
-	//int				fdin;
-	//int				fdout;
+	char			*in_file;  // нужно или нет?
+	char			*from_file; // нужно или нет?
 	char			*av;
 	char			***mass3d;
 	char			**env;
