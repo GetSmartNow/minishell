@@ -141,4 +141,8 @@ void				define_fd_out(t_mini *s, char *line);
 void				ft_sort_pipes(t_mini *s);
 int					ft_arrlen(char **matrix);
 char				*extract_file_name(char *line, char redir);
+
+//parser/utils1
+int 				skip_symbol(const char *str, int *symbol_count, char symbol);
+int					is_quote(char symbol);
 #endif
