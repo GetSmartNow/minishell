@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 16:49:51 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/19 20:26:13 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/20 20:43:57 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,24 +174,20 @@ int		ft_isemptystr(char *str)
 	return (1);
 }
 
-char	*make_substitute(char *command, t_mass **head)
+char	*make_substitute(char *command, t_mass **head, int counter)
 {
 	int		i;
 	char	*res;
 	char	*tmp;
 	char	*key;
 	int		count_shield;
-	int		flag;
 
 	tmp = NULL;
 	res = NULL;
 	i = 0;
 	count_shield = 0;
-	flag = 0;
 	while (command[i])
 	{
-		if (command[i] == ' ')
-			flag = 1;
 		if (command[i] == '\\')
 		{
 			while (command[i] == '\\')
@@ -252,9 +248,9 @@ char	*make_substitute(char *command, t_mass **head)
 		}
 		else
 		{
-			if (!flag) //лишнее условие?
+			if (counter == 0)
 			{
-				res = ft_strnjoin_char(res, command[i], 1);
+				res = ft_strnjoin_char(res, ft_tolower(command[i]), 1);
 				i++;
 			}
 			else
@@ -269,6 +265,6 @@ char	*make_substitute(char *command, t_mass **head)
 	if (res == NULL)
 		res = ft_strdup("");
 	//DELETE SOMEDAY
-	//printf("RES: |%s|\n", res);
+	printf("RES: |%s|\n", res);
 	return (res);
 }

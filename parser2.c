@@ -281,7 +281,7 @@ void	ft_parser(t_mini *s, char *line, char **env)
 			while ((s->command_elems)[iter_elems])
 			{
 				tmp = (s->command_elems)[iter_elems];
-				(s->command_elems)[iter_elems] = make_substitute((s->command_elems)[iter_elems], &(s->head)); 
+				(s->command_elems)[iter_elems] = make_substitute((s->command_elems)[iter_elems], &(s->head), iter_elems); 
 				free(tmp);
 				tmp = NULL;
 				iter_elems++;
@@ -289,20 +289,8 @@ void	ft_parser(t_mini *s, char *line, char **env)
 
 			//ЗАКИДЫВАЮ В MASS3D И НАЧИНАЕМ КВН
 			(s->mass3d)[iter_pipes] = s->command_elems; //free
-			//if (ft_strlen_modif((s->pipes)[iter_pipes]) > 0)
-			//{
-			//	sort_ft(s, env);
-			//}
 			iter_pipes++;
 		}
-		// (s->array_fdout)[iter_pipes] = -1;
-		// (s->array_fdin)[iter_pipes] = -1;
-		// int j = 0;
-		// while (s->array_fdout[j])
-		// {
-		// 	printf("%d\n", s->array_fdout[j]);
-		// 	j++;
-		// }
 		if (ft_strlen_modif((s->commands)[iter_commands]) > 0)
 		{
 			sort_ft(s, env);

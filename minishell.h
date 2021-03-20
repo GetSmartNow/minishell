@@ -130,7 +130,7 @@ void				ft_list_sort(t_mass **lst);
 
 //________________PARSER
 void				ft_parser(t_mini *s, char *line, char **env);
-char 				*make_substitute(char *sep_commands, t_mass **head);
+char 				*make_substitute(char *sep_commands, t_mass **head, int counter);
 char				**ft_split_new(char const *s, char c);
 int					ft_strlen_modif(const char *str);
 void				sort_ft(t_mini *s, char **env1);
