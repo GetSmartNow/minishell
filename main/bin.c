@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 11:36:22 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/20 21:53:44 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/21 00:48:04 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,8 @@ int					exec_bin_1(t_mini *s, char *exec)
 		ft_memdel_1d(s->var.path);
 		return 0;
 	}
+	else if (exec == NULL) //dopiska
+		return -1;
 	else if (exec[0] == '.' && exec[1] == '/')
 	{
 		s->var.bin = exec;
@@ -139,7 +141,7 @@ int					exec_bin_1(t_mini *s, char *exec)
 
 void				bin_error(t_mini *s, char *exec, int res)
 {
-	if (res == 4 || res == 6 || res == 0)
+	if (res == 4 || res == 6 || res == 0 || res == -1) //dopiska
 	{
 		g_sig.exit_status = 0;
 		return ;

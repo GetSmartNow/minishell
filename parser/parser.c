@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 16:49:51 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/20 21:59:32 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/21 01:01:55 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,10 +205,12 @@ char	*make_substitute(char *command, t_mass **head, int counter)
 				i++;
 				count_shield = 0;
 			}
+			counter = -1;
 		}
 		else if (command[i] == '\"')
 		{
 			i++;
+			counter = -1;
 		}
 		else if (command[i] == '\'')
 		{
@@ -224,27 +226,37 @@ char	*make_substitute(char *command, t_mass **head, int counter)
 				res = ft_concat(res, tmp);
 				i += ft_strlen_modif(tmp);
 			}
+			counter = -1;
 		}
 		else if (command[i] == '$')
 		{
-			key = extract_key(command, ++i); //free
-
-			//DELETE SOMEDAY
-			//printf("KEY: |%s|\n", key);
-			if (NULL != key)
+			if (!ft_strcmp(command + i, "$?"))
 			{
-				tmp = find_value_in_export(key, head); //free
-				
-				//DELETE SOMEDAY
-				//printf("TMP: |%s|\n", tmp);
-				i += ft_strlen_modif(key);
-				if (NULL != tmp && ft_strcmp(tmp, ""))
-					res = ft_concat(res, tmp);
+				res = ft_concat(res, ft_strdup("$?"));
+				i += ft_strlen_modif("$?");
 			}
 			else
 			{
-				i++;
+				key = extract_key(command, ++i); //free
+
+				//DELETE SOMEDAY
+				//printf("KEY: |%s|\n", key);
+				if (NULL != key)
+				{
+					tmp = find_value_in_export(key, head); //free
+					
+					//DELETE SOMEDAY
+					//printf("TMP: |%s|\n", tmp);
+					i += ft_strlen_modif(key);
+					if (NULL != tmp && ft_strcmp(tmp, ""))
+						res = ft_concat(res, tmp);
+				}
+				else
+				{
+					i++;
+				}
 			}
+			counter = -1;
 		}
 		else
 		{
@@ -260,11 +272,16 @@ char	*make_substitute(char *command, t_mass **head, int counter)
 			}
 		}
 	}
-	if (res != NULL && ft_isemptystr(res))
-		res = ft_concat(res, ft_strdup(""));
-	if (res == NULL)
-		res = ft_strdup("");
+
+	//!!!!!
+	//в случае если ничего нет, верну null, добавил проверку на null в exec_bin
+
+
+	//if (res != NULL && ft_isemptystr(res))
+	//	res = ft_concat(res, ft_strdup(""));
+	//if (res == NULL)
+	//	res = ft_strdup("");
 	//DELETE SOMEDAY
-	//printf("RES: |%s|\n", res);
+	printf("RES: |%s|\n", res);
 	return (res);
 }

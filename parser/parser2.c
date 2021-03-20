@@ -42,6 +42,7 @@ int		find_redir(char *str, char c)
 	{
 		while (str[iter] && str[iter] == '\\')
 		{
+			shield_count++;
 			iter++;
 		}
 		if (str[iter] && (str[iter] == '\'' || str[iter] == '\"') && flag == 0)
@@ -81,74 +82,14 @@ int		find_redir(char *str, char c)
 					printf("error near >");
 				//else
 				//	iter -= check_flag;
+				return (position);
 			}
 		}
 		iter++;
 	}
 	return (position);
 }
-//int		find_redir(char *str, char c)
-//{
-//	int		iter;
-//	int		shield_count;
-//	int		flag;
-//	int		pos;
-//	int		flag2;
 
-//	flag2 = 0;
-//	shield_count = 0;
-//	iter = 0;
-//	pos = -1;
-//	while (str[iter])
-//	{
-//		if (str[iter] == '\\')
-//		{
-//			shield_count++;
-//			iter++;
-//			flag2 = 0;
-//		}
-//		else if (str[iter] != '\\' && str[iter] != c)
-//		{
-//			if ((str[iter] == '\'' || str[iter] == '\"') && shield_count % 2 == 1)
-//			{
-//				flag = 0;
-//				shield_count = 0;
-//			}
-//			else if ((str[iter] == '\'' || str[iter] == '\"') && shield_count % 2 != 1)
-//			{
-//				flag = 1;
-//				shield_count = 0;
-//			}
-//			iter++;
-//			if (str[iter] == c && (flag == 1 || shield_count % 2 == 1))
-//			{
-//				iter++;
-//			}
-//			flag2 = 0;
-//		}
-//		else if (str[iter] == c && shield_count % 2 == 1)
-//		{
-//			iter++;
-//			shield_count = 0;
-//			flag2 = 0;
-//		}
-//		else if (str[iter] == c)
-//		{
-//			pos = iter;
-//			while (str[iter] == c)
-//			{
-//				iter++;
-//				flag2++;
-//			}
-//			if (flag2 > 2 && c == '>')
-//				printf("error wrong symbol with %c\n", c);
-//			if (flag2 > 1 && c == '<')
-//				printf("error wrong symbol with %c\n", c);
-//			return (pos);
-//		}
-//	}
-//	return (pos);
-//}
 
 
 char	*find_file_name(char *line, int position, int *len)
