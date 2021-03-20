@@ -113,7 +113,7 @@ Nothing
 /Users/mvernius
 /Users/mvernius/Desktop/minishell_test
 
-29. echo $HOME > a1 | cat < a1 > a2 | echo >> a1 '$PWD'
+29. echo $HOME > a1 | cat <a1 > a2 | echo >> a1 '$PWD'
 и в a1 и в a2 будет лежать:
 /Users/mvernius
 $PWD

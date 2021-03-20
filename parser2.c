@@ -27,66 +27,128 @@ int		detect_type(char *str, int position)
 //СУПЕР ЕРЕСЬ, МБ МОЖНО СОКРАТИТЬ 
 int		find_redir(char *str, char c)
 {
-	int		iter;
-	int		shield_count;
-	int		flag;
-	int		pos;
-	int		flag2;
+	int	iter;
+	int	shield_count;
+	int	position;
+	int	flag;
+	int	check_flag;
 
-	flag2 = 0;
-	shield_count = 0;
+	check_flag = 0;
 	iter = 0;
-	pos = -1;
+	shield_count = 0;
+	position = -1;
+	flag = 0;
 	while (str[iter])
 	{
-		if (str[iter] == '\\')
+		while (str[iter] && str[iter] == '\\')
 		{
-			shield_count++;
 			iter++;
-			flag2 = 0;
 		}
-		else if (str[iter] != '\\' && str[iter] != c)
+		if (str[iter] && (str[iter] == '\'' || str[iter] == '\"') && flag == 0)
 		{
-			if ((str[iter] == '\'' || str[iter] == '\"') && shield_count % 2 == 1)
-			{
-				flag = 0;
-				shield_count = 0;
-			}
-			else if ((str[iter] == '\'' || str[iter] == '\"') && shield_count % 2 != 1)
+			if (shield_count % 2 == 0)
 			{
 				flag = 1;
-				shield_count = 0;
 			}
-			iter++;
-			if (str[iter] == c && (flag == 1 || shield_count % 2 == 1))
-			{
-				iter++;
-			}
-			flag2 = 0;
-		}
-		else if (str[iter] == c && shield_count % 2 == 1)
-		{
-			iter++;
 			shield_count = 0;
-			flag2 = 0;
+		}
+		else if (str[iter] && (str[iter] == '\'' || str[iter] == '\"') && flag == 1)
+		{
+			if (shield_count % 2 == 0)
+			{
+				flag = 0;
+			}
+			shield_count = 0;
 		}
 		else if (str[iter] == c)
 		{
-			pos = iter;
-			while (str[iter] == c)
+			if (shield_count % 2 == 1)
 			{
-				iter++;
-				flag2++;
+				flag = 1;
 			}
-			if (flag2 > 2 && c == '>')
-				printf("error wrong symbol with %c\n", c);
-			if (flag2 > 1 && c == '<')
-				printf("error wrong symbol with %c\n", c);
-			return (pos);
+			shield_count = 0;
+			if (flag == 0)
+			{
+				position = iter;
+				while (str[iter] && str[iter] == c)
+				{
+					iter++;
+					check_flag++;
+				}
+				if (c == '<' && check_flag > 1)
+					printf("error near <");
+				else if (c == '>' && check_flag > 2)
+					printf("error near >");
+				//else
+				//	iter -= check_flag;
+			}
 		}
+		iter++;
 	}
-	return (pos);
+	return (position);
 }
+//int		find_redir(char *str, char c)
+//{
+//	int		iter;
+//	int		shield_count;
+//	int		flag;
+//	int		pos;
+//	int		flag2;
+
+//	flag2 = 0;
+//	shield_count = 0;
+//	iter = 0;
+//	pos = -1;
+//	while (str[iter])
+//	{
+//		if (str[iter] == '\\')
+//		{
+//			shield_count++;
+//			iter++;
+//			flag2 = 0;
+//		}
+//		else if (str[iter] != '\\' && str[iter] != c)
+//		{
+//			if ((str[iter] == '\'' || str[iter] == '\"') && shield_count % 2 == 1)
+//			{
+//				flag = 0;
+//				shield_count = 0;
+//			}
+//			else if ((str[iter] == '\'' || str[iter] == '\"') && shield_count % 2 != 1)
+//			{
+//				flag = 1;
+//				shield_count = 0;
+//			}
+//			iter++;
+//			if (str[iter] == c && (flag == 1 || shield_count % 2 == 1))
+//			{
+//				iter++;
+//			}
+//			flag2 = 0;
+//		}
+//		else if (str[iter] == c && shield_count % 2 == 1)
+//		{
+//			iter++;
+//			shield_count = 0;
+//			flag2 = 0;
+//		}
+//		else if (str[iter] == c)
+//		{
+//			pos = iter;
+//			while (str[iter] == c)
+//			{
+//				iter++;
+//				flag2++;
+//			}
+//			if (flag2 > 2 && c == '>')
+//				printf("error wrong symbol with %c\n", c);
+//			if (flag2 > 1 && c == '<')
+//				printf("error wrong symbol with %c\n", c);
+//			return (pos);
+//		}
+//	}
+//	return (pos);
+//}
 
 
 char	*find_file_name(char *line, int position, int *len)
@@ -236,6 +298,29 @@ char	*extract_command(char *line, char redir)
 	return (res);
 }
 
+char	*extract_file_name(char *line, char redir)
+{
+	int		len;
+	int		iter;
+	int		position;
+	char	*file_name;
+
+	iter = 0;
+	position = 0;
+	file_name = NULL;
+	while (line[iter] && position >= 0)
+	{
+		position = find_redir(line + iter, redir);
+		if (position >= 0)
+		{
+			len = 0;
+			file_name = find_file_name(line + iter, position, &len);
+			iter += position + 1;
+		}
+	}
+	return (file_name);
+}
+
 void	ft_parser(t_mini *s, char *line, char **env)
 {
 	int		iter_commands;
@@ -258,11 +343,15 @@ void	ft_parser(t_mini *s, char *line, char **env)
 		s->mass3d = (char ***)malloc((s->pipe.count_pipe + 1) * sizeof(char **)); //free
 		s->array_fdin = (int *)malloc(ft_arrlen(s->pipes) * sizeof(int));
 		s->array_fdout = (int *)malloc(ft_arrlen(s->pipes) * sizeof(int));
+		
+		//Сортировка пайпов
+		//ft_sort_pipes(s);
 
 		//цикл по коммандам с пайпов
 		iter_pipes = 0;
 		while ((s->pipes)[iter_pipes])
 		{
+			//---Перенес в сортировку ft_sort_pipes
 			//ОПРЕДЕЛЯЕМ FD IN & OUT
 			define_fd_out(s, (s->pipes)[iter_pipes]);
 			(s->array_fdout)[iter_pipes] = s->fdout;
@@ -291,6 +380,9 @@ void	ft_parser(t_mini *s, char *line, char **env)
 			(s->mass3d)[iter_pipes] = s->command_elems; //free
 			iter_pipes++;
 		}
+
+		
+
 		if (ft_strlen_modif((s->commands)[iter_commands]) > 0)
 		{
 			sort_ft(s, env);

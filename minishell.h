@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/19 19:15:24 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/20 21:08:39 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,4 +140,7 @@ char				*find_file_name(char *line, int position, int *len);
 int					find_redir(char *str, char c);
 void				define_fd_in(t_mini *s, char *line);
 void				define_fd_out(t_mini *s, char *line);
+void				ft_sort_pipes(t_mini *s);
+int					ft_arrlen(char **matrix);
+char				*extract_file_name(char *line, char redir);
 #endif

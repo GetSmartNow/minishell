@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 16:49:51 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/20 20:43:57 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/20 21:59:32 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,6 +265,6 @@ char	*make_substitute(char *command, t_mass **head, int counter)
 	if (res == NULL)
 		res = ft_strdup("");
 	//DELETE SOMEDAY
-	printf("RES: |%s|\n", res);
+	//printf("RES: |%s|\n", res);
 	return (res);
 }
