@@ -21,15 +21,6 @@ static int		len_cur_word(char const *s, char sep)
 		}
 		if (*s && *s != sep)
 		{
-			//if (shield_count % 2 == 1)
-			//{
-			//	if (*s == '\'' || *s == '\"')
-			//	{
-			//		s++;
-			//		length++;
-			//		shield_count = 0;
-			//	}
-			//}
 			if (shield_count % 2 == 0)
 			{
 				if ((*s == '\'' || *s == '\"') && flag == 1)
@@ -47,24 +38,6 @@ static int		len_cur_word(char const *s, char sep)
 				shield_count = 0;
 			s++;
 			length++;
-			//if ((*s == '\'' || *s == '\"') && shield_count % 2 == 1)
-			//{
-			//	flag = 0;
-			//	shield_count = 0;
-			//}
-			//else if ((*s == '\'' || *s == '\"') && shield_count % 2 == 0)
-			//{
-			//	flag = 1;
-			//	shield_count = 0;
-			//}
-			//s++;
-			//length++;
-			//if (*s == sep && (flag == 1 || shield_count % 2 == 1))
-			//{
-			//	printf("SH COUNT: |%d|\n", shield_count);
-			//	s++;
-			//	length++;
-			//}
 		}
 		else if (*s == sep && shield_count % 2 == 1)
 		{
@@ -151,14 +124,18 @@ static size_t	create_str(const char *s, char c, char **arr, size_t *iter)
 			arr[*iter] = ft_substr(s, 0, len_word);
 			s += len_word;
 			*iter += 1;
-			//arr[*iter] = (char *)malloc(len_word + 1);
-			//if (NULL == arr[*iter])
-			//	return (1);
-			//i = 0;
-			//while (i < len_word && *s)
-			//	arr[*iter][i++] = *s++;
-			//arr[(*iter)++][i] = '\0';
-			//printf("FROM SPLIT: |%s|\n", arr[*iter - 1]);
+			if (NULL == arr[*iter])
+				return (1);
+			// len_word = len_cur_word(s, c);
+			// arr[*iter] = (char *)malloc(len_word + 1);
+			// if (NULL == arr[*iter])
+			// 	return (1);
+			// i = 0;
+			// while (i < len_word && *s)
+			// 	arr[*iter][i++] = *s++;
+			// arr[*iter][i] = '\0';
+			// *iter += 1;
+			// printf("FROM SPLIT: |%s|\n", arr[*iter - 1]);
 		}
 	}
 	return (0);
