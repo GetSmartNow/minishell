@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:35:14 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/19 19:27:35 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/19 20:13:43 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,8 +159,11 @@ int			main(int ac, char **av, char **env)
 		ft_init_in_loop(&s);
 		ft_putstr_fd("\033[0;36m\033[1mminishell ▸ \033[0m", STDOUT);
 		status = get_next_line(&line);
-		ft_parser(&s, line, env);
-		// ft_memdel_1d(line);  //сегается
+		if (status)
+		{
+			ft_parser(&s, line, env);
+			ft_memdel_1d(line);
+		}
 	}
 	return (g_sig.exit_status);
 }

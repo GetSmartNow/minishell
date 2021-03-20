@@ -266,10 +266,10 @@ void	ft_parser(t_mini *s, char *line, char **env)
 			//ОПРЕДЕЛЯЕМ FD IN & OUT
 			define_fd_out(s, (s->pipes)[iter_pipes]);
 			(s->array_fdout)[iter_pipes] = s->fdout;
-			printf("%d\n", (s->array_fdout)[iter_pipes]);
+			// printf("%d\n", (s->array_fdout)[iter_pipes]);
 			define_fd_in(s, (s->pipes)[iter_pipes]);
 			(s->array_fdin)[iter_pipes] = s->fdin;
-			printf("%d\n", (s->array_fdin)[iter_pipes]);
+			// printf("%d\n", (s->array_fdin)[iter_pipes]);
 
 			//ИЗВЛЕЧЕНИЕ СТРОКИ БЕЗ РЕДИРЕКТОВ
 			s->pipes[iter_pipes] = extract_command(s->pipes[iter_pipes], '>'); //free можно внутри extract сделать
@@ -280,10 +280,13 @@ void	ft_parser(t_mini *s, char *line, char **env)
 			iter_elems = 0;
 			while ((s->command_elems)[iter_elems])
 			{
+				// printf("line |%s|\n", s->command_elems[iter_elems]);
 				tmp = (s->command_elems)[iter_elems];
+				// printf("tmp |%s|\n", tmp);
 				(s->command_elems)[iter_elems] = make_substitute((s->command_elems)[iter_elems], &(s->head)); 
-				free(tmp);
-				tmp = NULL;
+				// ft_memdel_1d(tmp);
+				// free(tmp);
+				// tmp = NULL;
 				iter_elems++;
 			}
 

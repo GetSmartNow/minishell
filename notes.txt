@@ -87,14 +87,14 @@ bash: \\\\/Users/mvernius: No such file or directory
 21. empty string (OK)
 Nothing
 
-22. echo > a1 > a2 > a3 HeLlO (ERROR: вывод в STDOUT)
+22. echo > a1 > a2 > a3 HeLlO (ERROR: вывод в STDOUT)   OK
 создаст три файла
 запишет HeLlO в а3
 
-23. echo 123 > a1 > a2 >> a3
+23. echo 123 > a1 > a2 >> a3    OK
 будет дополнять а3
 
-24. echo 1ABCD > a1 | cat a1 | grep 1 < a3
+24. echo 1ABCD > a1 | cat a1 | grep 1 < a3   OK
 запишет 1ABCD  в а1
 выведет пересечения по 1 из а3
 

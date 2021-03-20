@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:05:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/19 19:25:31 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/19 19:43:16 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,17 +89,19 @@ int					mini_pipes(t_mini *s) //ps -a | cat -e | cat -e
 	init_pipes(s);
 	for(int i = 0; i < s->pipe.count_commands; i++) // ls | cat -e | cat -e
 	{
+		printf("fdout: %d\n", s->array_fdout[i]);
+		printf("fdin: %d\n", s->array_fdin[i]);
 		res = mini_bin1(s, i);
 		g_sig.pid = fork();
 		if (g_sig.pid == 0)
 		{
 			if (i == 0) // first
 			{
-				// if (s->from_file[i])
-				// 	dup2(s->fdin[i], STDIN);
-				// if (s->in_file)
-				// 	dup2(s->fdout[i], STDOUT);
-				// else
+				if (s->array_fdin[i])
+					dup2(s->array_fdin[i], STDIN);
+				if (s->array_fdout[i] > 1)
+					dup2(s->array_fdout[i], STDOUT);
+				else
 					dup2(s->pipe.fd[i][1], STDOUT);
 				for (int k = 0; k < s->pipe.count_pipe; k++)
 				{
@@ -110,13 +112,13 @@ int					mini_pipes(t_mini *s) //ps -a | cat -e | cat -e
 			}
 			else
 			{
-				// if (s->from_file[i])
-				// 	dup2(s->fdin[i], STDIN);
-				// else
+				if (s->array_fdin[i])
+					dup2(s->array_fdin[i], STDIN);
+				else
 					dup2(s->pipe.fd[i - 1][0], STDIN);
-				// if (s->in_file)
-				// 	dup2(s->fdout[i], STDOUT);
-				/*else*/ if (i + 1 != s->pipe.count_commands)
+				if (s->array_fdout[i] > 1)
+					dup2(s->array_fdout[i], STDOUT);
+				else if (i + 1 != s->pipe.count_commands)
 					dup2(s->pipe.fd[i][1], STDOUT);
 				for (int k = 0; k < s->pipe.count_pipe; k++)
 				{
