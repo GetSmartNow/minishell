@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_cd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:32:58 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/17 16:01:16 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/20 06:31:55 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ static void			empty_olpwd(t_mini *s)
 		if (ft_strncmp(tmp->content, "OLDPWD=", ft_strlen("OLDPWD=")) == 0)
 		{
 			ft_memdel_1d(tmp->content);
-			// ft_bzero(tmp->content, ft_strlen(tmp->content));
 			tmp->content = ft_strdup("OLDPWD=");
 		}
 		tmp = tmp->next;
@@ -97,11 +96,24 @@ static void			empty_olpwd(t_mini *s)
 		if (ft_strncmp(tmp->content, "OLDPWD=", ft_strlen("OLDPWD=")) == 0)
 		{
 			ft_memdel_1d(tmp->content);
-			// ft_bzero(tmp->content, ft_strlen(tmp->content));
 			tmp->content = put_quotes("OLDPWD=");
 		}
 		tmp = tmp->next;
 	}
+}
+
+static int			mini_cd_minus_2(t_mini *s, char *arg, int res)
+{
+	if (s->var.oldpwd != NULL)
+	{
+		write(STDOUT, s->var.oldpwd, ft_strlen(s->var.oldpwd));
+		write(STDOUT, "\n", 1);
+		res = chdir(s->var.oldpwd);
+	}
+	else
+		res = chdir(arg);
+	ft_memdel_1d(s->var.oldpwd);
+	return (res);
 }
 
 static void			mini_cd_minus_1(t_mini *s)
@@ -151,15 +163,16 @@ static int			mini_cd_minus(t_mini *s, char *exec, char *arg)
 	}
 	if (res == 1)
 	{
-		if (s->var.oldpwd != NULL)
-		{
-			write(STDOUT, s->var.oldpwd, ft_strlen(s->var.oldpwd));
-			write(STDOUT, "\n", 1);
-			res = chdir(s->var.oldpwd);
-		}
-		else
-			res = chdir(arg);
-		ft_memdel_1d(s->var.oldpwd);
+		res = mini_cd_minus_2(s, arg, res);
+		// if (s->var.oldpwd != NULL)
+		// {
+		// 	write(STDOUT, s->var.oldpwd, ft_strlen(s->var.oldpwd));
+		// 	write(STDOUT, "\n", 1);
+		// 	res = chdir(s->var.oldpwd);
+		// }
+		// else
+		// 	res = chdir(arg);
+		// ft_memdel_1d(s->var.oldpwd);
 	}
 	return (res);
 }

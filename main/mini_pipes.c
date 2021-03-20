@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:05:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/19 19:43:16 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/20 05:08:33 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,15 @@ int					mini_pipes(t_mini *s) //ps -a | cat -e | cat -e
 			if (i == 0) // first
 			{
 				if (s->array_fdin[i])
+				{
 					dup2(s->array_fdin[i], STDIN);
+					close(s->array_fdin[i]);
+				}
 				if (s->array_fdout[i] > 1)
+				{
 					dup2(s->array_fdout[i], STDOUT);
+					close(s->array_fdout[i]);	
+				}
 				else
 					dup2(s->pipe.fd[i][1], STDOUT);
 				for (int k = 0; k < s->pipe.count_pipe; k++)
@@ -113,11 +119,17 @@ int					mini_pipes(t_mini *s) //ps -a | cat -e | cat -e
 			else
 			{
 				if (s->array_fdin[i])
+				{
 					dup2(s->array_fdin[i], STDIN);
+					close(s->array_fdin[i]);
+				}
 				else
 					dup2(s->pipe.fd[i - 1][0], STDIN);
 				if (s->array_fdout[i] > 1)
+				{
 					dup2(s->array_fdout[i], STDOUT);
+					close(s->array_fdout[i]);	
+				}
 				else if (i + 1 != s->pipe.count_commands)
 					dup2(s->pipe.fd[i][1], STDOUT);
 				for (int k = 0; k < s->pipe.count_pipe; k++)

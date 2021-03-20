@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 14:55:26 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/19 20:12:26 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/20 06:06:53 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,33 @@ int					check_end(char *s)
 	return (0);
 }
 
+int					caught_signal(char *remainder, int byte_was_read)
+{
+	if (byte_was_read == 0)
+	{
+		write(1, "  \b\b", 4);
+		if (ft_strlen_1(remainder) != 0)
+			byte_was_read = 1;
+		else
+			write(1, "exit\n", 5);
+	}
+	return (byte_was_read);
+}
+
+void				caught_signal_1(char *remainder)
+{
+	if (sigint == 1)
+	{
+		ft_memdel_1d(remainder);
+		ft_bzero(remainder, ft_strlen_1(remainder));
+	}
+}
+
 int					get_next_line(char **line)
 {
-	char			*buf = NULL;
+	char			*buf;
 	int				byte_was_read;
-	static char		*remainder = NULL;
+	static char		*remainder;
 
 	byte_was_read = 1;
 	if (!(buf = (char *)malloc(sizeof(char) * 1)))
@@ -70,25 +92,11 @@ int					get_next_line(char **line)
 		}
 		buf[byte_was_read] = '\0';
 		remainder = ft_join_str(remainder, buf);
+		byte_was_read = caught_signal(remainder, byte_was_read);
 		if (byte_was_read == 0)
-		{
-			write(1, "  \b\b", 4);
-			if (ft_strlen_1(remainder) != 0)
-			{
-				byte_was_read = 1;
-			}
-			else
-			{
-				write(1, "exit\n", 5);
-				return (0);
-			}
-		}
+			return (0);
 	}
-	if (sigint == 1)
-	{
-		ft_memdel_1d(remainder);
-		ft_bzero(remainder, ft_strlen_1(remainder));
-	}
+	caught_signal_1(remainder);
 	free(buf);
 	*line = strdup_till_null(remainder);
 	remainder = find_null(remainder);

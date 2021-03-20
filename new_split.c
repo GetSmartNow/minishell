@@ -1,5 +1,6 @@
-#include "libft/include/libft.h"
-#include <stdio.h>
+// #include "libft/include/libft.h"
+// #include <stdio.h>
+#include "minishell.h"
 
 static int		len_cur_word(char const *s, char sep)
 {
@@ -167,10 +168,12 @@ char			**ft_split_new(char const *s, char c)
 {
 	char	**arr;
 	size_t	iter;
+	int		length;
 
 	if (!s)
 		return (NULL);
 	iter = 0;
+	length = count_words(s, c);
 	arr = (char **)malloc((count_words(s, c) + 1) * sizeof(char *));
 	if (NULL == arr)
 		return (NULL);
@@ -180,16 +183,18 @@ char			**ft_split_new(char const *s, char c)
 	return (arr);
 }
 
-//int main(int argc, char *argv[])
-//{
-//	if (argc)
-//	{
-//		char **splited = ft_split_new(argv[1], '|');
-//		while (*splited)
-//		{
-//			printf("%s\n", *splited);
-//			splited++;
-//		}
-//		printf("%s\n", *splited);
-//	}
-//}
+// int main(int argc, char *argv[])
+// {
+// 	char *line = "ls | cat -e";
+// 	printf("line: %s\n", line);
+// 	if (argc)
+// 	{
+// 		char **splited = ft_split_new(line, '|');
+// 		while (*splited)
+// 		{
+// 			printf("%s\n", *splited);
+// 			splited++;
+// 		}
+// 		printf("%s\n", *splited);
+// 	}
+// }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctycho <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/06 15:49:30 by ctycho            #+#    #+#             */
-/*   Updated: 2020/11/11 17:42:16 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/20 06:18:24 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,21 +47,14 @@ static int	ft_count(char const *s, char c)
 	return (n);
 }
 
-char		**ft_split(char const *s, char c)
+char		**main_loop(char **arr, char *s, char c, int words)
 {
 	int		i;
 	int		j;
-	int		words;
 	int		start;
-	char	**arr;
 
 	i = 0;
 	j = -1;
-	if (s == 0)
-		return (0);
-	words = ft_count(s, c);
-	if (!(arr = malloc(sizeof(char *) * (words + 1))))
-		return (NULL);
 	while (++j < words)
 	{
 		while (s[i] && s[i] == c)
@@ -74,5 +67,19 @@ char		**ft_split(char const *s, char c)
 		i++;
 	}
 	arr[j] = NULL;
+	return (arr);
+}
+
+char		**ft_split(char const *s, char c)
+{
+	int		words;
+	char	**arr;
+
+	if (s == 0)
+		return (0);
+	words = ft_count(s, c);
+	if (!(arr = malloc(sizeof(char *) * (words + 1))))
+		return (NULL);
+	arr = main_loop(arr, s, c, words);
 	return (arr);
 }
