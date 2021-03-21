@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:35:14 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 14:59:35 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/21 15:01:01 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,37 +147,6 @@ int			main(int ac, char **av, char **env)
 	s.exit = 0;
 	g_sig.exit_status = 0;
 	s.var.path = NULL;
-	init_list(&s, env);
-	init_list_x(&s, env);
-	ft_shlvl(&s);
-	get_pwd(&s);
-	while (status && s.exit == 0)
-	{
-		init_signal();
-		signal(SIGINT, &sig_int); // Register signal handler
-		signal(SIGQUIT, &sig_quit);
-		ft_init_in_loop(&s);
-		ft_putstr_fd("\033[0;36m\033[1mminishell ▸ \033[0m", STDOUT);
-		status = get_next_line(&line);
-		if (status)
-		{
-			ft_parser(&s, line, env);
-			ft_memdel_1d(line);
-		}
-	}
-	return (g_sig.exit_status);
-}
-
-
-/* int			main(int ac, char **av, char **env)
-{
-	t_mini	s;
-	char	*line = NULL;
-	int		status = 1;
-	int		i = 0;
-	int 	res = 0;
-
-	ft_init_before_loop(&s, av[0]);
 	init_list(&s, env);
 	init_list_x(&s, env);
 	ft_shlvl(&s);

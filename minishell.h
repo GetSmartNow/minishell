@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 14:58:26 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/21 15:01:15 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,9 +140,6 @@ char				*find_file_name(char *line, int position, int *len);
 int					find_redir(char *str, char c);
 void				define_fd_in(t_mini *s, char *line);
 void				define_fd_out(t_mini *s, char *line);
-<<<<<<< HEAD
-
-=======
 void				ft_sort_pipes(t_mini *s);
 int					ft_arrlen(char **matrix);
 char				*extract_file_name(char *line, char redir);
@@ -150,5 +147,4 @@ char				*extract_file_name(char *line, char redir);
 //parser/utils1
 int 				skip_symbol(const char *str, int *symbol_count, char symbol);
 int					is_quote(char symbol);
->>>>>>> chingis
 #endif
