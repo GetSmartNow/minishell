@@ -35,7 +35,9 @@ int		find_redir(char *str, char c)
 			define_flag(shield_count, &flag);
 		else if (str[iter] == c)
 		{
-			define_flag(shield_count, &flag);
+			//define_flag(shield_count, &flag);
+			if (shield_count % 2 == 1)
+				flag = 1;
 			if (flag == 0)
 			{
 				position = iter;
