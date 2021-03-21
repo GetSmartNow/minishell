@@ -280,6 +280,7 @@ void	ft_parser(t_mini *s, char *line, char **env)
 		//проверка исполняемых файлов
 		if (ft_strlen_modif((s->commands)[iter_commands]) > 0)
 			sort_ft(s, env);
+		// else ()
 		iter_commands++;
 	}
 }

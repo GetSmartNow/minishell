@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 11:36:22 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 15:19:04 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/21 16:25:52 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,6 @@ int				absolute_path(t_mini *s, char *bin, char *exec)
 	return (s->var.count_bin);
 }
 
-char				**exec_bin_2(t_mini *s, char **bin, char *exec)
-{
-	// 
-	return (bin);
-}
-
 int					exec_bin_1(t_mini *s, char *exec)
 {
 	int			i = 0;
@@ -126,9 +120,8 @@ int					exec_bin_1(t_mini *s, char *exec)
 		s->var.count_bin = 1;
 	else
 		s->var.count_bin = 5;
-	while (bin[i]) //bin[i + 3]
-	{ //make it finish when command is found
-		// printf("%s\n", bin[i]);
+	while (bin[i])
+	{
 		if (s->var.count_bin == 1)
 			absolute_path(s, bin[i], exec);
 		else
@@ -182,12 +175,18 @@ int					exec_bin(t_mini *s, char **arr, char *exec)
 	}
 	else if (g_sig.pid == 0)
 	{
-		// printf("fdin: %d\n", s->fdin);
-		// printf("fdout: %d\n", s->fdout);
-		if (s->from_file)
-			dup2(s->fdin, STDIN);
-		if (s->in_file)
-			dup2(s->fdout, STDOUT);
+		printf("fdin: %d\n", s->array_fdin[0]);
+		printf("fdout: %d\n", s->fdout);
+		if (s->array_fdin[0])
+		{
+			dup2(s->array_fdin[0], STDIN);
+			close(s->array_fdin[0]);
+		}
+		if (s->array_fdout[0] > 1)
+		{
+			dup2(s->array_fdout[0], STDOUT);
+			close(s->array_fdout[0]);
+		}
 		execve(s->var.bin, arr, s->env);
 		exit (1);
 	}

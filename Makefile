@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+         #
+#    By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/09 17:56:31 by ctycho            #+#    #+#              #
-#    Updated: 2021/03/21 01:34:50 by mvernius         ###   ########.fr        #
+#    Updated: 2021/03/21 14:58:41 by ctycho           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,7 +55,7 @@ LBLUE	:=	\033[1;34m
 
 all:		$(NAME)
 	
-${NAME}: $(SRCS) $(INC)
+${NAME}: $(SRCS) $(INC) $(LIB_D)
 	@make -C $(LIB_D)
 	@$(CC) -o $(NAME) $(SRCS) $(LIB_D)libft.a $(FLAG)
 	@echo "${CYAN}Library "${NAME}" succesfully compiled"

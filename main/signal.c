@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 07:41:42 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/20 20:38:18 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/21 16:22:03 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void				exit_code(t_mini *s)
+{
+	char			*nbr;
+
+	nbr = ft_itoa(g_sig.exit_status);
+	write(1, "bash: ", 6);
+	write(1, nbr, ft_strlen(nbr));
+	write(1, ": command not found\n", 20);
+	ft_memdel_1d(nbr);
+	g_sig.exit_status = 127;
+}
 
 void				sig_int(int signum)
 {
