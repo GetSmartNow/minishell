@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 11:36:22 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/19 19:38:57 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/21 13:57:46 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,8 +191,8 @@ int					exec_bin(t_mini *s, char **arr, char *exec)
 	}
 	else
 		wait(NULL);
-	//if (res)
-		//ft_memdel_1d(s->var.bin);
+	if (res)
+		ft_memdel_1d(s->var.bin);
 	bin_error(s, exec, res);
 	return (0);
 }

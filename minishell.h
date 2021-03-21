@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/19 19:15:24 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/21 14:16:17 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ int					mini_bin(t_mini *s);
 void				mini_cd(t_mini *s, char *exec, char *arg);
 void				mini_pwd(t_mini	*s);
 void				mini_pwd_1(t_mini *s);
+void				mini_oldpwd(t_mini *s);
 void				mini_echo(char **str, t_mini *s);
 int					mini_exit(t_mini *s, char *exec, char *arg);
 void				mini_env(t_mini *s);
@@ -108,6 +109,7 @@ void				mini_export(t_mini *s);
 void				mini_unset(t_mini *s);
 int					mini_pipes(t_mini *s);
 
+/*ENV*/
 void				ft_shlvl(t_mini *s);
 void				get_pwd(t_mini	*s);
 
