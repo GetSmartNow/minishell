@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bin.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 11:36:22 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 16:25:52 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/21 20:18:56 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,18 +165,14 @@ int					exec_bin(t_mini *s, char **arr, char *exec)
 {
 	int				res = 0;
 	char			*bin = NULL;
+	int				status;
 
 	res = exec_bin_1(s, exec);
 	g_sig.pid = fork();
 	if (g_sig.pid < 0)
-	{
-		write(STDERR, "error\n", 6);
 		exit (127);
-	}
 	else if (g_sig.pid == 0)
 	{
-		printf("fdin: %d\n", s->array_fdin[0]);
-		printf("fdout: %d\n", s->fdout);
 		if (s->array_fdin[0])
 		{
 			dup2(s->array_fdin[0], STDIN);
@@ -191,7 +187,11 @@ int					exec_bin(t_mini *s, char **arr, char *exec)
 		exit (1);
 	}
 	else
-		wait(NULL);
+	{
+		waitpid(g_sig.pid, &status, 0);
+		printf("status: %d\n", status);
+	}
+		// wait(NULL);
 	if (res)
 		ft_memdel_1d(s->var.bin);
 	bin_error(s, exec, res);

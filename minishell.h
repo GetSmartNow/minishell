@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 20:34:30 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/21 21:06:01 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,12 @@ typedef struct		s_mini
 }					t_mini;
 
 t_sig	g_sig;
+
+/*INIT*/
+void				ft_init_before_loop(t_mini *s, char *av);
+void				ft_init_in_loop(t_mini *s);
+int					init_list(t_mini *s, char **env);
+int					init_list_x(t_mini *s, char **env);
 
 int					exec_bin(t_mini *s, char **arr, char *command);
 int					mini_bin(t_mini *s);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_exit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:44:29 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 18:37:03 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/21 19:05:31 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,11 @@ int				mini_exit(t_mini *s, char *exec, char *arg)
 {
 	int				res;
 
+	s->exit = 1;
 	write(1, exec, ft_strlen(exec));
 	write(1, "\n", 1);
-	if (ft_arrlen(s->mass3d[0]) > 2)
+	if (arg)
 	{
-		//printf("%d\n", (int)ft_strlen_1(s->mass3d[0][2]));
-		write(STDERR, "bash: exit: too many arguments\n", 31);
-	}
-	else if (arg)
-	{
-		s->exit = 1;
 		res = check_number(arg);
 		g_sig.exit_status = res;
 		if (res == 255)
@@ -59,6 +54,11 @@ int				mini_exit(t_mini *s, char *exec, char *arg)
 			write(STDERR, "bash: exit: ", 12);
 			write(STDERR, arg, ft_strlen(arg));
 			write(STDERR, ": numeric argument required\n", 28);
+		}
+		else if (ft_arrlen(s->mass3d[0]) > 2)
+		{
+			write(STDERR, "bash: exit: too many arguments\n", 31);
+			s->exit = 0;
 		}
 	}
 	return (res);
