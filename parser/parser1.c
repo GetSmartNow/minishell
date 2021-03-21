@@ -296,8 +296,8 @@ void	ft_parser(t_mini *s, char *line, char **env)
 		make_pipes(s);
 
 		//проверка исполняемых файлов
-		// if (ft_strlen_modif((s->commands)[iter_commands]) > 0)
-		// 	sort_ft(s, env);
+		if (ft_strlen_modif((s->commands)[iter_commands]) > 0)
+			sort_ft(s, env);
 
 		int i = -1;
 		while (++i < s->pipe.count_commands)

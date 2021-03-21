@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:05:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 16:36:25 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/21 23:26:28 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,8 +148,11 @@ int					mini_pipes(t_mini *s) //ps -a | cat -e | cat -e
 	{
 		close(s->pipe.fd[j][0]);
 		close(s->pipe.fd[j][1]);
+		free(s->pipe.fd[j]);
 	}
-	for (int i = 0; i < s->pipe.count_commands; i++)
-		wait(NULL);
+	free(s->pipe.fd);
+	s->pipe.fd = NULL;
+	// for (int i = 0; i < s->pipe.count_commands; i++)
+	// 	wait(NULL);
 	return (0);
 }
