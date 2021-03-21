@@ -65,6 +65,7 @@ int ft_fill_fd(t_mini *s, char *line, char *file_name, int position)
 		s->fdout = open(file_name, O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
 	if (s->fdout < 0)
 		printf("error in open (ft_fill_fd)\n");
+	printf("fd: %d\n", s->fdout);
 	return (fd_type);
 }
 
@@ -262,7 +263,6 @@ void make_pipes(t_mini *s)
 		//РАЗБИЕНИЕ И ЗАМЕНА ЭЛЕМЕНТОВ
 		make_command_elems(s, iter_pipes);
 		//ЗАКИДЫВАЮ В MASS3D И НАЧИНАЕМ КВН
-		//ft_memdel_2d((void **)s->mass3d[iter_pipes]);
 		(s->mass3d)[iter_pipes] = s->command_elems; //free
 		iter_pipes++;
 	}
@@ -285,7 +285,7 @@ void	ft_parser(t_mini *s, char *line, char **env)
 		s->pipe.count_commands = s->pipe.count_pipe + 1;
 
 		//выделение памяти под мас3д, массивы фдшников
-		s->mass3d = (char ***)malloc((s->pipe.count_pipe + 1) * sizeof(char **)); //free
+		s->mass3d = (char ***)malloc((s->pipe.count_commands + 1) * sizeof(char **)); //free
 		s->array_fdin = (int *)malloc(ft_arrlen(s->pipes) * sizeof(int));
 		s->array_fdout = (int *)malloc(ft_arrlen(s->pipes) * sizeof(int));
 		
@@ -298,17 +298,17 @@ void	ft_parser(t_mini *s, char *line, char **env)
 		//проверка исполняемых файлов
 		if (ft_strlen_modif((s->commands)[iter_commands]) > 0)
 			sort_ft(s, env);
-		ft_memdel_2d((void **)s->pipes);
-		ft_memdel_1d((void *)s->array_fdin);
-		ft_memdel_1d((void *)s->array_fdout);
 
 		int i = -1;
 		while (++i < s->pipe.count_commands)
 		{
 			ft_memdel_2d((void **)s->mass3d[i]);
 		}
-		//ft_memdel_3d((void ***)s->mass3d);
-		// else ()
+		ft_memdel_2d((void **)s->pipes);
+		ft_memdel_1d((void *)s->array_fdin);
+		ft_memdel_1d((void *)s->array_fdout);
+		free(s->mass3d);
+		s->mass3d = NULL;
 		iter_commands++;
 	}
 	ft_memdel_2d((void **)s->commands);

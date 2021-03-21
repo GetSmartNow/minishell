@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 16:49:51 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/21 16:26:49 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/21 22:24:42 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,6 +257,8 @@ char	*make_substitute(char *command, t_mass **head, int counter)
 					i += ft_strlen_modif(key);
 					if (NULL != tmp && ft_strcmp(tmp, ""))
 						res = ft_concat(res, tmp);
+					free(key);
+					key = NULL;
 				}
 				else
 				{

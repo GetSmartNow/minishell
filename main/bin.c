@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bin.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 11:36:22 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 20:18:56 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/21 21:35:43 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,10 +167,12 @@ int					exec_bin(t_mini *s, char **arr, char *exec)
 	char			*bin = NULL;
 	int				status;
 
+	printf("sdout: %d\n", s->array_fdout[0]);
+	printf("sdin: %d\n", s->array_fdin[0]);
 	res = exec_bin_1(s, exec);
 	g_sig.pid = fork();
 	if (g_sig.pid < 0)
-		exit (127);
+		exit (127);	
 	else if (g_sig.pid == 0)
 	{
 		if (s->array_fdin[0])

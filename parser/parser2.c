@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 20:57:27 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/21 20:51:09 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/21 21:33:03 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	create_fd(t_mini *s)
 		//ОПРЕДЕЛЯЕМ FD IN & OUT
 		define_fd_out(s, (s->pipes)[iter_pipes]);
 		(s->array_fdout)[iter_pipes] = s->fdout;
+		printf("fd1: %d\n", s->array_fdout[iter_pipes]);
 		//close(s->fdout);
 		//printf("%d\n", (s->array_fdout)[iter_pipes]);
 		define_fd_in(s, (s->pipes)[iter_pipes]);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_pipes.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:05:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 16:36:25 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/21 23:28:05 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ int					mini_pipes(t_mini *s) //ps -a | cat -e | cat -e
 		g_sig.pid = fork();
 		if (g_sig.pid == 0)
 		{
+			printf("fd2: %d\n", s->array_fdout[i]);
+			printf("sdin: %d\n", s->array_fdin[i]);
 			if (i == 0) // first
 			{
 				if (s->array_fdin[i])
@@ -148,8 +150,11 @@ int					mini_pipes(t_mini *s) //ps -a | cat -e | cat -e
 	{
 		close(s->pipe.fd[j][0]);
 		close(s->pipe.fd[j][1]);
+		free(s->pipe.fd[j]);
 	}
 	for (int i = 0; i < s->pipe.count_commands; i++)
 		wait(NULL);
+	free(s->pipe.fd);
+	s->pipe.fd = NULL;
 	return (0);
 }
