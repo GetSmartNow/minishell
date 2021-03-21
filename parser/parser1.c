@@ -274,72 +274,12 @@ void	ft_parser(t_mini *s, char *line, char **env)
 		//Сортировка пайпов, определение всех fd, заполнение массивов по fd
 		ft_sort_pipes(s);
 
-<<<<<<< HEAD:parser2.c
-		//цикл по коммандам с пайпов
-		iter_pipes = 0;
-		while ((s->pipes)[iter_pipes])
-		{
-			//ОПРЕДЕЛЯЕМ FD IN & OUT
-			define_fd_out(s, (s->pipes)[iter_pipes]);
-			(s->array_fdout)[iter_pipes] = s->fdout;
-			// printf("%d\n", (s->array_fdout)[iter_pipes]);
-			define_fd_in(s, (s->pipes)[iter_pipes]);
-			(s->array_fdin)[iter_pipes] = s->fdin;
-			// printf("%d\n", (s->array_fdin)[iter_pipes]);
-
-			//ИЗВЛЕЧЕНИЕ СТРОКИ БЕЗ РЕДИРЕКТОВ
-			s->pipes[iter_pipes] = extract_command(s->pipes[iter_pipes], '>'); //free можно внутри extract сделать
-			s->pipes[iter_pipes] = extract_command(s->pipes[iter_pipes], '<'); //free
-
-			//РАЗБИЕНИЕ И ЗАМЕНА ЭЛЕМЕНТОВ
-			s->command_elems = ft_split_new((s->pipes)[iter_pipes], ' '); 
-			iter_elems = 0;
-			while ((s->command_elems)[iter_elems])
-			{
-				// printf("line |%s|\n", s->command_elems[iter_elems]);
-				tmp = (s->command_elems)[iter_elems];
-				// printf("tmp |%s|\n", tmp);
-				(s->command_elems)[iter_elems] = make_substitute((s->command_elems)[iter_elems], &(s->head)); 
-				// ft_memdel_1d(tmp);
-				// free(tmp);
-				// tmp = NULL;
-				iter_elems++;
-			}
-
-			//ЗАКИДЫВАЮ В MASS3D И НАЧИНАЕМ КВН
-			(s->mass3d)[iter_pipes] = s->command_elems; //free
-			//if (ft_strlen_modif((s->pipes)[iter_pipes]) > 0)
-			//{
-			//	sort_ft(s, env);
-			//}
-			iter_pipes++;
-		}
-		ft_memdel_2d((void**)s->pipes);
-		// (s->array_fdout)[iter_pipes] = -1;
-		// (s->array_fdin)[iter_pipes] = -1;
-		// int j = 0;
-		// while (s->array_fdout[j])
-		// {
-		// 	printf("%d\n", s->array_fdout[j]);
-		// 	j++;
-		// }
-=======
 		//цикл по коммандам с пайпов, внутри разбиение по пробелам и замены
 		make_pipes(s);
 
 		//проверка исполняемых файлов
->>>>>>> chingis:parser/parser1.c
 		if (ft_strlen_modif((s->commands)[iter_commands]) > 0)
 			sort_ft(s, env);
-<<<<<<< HEAD:parser2.c
-		}
-		// ft_memdel_2d((void**)s->array_fdin); 
-		// ft_memdel_2d((void**)s->array_fdout);
 		iter_commands++;
 	}
-	ft_memdel_2d((void**)s->commands); // added
-=======
-		iter_commands++;
-	}
->>>>>>> chingis:parser/parser1.c
 }
