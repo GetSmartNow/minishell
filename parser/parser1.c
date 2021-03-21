@@ -296,17 +296,19 @@ void	ft_parser(t_mini *s, char *line, char **env)
 		make_pipes(s);
 
 		//проверка исполняемых файлов
-		if (ft_strlen_modif((s->commands)[iter_commands]) > 0)
-			sort_ft(s, env);
-		ft_memdel_2d((void **)s->pipes);
-		ft_memdel_1d((void *)s->array_fdin);
-		ft_memdel_1d((void *)s->array_fdout);
+		// if (ft_strlen_modif((s->commands)[iter_commands]) > 0)
+		// 	sort_ft(s, env);
 
 		int i = -1;
 		while (++i < s->pipe.count_commands)
 		{
 			ft_memdel_2d((void **)s->mass3d[i]);
 		}
+		ft_memdel_2d((void **)s->pipes);
+		ft_memdel_1d((void *)s->array_fdin);
+		ft_memdel_1d((void *)s->array_fdout);
+		free(s->mass3d);
+		s->mass3d = NULL;
 		//ft_memdel_3d((void ***)s->mass3d);
 		// else ()
 		iter_commands++;

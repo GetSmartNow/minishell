@@ -105,5 +105,5 @@ $PWD
 
 ls | exit | pwd
 
-
+ls > a1 | cat < A1 > A2 | echo hello > a1
 

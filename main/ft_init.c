@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/21 16:27:47 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 16:29:28 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/21 21:11:30 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ void			ft_init_in_loop(t_mini *s)
 {
 	s->fdin = 0;
 	s->fdout = 0;
-	s->in_file = NULL;
-	s->from_file = NULL;
 	s->free_line = NULL;
 	s->env = NULL;
 	s->tmp = NULL;
