@@ -1,69 +1,49 @@
  gcc -g libft/libft.a env/*.c builtins/*.c tools/*.c main/*.c *.h *.c
 
-1. Error: Export works improperly. Example: export test="many words here".
-	ENV -> test="many
-	EXP -> test=""many"
-	ORIGINAL BASH
-	ENV -> test=many words here
-	EXP -> test="many words here"
-2. Error: Export let's to create variable which start from num;
-3. echo "2.   ;  Gh". OUR: 2. ; Gh". ORIGINAL: 2.   ;  Gh
-4. Error: system message "no such file or dir" works when no quotes only. But also should work like in (4, 5) examples
-5. Pipe bug: echo "$HOME\\$home" | cat -e ---> DOES NOTHING.
-6. exit : malloc error. 
-7. $home: лишний текст ошибки. Когда пришла пустая строка, просто скип должен быть. 
-
-examle:
-ls \| cat -e
-
-
-
-
-
 		____________________PARSER______________________
 
 ORIGINAL BASH						
 1. "\$HOME" (OK)
-$HOME: command not found									|					
-															|
+$HOME: command not found														
+															
 2. "$HOME" (ERR DIF)
-/Users/mvernius: is a directory								|						
-															|
+/Users/mvernius: is a directory														
+															
 3. '$HOME' (OK)
-$HOME: command not found									|					
-															|
+$HOME: command not found														
+															
 4. \'$HOME\' (ERR DIF)
-'/Users/mvernius': NO such file or dir						|								
-															|
+'/Users/mvernius': NO such file or dir														
+															
 5. \"$HOME\" (ERR DIF)
-"/Users/mvernius": No such file or directory				|					
-															|
+"/Users/mvernius": No such file or directory									
+															
 6. echo $PWD\$HOME$1PWD (OK)
-/Users/mvernius/Desktop/minishell_test$HOMEPWD				|						
-															|
+/Users/mvernius/Desktop/minishell_test$HOMEPWD										
+															
 7. echo '\$PWD' (OK)
 \$PWD	
-															|
+															
 8. echo "$HOME\\$PWD" (OK)
-/Users/mvernius\/Users/mvernius/Desktop/minishell_test 		|							
-															|
+/Users/mvernius\/Users/mvernius/Desktop/minishell_test 									
+															
 9. echo "2.   ;  Gh" 
 2.   ;  Gh			
-															|
+															
 10. echo \"2.    ; ghs\" (OK)
-"2.															|								
-bash: ghs": command not found								|								
-															|
+"2.																						
+bash: ghs": command not found														
+															
 11. echo "2.    ; ghs\" (DIFF)
 открывает цитирование, пока ковычку не зак
-															|
+															
 12. echo 2.    \; ghs" (DIFF)
 точка с запятой экранируется, и открывается цит
-															|
+															
 13. echo 2.  \\; ghs (OK)
 2. \																			
-bash: ghs: command not found								|												
-															|
+bash: ghs: command not found																			
+															
 14. $1PWD (OK)
 /Users/mvernius/Desktop/minishell_test										
 
@@ -79,7 +59,7 @@ bash: 234PWD: command not found
 18. $1234PWD$HOME (ERR DIF)
 bash: 234PWD/Users/mvernius: No such file or directory									
 
-19. EcHo HeLlO (OK) (обработать по mass3d)
+19. EcHo HeLlO (OK)
 HeLlO
 
 20. \\\\\\\\$HOME (ERR DIF)
@@ -88,32 +68,40 @@ bash: \\\\/Users/mvernius: No such file or directory
 21. empty string (OK)
 Nothing
 
-22. echo > a1 > a2 > a3 HeLlO (ERROR: вывод в STDOUT)   OK
+22. echo > a1 > a2 > a3 HeLlO (OK)
 создаст три файла
 запишет HeLlO в а3
 
-23. echo 123 > a1 > a2 >> a3    OK
+23. echo 123 > a1 > a2 >> a3 (OK)
 будет дополнять а3
 
-24. echo 1ABCD > a1 | cat a1 | grep 1 < a3   OK
+24. echo 1ABCD > a1 | cat a1 | grep 1 < a3 (OK)
 запишет 1ABCD  в а1
 выведет пересечения по 1 из а3
 
-25. echo "1ABCD > a1 | cat a1 | grep 1 < a3"
+25. echo "1ABCD > a1 | cat a1 | grep 1 < a3" (OK)
 вывод: 1ABCD > a1 | cat a1 | grep 1 < a3
 
-26. echo '1ABCD > a1 | cat a1 | grep 1 < a3'
+26. echo '1ABCD > a1 | cat a1 | grep 1 < a3' (OK)
 вывод: 1ABCD > a1 | cat a1 | grep 1 < a3
 
-27. echo > a1 \> a2
+27. echo > a1 \> a2 (OK)
 запишет в а1 строку: > a2
 
-28. echo $HOME > a1 | cat < a1 > a2 | echo >> a1 $PWD
+28. echo $HOME > a1 | cat < a1 > a2 | echo >> a1 $PWD (OK)
 и в a1 и в a2 будет лежать:
 /Users/mvernius
 /Users/mvernius/Desktop/minishell_test
 
-29. echo $HOME > a1 | cat < a1 > a2 | echo >> a1 '$PWD'
+29. echo $HOME > a1 | cat <a1 > a2 | echo >> a1 '$PWD' (OK)
 и в a1 и в a2 будет лежать:
 /Users/mvernius
 $PWD
+
+ls | exit | pwd
+echo \> | cat -e
+echo '>'
+echo abs "<" 1.txt
+echo >> text.txt
+exit 111010101010101001010101010101010
+exit 110000000000000

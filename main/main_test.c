@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:35:14 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/20 06:04:35 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/21 14:59:35 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,19 +71,19 @@ void		sort_ft(t_mini *s, char **env1)
 		exit_code(s);
 	else if (s->pipe.count_pipe != 0) 
 		mini_pipes(s);
-	else if (ft_strcmp(s->mass3d[0][0], "ECHO") == 0 || ft_strcmp(s->mass3d[0][0], "echo") == 0)
+	else if (ft_strcmp(s->mass3d[0][0], "echo") == 0 || ft_strcmp(s->mass3d[0][0], "ECHO") == 0)
 		mini_echo(s->mass3d[0], s);
-	else if (ft_strcmp(s->mass3d[0][0], "PWD") == 0 || ft_strcmp(s->mass3d[0][0], "pwd") == 0) //|| ft_strcmp(s->mass3d[0][0], "PWD") == 0)
+	else if (ft_strcmp(s->mass3d[0][0], "pwd") == 0 || ft_strcmp(s->mass3d[0][0], "PWD") == 0)
 		mini_pwd(s);
-	else if (ft_strcmp(s->mass3d[0][0], "EXIT") == 0 || ft_strcmp(s->mass3d[0][0], "exit") == 0)
+	else if (ft_strcmp(s->mass3d[0][0], "exit") == 0 || ft_strcmp(s->mass3d[0][0], "EXIT") == 0)
 		mini_exit(s, s->mass3d[0][0], s->mass3d[0][1]);
-	else if (ft_strcmp(s->mass3d[0][0], "CD") == 0 || ft_strcmp(s->mass3d[0][0], "cd") == 0)
+	else if (ft_strcmp(s->mass3d[0][0], "cd") == 0 || ft_strcmp(s->mass3d[0][0], "CD") == 0)
 		mini_cd(s, s->mass3d[0][0], s->mass3d[0][1]);
-	else if (ft_strcmp(s->mass3d[0][0], "ENV") == 0 || ft_strcmp(s->mass3d[0][0], "env") == 0)
+	else if (ft_strcmp(s->mass3d[0][0], "env") == 0  || ft_strcmp(s->mass3d[0][0], "ENV") == 0)
 		mini_env(s);
-	else if (ft_strcmp(s->mass3d[0][0], "EXPORT") == 0 || ft_strcmp(s->mass3d[0][0], "export") == 0)
+	else if (ft_strcmp(s->mass3d[0][0], "export") == 0 || ft_strcmp(s->mass3d[0][0], "EXPORT") == 0)
 		mini_export(s);
-	else if (ft_strcmp(s->mass3d[0][0], "UNSET") == 0 || ft_strcmp(s->mass3d[0][0], "unset") == 0)
+	else if (ft_strcmp(s->mass3d[0][0], "unset") == 0 || ft_strcmp(s->mass3d[0][0], "UNSET") == 0)
 		mini_unset(s);
 	else
 		exec_bin(s, s->mass3d[0], s->mass3d[0][0]);
@@ -184,63 +184,17 @@ int			main(int ac, char **av, char **env)
 	get_pwd(&s);
 	while (status && s.exit == 0)
 	{
-		s.mass3d = (char ***)ft_calloc(sizeof(char **), 50);
-		i = 0;
 		init_signal();
 		signal(SIGINT, &sig_int); // Register signal handler
 		signal(SIGQUIT, &sig_quit);
 		ft_init_in_loop(&s);
 		ft_putstr_fd("\033[0;36m\033[1mminishell ▸ \033[0m", STDOUT);
 		status = get_next_line(&line);
-		char **sep_commands = ft_split_new(line, ';');
-		while (*sep_commands)
+		if (status)
 		{
-			printf("str: \"%s\"\n", *sep_commands);
-			*sep_commands = make_substitute(*sep_commands, &(s.head));
-			res = check_line(&s, *sep_commands);
-			if (res > 0)
-				sort_ft(&s, env);
-			sep_commands++;
+			ft_parser(&s, line, env);
+			ft_memdel_1d(line);
 		}
-		ft_memdel_1d(line);
 	}
 	return (g_sig.exit_status);
 }
- */
-
-// ls | cat -e | grep m
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

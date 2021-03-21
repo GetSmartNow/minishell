@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 14:56:15 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/21 14:58:26 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,8 @@ typedef struct		s_mini
 	t_mass			*head;
 	t_mass			*head_x;
 	t_env			var;
-	char			*in_file;
-	char			*from_file;
-	//int				fdin;
-	//int				fdout;
+	char			*in_file;  // нужно или нет?
+	char			*from_file; // нужно или нет?
 	char			*av;
 	char			***mass3d;
 	char			**env;
@@ -132,7 +130,7 @@ void				ft_list_sort(t_mass **lst);
 
 //________________PARSER
 void				ft_parser(t_mini *s, char *line, char **env);
-char 				*make_substitute(char *sep_commands, t_mass **head);
+char 				*make_substitute(char *sep_commands, t_mass **head, int counter);
 char				**ft_split_new(char const *s, char c);
 int					ft_strlen_modif(const char *str);
 void				sort_ft(t_mini *s, char **env1);
@@ -142,5 +140,15 @@ char				*find_file_name(char *line, int position, int *len);
 int					find_redir(char *str, char c);
 void				define_fd_in(t_mini *s, char *line);
 void				define_fd_out(t_mini *s, char *line);
+<<<<<<< HEAD
 
+=======
+void				ft_sort_pipes(t_mini *s);
+int					ft_arrlen(char **matrix);
+char				*extract_file_name(char *line, char redir);
+
+//parser/utils1
+int 				skip_symbol(const char *str, int *symbol_count, char symbol);
+int					is_quote(char symbol);
+>>>>>>> chingis
 #endif
