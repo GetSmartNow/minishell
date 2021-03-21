@@ -31,19 +31,19 @@ char	*find_file_name(char *line, int position, int *len)
 
 	counter = 0;
 
-	while (!ft_isalnum(line[position])) //возможно другой скип нужен, только пробелов
+	while (line[position] && !ft_isalnum(line[position])) //возможно другой скип нужен, только пробелов
 	{
 		position++;
 		*len += 1;
 	}	
 	start = position;
-	while (ft_isalnum(line[position]) || line[position] == '.')
+	while (line[position] && (ft_isalnum(line[position]) || line[position] == '.'))
 	{
 		counter++;
 		position++;
 		*len += 1;
 	}
-	while (ft_isspace(line[position]))
+	while (line[position] && (ft_isspace(line[position])))
 	{
 		*len += 1;
 		position++;
