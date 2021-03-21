@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 14:55:26 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 14:56:52 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/21 20:30:48 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,15 +65,6 @@ int					caught_signal(char *remainder, int byte_was_read)
 	return (byte_was_read);
 }
 
-void				caught_signal_1(char *remainder)
-{
-	if (sigint == 1)
-	{
-		ft_memdel_1d(remainder);
-		ft_bzero(remainder, ft_strlen_1(remainder));
-	}
-}
-
 int					get_next_line(char **line)
 {
 	char			*buf;
@@ -96,7 +87,6 @@ int					get_next_line(char **line)
 		if (byte_was_read == 0)
 			return (0);
 	}
-	caught_signal_1(remainder);
 	free(buf);
 	*line = strdup_till_null(remainder);
 	remainder = find_null(remainder);

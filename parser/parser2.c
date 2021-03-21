@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 20:57:27 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/21 15:17:09 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/21 20:51:09 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,11 @@ void	create_fd(t_mini *s)
 		//ОПРЕДЕЛЯЕМ FD IN & OUT
 		define_fd_out(s, (s->pipes)[iter_pipes]);
 		(s->array_fdout)[iter_pipes] = s->fdout;
+		//close(s->fdout);
 		//printf("%d\n", (s->array_fdout)[iter_pipes]);
 		define_fd_in(s, (s->pipes)[iter_pipes]);
 		(s->array_fdin)[iter_pipes] = s->fdin;
+		//close(s->fdin);
 		iter_pipes++;
 	}
 }
@@ -61,13 +63,17 @@ void	ft_sort_pipes(t_mini *s)
 
 	arr_len = ft_arrlen(s->pipes);
 	i = 0;
+	file_name1 = NULL;
+	file_name2 = NULL;
 	create_fd(s);
 	while (i < arr_len - 1)
 	{
 		j = i + 1;
+		ft_memdel_1d((void *)file_name1);
 		file_name1 = extract_file_name((s->pipes)[i], '<');
 		while (j < arr_len)
 		{
+			ft_memdel_1d((void *)file_name2);
 			file_name2 = extract_file_name((s->pipes)[j], '>');
 			if (file_name1 && file_name2)
 			{
@@ -82,4 +88,6 @@ void	ft_sort_pipes(t_mini *s)
 		}
 		i++;
 	}
+	ft_memdel_1d(file_name2);
+	ft_memdel_1d(file_name1);
 }

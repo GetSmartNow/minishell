@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 16:22:08 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/21 20:34:30 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,6 @@ typedef struct		s_mini
 	t_mass			*head;
 	t_mass			*head_x;
 	t_env			var;
-	char			*in_file;  // нужно или нет?
-	char			*from_file; // нужно или нет?
 	char			*av;
 	char			***mass3d;
 	char			**env;

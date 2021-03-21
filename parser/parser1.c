@@ -56,7 +56,6 @@ int ft_fill_fd(t_mini *s, char *line, char *file_name, int position)
 {
 	int fd_type;
 
-	s->in_file = ft_strdup(file_name); //free
 	fd_type = detect_out_redirect_type(line, position);
 	if (s->fdout != -1)
 		close(s->fdout);
@@ -77,6 +76,9 @@ void	define_fd_out(t_mini *s, char *line)
 	int		len;
 
 	iter = 0;
+	file_name = NULL;
+	//if (s->fdout != -1)
+	//	close(s->fdout);
 	s->fdout = -1;
 	while (line[iter])
 	{
@@ -84,6 +86,7 @@ void	define_fd_out(t_mini *s, char *line)
 		if (position >= 0)
 		{
 			len = 0;
+			ft_memdel_1d((void *)file_name);
 			file_name = find_file_name(line + iter, position, &len); //free
 			iter += position + ft_fill_fd(s, line + iter, file_name, position);
 		}
@@ -94,6 +97,7 @@ void	define_fd_out(t_mini *s, char *line)
 			break ;
 		}
 	}
+	ft_memdel_1d((void *)file_name);
 }
 
 void	define_fd_in(t_mini *s, char *line)
@@ -105,15 +109,20 @@ void	define_fd_in(t_mini *s, char *line)
 	int		len;
 
 	iter = 0;
+	//if (s->fdin != -1)
+	//	close(s->fdin);
 	s->fdin = -1;
+	file_name = NULL;
 	while (line[iter])
 	{
 		position = find_redir(line + iter, '<');
 		if (position >= 0)
 		{
 			len = 0;
+			ft_memdel_1d((void *)file_name);
 			file_name = find_file_name(line + iter, position, &len);
-			s->from_file = ft_strdup(file_name); //free
+			if (s->fdin != -1)
+				close(s->fdin);
 			fd = open(file_name, O_RDONLY); //какой корректно юзать?
 			if (fd < 0)
 				printf("input file error\n");
@@ -127,7 +136,8 @@ void	define_fd_in(t_mini *s, char *line)
 				s->fdin = STDIN;
 			break ;
 		}
-	}	
+	}
+	ft_memdel_1d((void *)file_name);
 }
 
 char	*ft_strcut(char *line, int start, int len)
@@ -156,6 +166,7 @@ char	*ft_strcut(char *line, int start, int len)
 		res = ft_strnjoin_char(res, line[i], 1);
 		i++;
 	}
+	ft_memdel_1d((void *)line);
 	return (res);
 }
 
@@ -165,7 +176,9 @@ char	*extract_command(char *line, char redir)
 	char	*res;
 	int		iter;
 	int		position;
+	char	*file_name;
 
+	file_name = NULL;
 	iter = 0;
 	res = ft_strdup(line);
 	position = 0;
@@ -175,10 +188,17 @@ char	*extract_command(char *line, char redir)
 		if (position >= 0)
 		{
 			len = 0;
-			find_file_name(res, position, &len);
+			if (file_name != NULL) //memdel1d
+			{
+				free(file_name);
+				file_name = NULL;
+			}
+			file_name = find_file_name(res, position, &len);
 			res = ft_strcut(res, iter + position, len); //love this function, add later to my lib;
 		}
 	}
+	ft_memdel_1d((void *)file_name);
+	ft_memdel_1d((void *)line);
 	return (res);
 }
 
@@ -198,6 +218,11 @@ char	*extract_file_name(char *line, char redir)
 		if (position >= 0)
 		{
 			len = 0;
+			if (file_name != NULL)
+			{
+				free(file_name);
+				file_name = NULL;
+			}
 			file_name = find_file_name(line + iter, position, &len);
 			iter += position + 1;
 		}
@@ -224,20 +249,12 @@ void make_command_elems(t_mini *s, int iter_pipes)
 
 void make_pipes(t_mini *s)
 {
-	int iter_pipes;
+	int 	iter_pipes;
+	char	*tmp;
 
 	iter_pipes = 0;
 	while ((s->pipes)[iter_pipes])
 	{
-		//---Перенес в сортировку ft_sort_pipes
-		//ОПРЕДЕЛЯЕМ FD IN & OUT
-		//define_fd_out(s, (s->pipes)[iter_pipes]);
-		//(s->array_fdout)[iter_pipes] = s->fdout;
-		//printf("%d\n", (s->array_fdout)[iter_pipes]);
-		//define_fd_in(s, (s->pipes)[iter_pipes]);
-		//(s->array_fdin)[iter_pipes] = s->fdin;
-		//printf("%d\n", (s->array_fdin)[iter_pipes]);
-
 		//ИЗВЛЕЧЕНИЕ СТРОКИ БЕЗ РЕДИРЕКТОВ
 		s->pipes[iter_pipes] = extract_command(s->pipes[iter_pipes], '>'); //free можно внутри extract сделать
 		s->pipes[iter_pipes] = extract_command(s->pipes[iter_pipes], '<'); //free
@@ -245,6 +262,7 @@ void make_pipes(t_mini *s)
 		//РАЗБИЕНИЕ И ЗАМЕНА ЭЛЕМЕНТОВ
 		make_command_elems(s, iter_pipes);
 		//ЗАКИДЫВАЮ В MASS3D И НАЧИНАЕМ КВН
+		//ft_memdel_2d((void **)s->mass3d[iter_pipes]);
 		(s->mass3d)[iter_pipes] = s->command_elems; //free
 		iter_pipes++;
 	}
@@ -280,7 +298,18 @@ void	ft_parser(t_mini *s, char *line, char **env)
 		//проверка исполняемых файлов
 		if (ft_strlen_modif((s->commands)[iter_commands]) > 0)
 			sort_ft(s, env);
+		ft_memdel_2d((void **)s->pipes);
+		ft_memdel_1d((void *)s->array_fdin);
+		ft_memdel_1d((void *)s->array_fdout);
+
+		int i = -1;
+		while (++i < s->pipe.count_commands)
+		{
+			ft_memdel_2d((void **)s->mass3d[i]);
+		}
+		//ft_memdel_3d((void ***)s->mass3d);
 		// else ()
 		iter_commands++;
 	}
+	ft_memdel_2d((void **)s->commands);
 }

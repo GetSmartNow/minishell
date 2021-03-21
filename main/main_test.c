@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_test.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:35:14 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 16:21:39 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/21 20:59:14 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,20 @@ static void		ft_init_before_loop(t_mini *s, char *av)
 	s->var.pwd = 0;
 	s->exit = 0;
 	s->var.path = NULL;
+	//s->fdout = -1;
+	//s->fdin = -1;
 }
 
 static void		ft_init_in_loop(t_mini *s)
 {
-	s->fdin = 0;
-	s->fdout = 0;
-	s->in_file = NULL;
-	s->from_file = NULL;
+	//if (s->fdin != -1)
+	//	close(s->fdin);
+	//if (s->fdout != -1)
+	//	close(s->fdout);
+	//s->in_file = NULL;
+	//s->from_file = NULL;
+	//s->fdout = -1;
+	//s->fdin = -1;
 	s->free_line = NULL;
 	s->env = NULL;
 	s->tmp = NULL;

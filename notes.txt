@@ -1,5 +1,7 @@
  gcc -g libft/libft.a env/*.c builtins/*.c tools/*.c main/*.c parser/*.c *.h *.c
 
+
+ls | cat -e ; echo 123 > a1 >> a2 >> a3 | echo 432 >> a5
  TODO:
  add extra function with mistakes
 
