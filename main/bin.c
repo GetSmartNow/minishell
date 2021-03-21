@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 11:36:22 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 15:22:44 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/21 16:34:09 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,14 +169,9 @@ int					exec_bin(t_mini *s, char **arr, char *exec)
 	res = exec_bin_1(s, exec);
 	g_sig.pid = fork();
 	if (g_sig.pid < 0)
-	{
-		write(STDERR, "error\n", 6);
 		exit (127);
-	}
 	else if (g_sig.pid == 0)
 	{
-		printf("fdin: %d\n", s->array_fdin[0]);
-		printf("fdout: %d\n", s->fdout);
 		if (s->array_fdin[0])
 		{
 			dup2(s->array_fdin[0], STDIN);

@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:05:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 14:58:46 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/21 16:36:25 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,15 +82,13 @@ static int		mini_bin1(t_mini *s, int i)
 
 int					mini_pipes(t_mini *s) //ps -a | cat -e | cat -e
 {
-	//int		i = 0;
+	int		i = 0;
 	int		res;
 	int		j;
 
 	init_pipes(s);
-	for(int i = 0; i < s->pipe.count_commands; i++) // ls | cat -e | cat -e
+	for(i = 0; i < s->pipe.count_commands; i++)
 	{
-		printf("fdout: %d\n", s->array_fdout[i]);
-		printf("fdin: %d\n", s->array_fdin[i]);
 		res = mini_bin1(s, i);
 		g_sig.pid = fork();
 		if (g_sig.pid == 0)
@@ -140,7 +138,6 @@ int					mini_pipes(t_mini *s) //ps -a | cat -e | cat -e
 				}
 			}
 			execve(s->var.bin, s->mass3d[i], s->env);
-			// ft_error(s->mass3d[i][0], 1);
 			exit (1);
 		}
 		if (res)
