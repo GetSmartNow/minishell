@@ -1,6 +1,16 @@
-// #include "libft/include/libft.h"
-// #include <stdio.h>
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   new_split.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/21 15:17:40 by mvernius          #+#    #+#             */
+/*   Updated: 2021/03/21 16:25:19 by mvernius         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../libft/include/libft.h"
 
 static int		len_cur_word(char const *s, char sep)
 {
@@ -83,32 +93,33 @@ static size_t	count_words(char const *s, char sep)
 		{
 			if (shield_count % 2 == 0)
 				flag = 1;
-			shield_count = 0;
+			// shield_count = 0;
 		}
 		else if (s[i] && (s[i] == '\'' || s[i] == '\"') && flag == 1)
 		{
 			if (shield_count % 2 == 0)
 				flag = 0;
-			shield_count = 0;
+			// shield_count = 0;
 		}
 		if (s[i] && s[i] != sep && state == 0)
 		{
 			count++;
 			state = 1;
-			shield_count = 0;
+			// shield_count = 0;
 		}
 		else if (s[i] == sep)
 		{
 			if (shield_count % 2 == 1)
 			{
-				shield_count = 0;
+				// shield_count = 0;
 				flag = 1;
 			}
 			else
-				shield_count = 0;
+				// shield_count = 0;
 			if (flag == 0)
 				state = 0;
 		}
+		shield_count = 0;
 		i++;
 	}
 	return (count);

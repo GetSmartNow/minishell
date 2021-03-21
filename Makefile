@@ -40,7 +40,7 @@ SRCS	:=	$(addprefix ${MAIN_D}, main_test.c bin.c mini_pipes.c signal.c \
 			$(addprefix ${BUILT}, mini_cd.c mini_echo.c mini_env.c mini_exit.c \
 			mini_export.c mini_pwd.c mini_unset.c) \
 			$(addprefix $(PARS_D), new_split.c parser1.c parser2.c parser3.c \
-			find_redir.c utils1.c)
+			utils1.c find_redir.c)
 
 #colors----------------------------------------------------------------------
 
