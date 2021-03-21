@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bin.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 11:36:22 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 00:48:04 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/21 14:21:19 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,8 +193,8 @@ int					exec_bin(t_mini *s, char **arr, char *exec)
 	}
 	else
 		wait(NULL);
-	//if (res)
-		//ft_memdel_1d(s->var.bin);
+	if (res)
+		ft_memdel_1d(s->var.bin);
 	bin_error(s, exec, res);
 	return (0);
 }

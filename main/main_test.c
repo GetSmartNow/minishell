@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_test.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:35:14 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 01:26:52 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/21 14:48:28 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,11 +142,7 @@ int			main(int ac, char **av, char **env)
 	int		j = 0;
 	int 	res = 0;
 
-	s.av = av[0];
-	s.var.pwd = 0;
-	s.exit = 0;
-	g_sig.exit_status = 0;
-	s.var.path = NULL;
+	ft_init_before_loop(&s, av[0]);
 	init_list(&s, env);
 	init_list_x(&s, env);
 	ft_shlvl(&s);
@@ -164,7 +160,6 @@ int			main(int ac, char **av, char **env)
 			ft_parser(&s, line, env);
 			ft_memdel_1d(line);
 		}
-		// ft_memdel_1d(line);  //сегается
 	}
 	return (g_sig.exit_status);
 }
