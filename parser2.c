@@ -298,6 +298,7 @@ void	ft_parser(t_mini *s, char *line, char **env)
 			//}
 			iter_pipes++;
 		}
+		ft_memdel_2d((void**)s->pipes);
 		// (s->array_fdout)[iter_pipes] = -1;
 		// (s->array_fdin)[iter_pipes] = -1;
 		// int j = 0;
@@ -310,7 +311,9 @@ void	ft_parser(t_mini *s, char *line, char **env)
 		{
 			sort_ft(s, env);
 		}
+		// ft_memdel_2d((void**)s->array_fdin); 
+		// ft_memdel_2d((void**)s->array_fdout);
 		iter_commands++;
 	}
-	//ft_memdel_1d(line); // всё еще сегает
+	ft_memdel_2d((void**)s->commands); // added
 }

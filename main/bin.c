@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 11:36:22 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 13:57:46 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/21 14:56:46 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,12 +180,18 @@ int					exec_bin(t_mini *s, char **arr, char *exec)
 	}
 	else if (g_sig.pid == 0)
 	{
-		printf("fdin: %d\n", s->fdin);
+		printf("fdin: %d\n", s->array_fdin[0]);
 		printf("fdout: %d\n", s->fdout);
 		if (s->array_fdin[0])
+		{
 			dup2(s->array_fdin[0], STDIN);
-		if (s->array_fdout[0])
-			dup2(s->array_fdin[0], STDOUT);
+			close(s->array_fdin[0]);
+		}
+		if (s->array_fdout[0] > 1)
+		{
+			dup2(s->array_fdout[0], STDOUT);
+			close(s->array_fdout[0]);
+		}
 		execve(s->var.bin, arr, s->env);
 		exit (1);
 	}

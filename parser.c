@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 16:49:51 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/19 17:16:49 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/19 20:26:13 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,7 +252,7 @@ char	*make_substitute(char *command, t_mass **head)
 		}
 		else
 		{
-			if (!flag)
+			if (!flag) //лишнее условие?
 			{
 				res = ft_strnjoin_char(res, command[i], 1);
 				i++;

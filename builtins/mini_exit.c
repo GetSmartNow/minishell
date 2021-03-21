@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_exit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:44:29 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/17 15:05:13 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/20 06:28:22 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ int				mini_exit(t_mini *s, char *exec, char *arg)
 		g_sig.exit_status = res;
 		if (res == 255)
 		{
-			write(STDOUT, "bash: exit: ", 12);
-			write(STDOUT, arg, ft_strlen(arg));
-			write(STDOUT, ": numeric argument required\n", 28);
+			write(STDERR, "bash: exit: ", 12);
+			write(STDERR, arg, ft_strlen(arg));
+			write(STDERR, ": numeric argument required\n", 28);
 		}
 	}
 	return (res);

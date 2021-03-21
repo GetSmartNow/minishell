@@ -3,14 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   mini_echo.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:43:03 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/19 18:39:33 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/20 06:27:27 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+static void			mini_echo_1(t_mini *s, char *str, int i)
+{
+	i = 1;
+	while (str[i])
+	{
+		if (ft_strcmp(str[i], "-n") == 0)
+			i++;
+		else
+		{
+			write(s->fdout, str[i], ft_strlen(str[i]));
+			str[i + 1] != NULL ? write(s->fdout, " ", 1) : 0;
+			i++;
+		}
+	}
+}
 
 void				mini_echo(char **str, t_mini *s)
 {
@@ -20,20 +36,7 @@ void				mini_echo(char **str, t_mini *s)
 	if (str[1] == NULL)
 		write(s->fdout, "\n", 1);
 	else if (ft_strcmp(str[1], "-n") == 0)
-	{
-		i = 1;
-		while (str[i])
-		{
-			if (ft_strcmp(str[i], "-n") == 0)
-				i++;
-			else
-			{
-				write(s->fdout, str[i], ft_strlen(str[i]));
-				str[i + 1] != NULL ? write(s->fdout, " ", 1) : 0;
-				i++;
-			}
-		}
-	}
+		mini_echo_1(s, str, i);
 	else
 	{
 		while (str[++i])
