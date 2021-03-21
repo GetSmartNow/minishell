@@ -1,0 +1,13 @@
+Makefile
+a.out.dSYM
+a1
+bin_delete.c
+builtins
+env
+libft
+main
+minishell
+minishell.h
+notes.txt
+parser
+tools

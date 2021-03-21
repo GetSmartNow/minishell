@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:35:14 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 16:28:38 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/21 20:26:51 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,9 @@ int			main(int ac, char **av, char **env)
 		ft_init_in_loop(&s);
 		ft_putstr_fd("\033[0;36m\033[1mminishell ▸ \033[0m", STDOUT);
 		status = get_next_line(&line);
-		if (status)
+		if (sigint == 1 && sigd == 1)
+			ft_memdel_1d(line);
+		else if (status)
 		{
 			ft_parser(&s, line, env);
 			ft_memdel_1d(line);

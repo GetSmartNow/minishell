@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 18:46:08 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 16:54:01 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/21 19:13:36 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,9 @@ void				mini_pwd_1(t_mini *s)
 			free(tmp->content);
 			line = malloc(1000);
 			getcwd(line, 100);
-			tmp->content = ft_strjoin_free("PWD=", line, line);
+			line = ft_strjoin_free("PWD=", line, line);
+			tmp->content = put_quotes(line);
+			ft_memdel_1d(line);
 		}
 		tmp = tmp->next;
 	}

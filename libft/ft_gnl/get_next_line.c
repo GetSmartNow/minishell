@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 14:55:26 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 14:56:52 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/21 20:28:07 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,20 +58,14 @@ int					caught_signal(char *remainder, int byte_was_read)
 	{
 		write(1, "  \b\b", 4);
 		if (ft_strlen_1(remainder) != 0)
+		{
+			sigd = 1;
 			byte_was_read = 1;
+		}
 		else
 			write(1, "exit\n", 5);
 	}
 	return (byte_was_read);
-}
-
-void				caught_signal_1(char *remainder)
-{
-	if (sigint == 1)
-	{
-		ft_memdel_1d(remainder);
-		ft_bzero(remainder, ft_strlen_1(remainder));
-	}
 }
 
 int					get_next_line(char **line)
@@ -96,52 +90,8 @@ int					get_next_line(char **line)
 		if (byte_was_read == 0)
 			return (0);
 	}
-	caught_signal_1(remainder);
 	free(buf);
 	*line = strdup_till_null(remainder);
 	remainder = find_null(remainder);
 	return (byte_was_read ? 1 : 0);
 }
-
-// int					get_next_line(char **line)
-// {
-// 	char			*buf = NULL;
-// 	int				byte_was_read;
-// 	static char		*remainder = NULL;
-
-// 	byte_was_read = 1;
-// 	if (!(buf = (char *)malloc(sizeof(char) * 1)))
-// 		return (-1);
-// 	while (!check_end(remainder) && byte_was_read != 0)
-// 	{
-// 		if ((byte_was_read = read(0, buf, 1)) < 0)
-// 		{
-// 			free(buf);
-// 			return (-1);
-// 		}
-// 		buf[byte_was_read] = '\0';
-// 		remainder = ft_join_str(remainder, buf);
-// 		if (byte_was_read == 0)
-// 		{
-// 			write(1, "  \b\b", 4);
-// 			if (ft_strlen_1(remainder) != 0)
-// 			{
-// 				byte_was_read = 1;
-// 			}
-// 			else
-// 			{
-// 				write(1, "exit\n", 5);
-// 				return (0);
-// 			}
-// 		}
-// 	}
-// 	if (sigint == 1)
-// 	{
-// 		ft_memdel_1d(remainder);
-// 		ft_bzero(remainder, ft_strlen_1(remainder));
-// 	}
-// 	free(buf);
-// 	*line = strdup_till_null(remainder);
-// 	remainder = find_null(remainder);
-// 	return (byte_was_read ? 1 : 0);
-// }

@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 11:36:22 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 18:56:11 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/21 20:18:56 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,7 @@ int					exec_bin(t_mini *s, char **arr, char *exec)
 {
 	int				res = 0;
 	char			*bin = NULL;
+	int				status;
 
 	res = exec_bin_1(s, exec);
 	g_sig.pid = fork();
@@ -186,7 +187,11 @@ int					exec_bin(t_mini *s, char **arr, char *exec)
 		exit (1);
 	}
 	else
-		wait(NULL);
+	{
+		waitpid(g_sig.pid, &status, 0);
+		printf("status: %d\n", status);
+	}
+		// wait(NULL);
 	if (res)
 		ft_memdel_1d(s->var.bin);
 	bin_error(s, exec, res);
