@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/19 19:15:24 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/21 16:30:55 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,8 @@ typedef struct		s_mini
 	t_mass			*head;
 	t_mass			*head_x;
 	t_env			var;
-	char			*in_file;
-	char			*from_file;
-	//int				fdin;
-	//int				fdout;
+	char			*in_file;  // нужно или нет?
+	char			*from_file; // нужно или нет?
 	char			*av;
 	char			***mass3d;
 	char			**env;
@@ -96,11 +94,18 @@ typedef struct		s_mini
 
 t_sig	g_sig;
 
+/*INIT*/
+void				ft_init_before_loop(t_mini *s, char *av);
+void				ft_init_in_loop(t_mini *s);
+int					init_list(t_mini *s, char **env);
+int					init_list_x(t_mini *s, char **env);
+
 int					exec_bin(t_mini *s, char **arr, char *command);
 int					mini_bin(t_mini *s);
 void				mini_cd(t_mini *s, char *exec, char *arg);
 void				mini_pwd(t_mini	*s);
 void				mini_pwd_1(t_mini *s);
+void				mini_oldpwd(t_mini *s);
 void				mini_echo(char **str, t_mini *s);
 int					mini_exit(t_mini *s, char *exec, char *arg);
 void				mini_env(t_mini *s);
@@ -108,6 +113,7 @@ void				mini_export(t_mini *s);
 void				mini_unset(t_mini *s);
 int					mini_pipes(t_mini *s);
 
+/*ENV*/
 void				ft_shlvl(t_mini *s);
 void				get_pwd(t_mini	*s);
 
@@ -115,6 +121,7 @@ void				get_pwd(t_mini	*s);
 void				init_signal(void);
 void				sig_int(int signum);
 void				sig_quit(int code);
+void				exit_code(t_mini *s);
 
 int					length_to_equal(t_mini *s, char *line);
 char				*put_quotes(char *s1);
@@ -130,7 +137,7 @@ void				ft_list_sort(t_mass **lst);
 
 //________________PARSER
 void				ft_parser(t_mini *s, char *line, char **env);
-char 				*make_substitute(char *sep_commands, t_mass **head);
+char 				*make_substitute(char *sep_commands, t_mass **head, int counter);
 char				**ft_split_new(char const *s, char c);
 int					ft_strlen_modif(const char *str);
 void				sort_ft(t_mini *s, char **env1);
@@ -140,4 +147,11 @@ char				*find_file_name(char *line, int position, int *len);
 int					find_redir(char *str, char c);
 void				define_fd_in(t_mini *s, char *line);
 void				define_fd_out(t_mini *s, char *line);
+void				ft_sort_pipes(t_mini *s);
+int					ft_arrlen(char **matrix);
+char				*extract_file_name(char *line, char redir);
+
+//parser/utils1
+int 				skip_symbol(const char *str, int *symbol_count, char symbol);
+int					is_quote(char symbol);
 #endif

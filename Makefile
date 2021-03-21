@@ -6,7 +6,7 @@
 #    By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/09 17:56:31 by ctycho            #+#    #+#              #
-#    Updated: 2021/03/19 18:48:58 by ctycho           ###   ########.fr        #
+#    Updated: 2021/03/21 16:27:27 by ctycho           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,15 +28,19 @@ BUILT	:=	./builtins/
 ENV		:=	./env/
 TOOL	:=	./tools/
 INC_D	:=	./include/
+PARS_D	:=	./parser/
 
 #files------------------------------------------------------------------------
 
 INC		:=	minishell.h
-SRCS	:=	$(addprefix ${MAIN_D}, main_test.c bin.c mini_pipes.c signal.c) \
+SRCS	:=	$(addprefix ${MAIN_D}, main_test.c bin.c mini_pipes.c signal.c \
+			ft_init.c) \
 			$(addprefix ${TOOL}, libft_utils.c ft_error.c mini_utils.c) \
 			$(addprefix $(ENV), ft_shlvl.c ft_pwd.c) \
 			$(addprefix ${BUILT}, mini_cd.c mini_echo.c mini_env.c mini_exit.c \
-			mini_export.c mini_pwd.c mini_unset.c) parser.c new_split.c parser2.c
+			mini_export.c mini_pwd.c mini_unset.c) \
+			$(addprefix $(PARS_D), new_split.c parser1.c parser2.c parser3.c \
+			find_redir.c utils1.c)
 
 #colors----------------------------------------------------------------------
 
@@ -52,7 +56,7 @@ LBLUE	:=	\033[1;34m
 
 all:		$(NAME)
 	
-${NAME}: $(SRCS) $(INC)
+${NAME}: $(SRCS) $(INC) $(LIB_D)
 	@make -C $(LIB_D)
 	@$(CC) -o $(NAME) $(SRCS) $(LIB_D)libft.a $(FLAG)
 	@echo "${CYAN}Library "${NAME}" succesfully compiled"

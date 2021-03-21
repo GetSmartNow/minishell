@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:05:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/19 19:25:31 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/21 16:36:25 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,12 @@ static int		mini_bin1(t_mini *s, int i)
 
 int					mini_pipes(t_mini *s) //ps -a | cat -e | cat -e
 {
-	//int		i = 0;
+	int		i = 0;
 	int		res;
 	int		j;
 
 	init_pipes(s);
-	for(int i = 0; i < s->pipe.count_commands; i++) // ls | cat -e | cat -e
+	for(i = 0; i < s->pipe.count_commands; i++)
 	{
 		res = mini_bin1(s, i);
 		g_sig.pid = fork();
@@ -95,11 +95,17 @@ int					mini_pipes(t_mini *s) //ps -a | cat -e | cat -e
 		{
 			if (i == 0) // first
 			{
-				// if (s->from_file[i])
-				// 	dup2(s->fdin[i], STDIN);
-				// if (s->in_file)
-				// 	dup2(s->fdout[i], STDOUT);
-				// else
+				if (s->array_fdin[i])
+				{
+					dup2(s->array_fdin[i], STDIN);
+					close(s->array_fdin[i]);
+				}
+				if (s->array_fdout[i] > 1)
+				{
+					dup2(s->array_fdout[i], STDOUT);
+					close(s->array_fdout[i]);	
+				}
+				else
 					dup2(s->pipe.fd[i][1], STDOUT);
 				for (int k = 0; k < s->pipe.count_pipe; k++)
 				{
@@ -110,13 +116,19 @@ int					mini_pipes(t_mini *s) //ps -a | cat -e | cat -e
 			}
 			else
 			{
-				// if (s->from_file[i])
-				// 	dup2(s->fdin[i], STDIN);
-				// else
+				if (s->array_fdin[i])
+				{
+					dup2(s->array_fdin[i], STDIN);
+					close(s->array_fdin[i]);
+				}
+				else
 					dup2(s->pipe.fd[i - 1][0], STDIN);
-				// if (s->in_file)
-				// 	dup2(s->fdout[i], STDOUT);
-				/*else*/ if (i + 1 != s->pipe.count_commands)
+				if (s->array_fdout[i] > 1)
+				{
+					dup2(s->array_fdout[i], STDOUT);
+					close(s->array_fdout[i]);	
+				}
+				else if (i + 1 != s->pipe.count_commands)
 					dup2(s->pipe.fd[i][1], STDOUT);
 				for (int k = 0; k < s->pipe.count_pipe; k++)
 				{
@@ -126,7 +138,6 @@ int					mini_pipes(t_mini *s) //ps -a | cat -e | cat -e
 				}
 			}
 			execve(s->var.bin, s->mass3d[i], s->env);
-			// ft_error(s->mass3d[i][0], 1);
 			exit (1);
 		}
 		if (res)
@@ -142,58 +153,3 @@ int					mini_pipes(t_mini *s) //ps -a | cat -e | cat -e
 		wait(NULL);
 	return (0);
 }
-
-
-
-
-
-
-
-// tmpin = dup(0);
-// 	tmpout = dup(1);
-// 	// if (infile)
-// 	// 	fdin = open(infile, O_RDONLY);
-// 	// else
-// 		fdin = dup(0);
-// 	int	ret;
-// 	int	fdout;
-// 	for(i = 0; i < s->pipe.count_commands; i++)
-// 	{
-// 		res = 0;
-// 		res = mini_bin1(s, i);
-// 		dup2(fdin, 0);
-// 		close(fdin);
-// 		if (i == s->pipe.count_commands - 1)
-// 		{
-// 			// if (outfile)
-// 			// 	fdout = open();
-// 			// else
-// 			fdout = dup(tmpout);
-// 		}
-// 		else
-// 		{
-// 			// int fdpipe[2];
-// 			pipe(fdpipe);
-// 			fdout = fdpipe[1];
-// 			fdin = fdpipe[0];
-// 		}
-// 		dup2(fdout, 1);
-// 		close(fdout);
-// 		ret = fork();
-// 		if (ret == 0)
-// 		{
-// 			// printf("|%s|\n", s->var.bin);
-// 			execve(s->var.bin, s->mass3d[i], s->env);
-// 			ft_error(s->mass3d[i][0], 1);
-// 			exit (1);
-// 		}
-// 		if (res)
-// 			ft_memdel_1d(s->var.bin);
-// 	}
-// 	dup2(tmpin, 0);
-// 	dup2(tmpout, 1);
-// 	close(tmpin);
-// 	close(tmpout);
-// 	if (waitpid(ret, &status, 0) > 0)
-// 		return (status);
-// 	return (0);

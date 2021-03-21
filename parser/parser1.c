@@ -12,7 +12,7 @@ int	ft_arrlen(char **matrix)
 	return (i);
 }
 //UTILS
-int		detect_type(char *str, int position)
+int		detect_out_redirect_type(char *str, int position)
 {
 	int	out;
 
@@ -23,71 +23,6 @@ int		detect_type(char *str, int position)
 		out = 1;
 	return (out);
 }
-
-//СУПЕР ЕРЕСЬ, МБ МОЖНО СОКРАТИТЬ 
-int		find_redir(char *str, char c)
-{
-	int		iter;
-	int		shield_count;
-	int		flag;
-	int		pos;
-	int		flag2;
-
-	flag2 = 0;
-	shield_count = 0;
-	iter = 0;
-	pos = -1;
-	while (str[iter])
-	{
-		if (str[iter] == '\\')
-		{
-			shield_count++;
-			iter++;
-			flag2 = 0;
-		}
-		else if (str[iter] != '\\' && str[iter] != c)
-		{
-			if ((str[iter] == '\'' || str[iter] == '\"') && shield_count % 2 == 1)
-			{
-				flag = 0;
-				shield_count = 0;
-			}
-			else if ((str[iter] == '\'' || str[iter] == '\"') && shield_count % 2 != 1)
-			{
-				flag = 1;
-				shield_count = 0;
-			}
-			iter++;
-			if (str[iter] == c && (flag == 1 || shield_count % 2 == 1))
-			{
-				iter++;
-			}
-			flag2 = 0;
-		}
-		else if (str[iter] == c && shield_count % 2 == 1)
-		{
-			iter++;
-			shield_count = 0;
-			flag2 = 0;
-		}
-		else if (str[iter] == c)
-		{
-			pos = iter;
-			while (str[iter] == c)
-			{
-				iter++;
-				flag2++;
-			}
-			if (flag2 > 2 && c == '>')
-				printf("error wrong symbol with %c\n", c);
-			if (flag2 > 1 && c == '<')
-				printf("error wrong symbol with %c\n", c);
-			return (pos);
-		}
-	}
-	return (pos);
-}
-
 
 char	*find_file_name(char *line, int position, int *len)
 {
@@ -116,10 +51,27 @@ char	*find_file_name(char *line, int position, int *len)
 	return (ft_substr(line, start, counter));
 }
 
+
+int ft_fill_fd(t_mini *s, char *line, char *file_name, int position)
+{
+	int fd_type;
+
+	s->in_file = ft_strdup(file_name); //free
+	fd_type = detect_out_redirect_type(line, position);
+	if (s->fdout != -1)
+		close(s->fdout);
+	if (fd_type == 2)
+		s->fdout = open(file_name, O_CREAT | O_WRONLY | O_APPEND, S_IRWXU); //add check if opened and close previous
+	else if (fd_type == 1)
+		s->fdout = open(file_name, O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
+	if (s->fdout < 0)
+		printf("error in open (ft_fill_fd)\n");
+	return (fd_type);
+}
+
 void	define_fd_out(t_mini *s, char *line)
 {
 	int		position;
-	int		fd_type;
 	char	*file_name;
 	int		iter;
 	int		len;
@@ -133,13 +85,7 @@ void	define_fd_out(t_mini *s, char *line)
 		{
 			len = 0;
 			file_name = find_file_name(line + iter, position, &len); //free
-			s->in_file = ft_strdup(file_name); //free
-			fd_type = detect_type(line + iter, position);
-			if (fd_type == 2)
-				s->fdout = open(file_name, O_CREAT | O_WRONLY | O_APPEND, S_IRWXU); //add check if opened and close previous
-			else if (fd_type == 1)
-				s->fdout = open(file_name, O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
-			iter += position + fd_type;
+			iter += position + ft_fill_fd(s, line + iter, file_name, position);
 		}
 		else
 		{
@@ -168,7 +114,7 @@ void	define_fd_in(t_mini *s, char *line)
 			len = 0;
 			file_name = find_file_name(line + iter, position, &len);
 			s->from_file = ft_strdup(file_name); //free
-			fd = open(file_name, O_RDONLY);
+			fd = open(file_name, O_RDONLY); //какой корректно юзать?
 			if (fd < 0)
 				printf("input file error\n");
 			else
@@ -236,16 +182,82 @@ char	*extract_command(char *line, char redir)
 	return (res);
 }
 
+char	*extract_file_name(char *line, char redir)
+{
+	int		len;
+	int		iter;
+	int		position;
+	char	*file_name;
+
+	iter = 0;
+	position = 0;
+	file_name = NULL;
+	while (line[iter] && position >= 0)
+	{
+		position = find_redir(line + iter, redir);
+		if (position >= 0)
+		{
+			len = 0;
+			file_name = find_file_name(line + iter, position, &len);
+			iter += position + 1;
+		}
+	}
+	return (file_name);
+}
+
+void make_command_elems(t_mini *s, int iter_pipes)
+{
+	int 	iter_elems;
+	char	*tmp;
+
+	s->command_elems = ft_split_new((s->pipes)[iter_pipes], ' ');
+	iter_elems = 0;
+	while ((s->command_elems)[iter_elems])
+	{
+		tmp = (s->command_elems)[iter_elems];
+		(s->command_elems)[iter_elems] = make_substitute((s->command_elems)[iter_elems], &(s->head), iter_elems);
+		free(tmp);
+		tmp = NULL;
+		iter_elems++;
+	}
+}
+
+void make_pipes(t_mini *s)
+{
+	int iter_pipes;
+
+	iter_pipes = 0;
+	while ((s->pipes)[iter_pipes])
+	{
+		//---Перенес в сортировку ft_sort_pipes
+		//ОПРЕДЕЛЯЕМ FD IN & OUT
+		//define_fd_out(s, (s->pipes)[iter_pipes]);
+		//(s->array_fdout)[iter_pipes] = s->fdout;
+		//printf("%d\n", (s->array_fdout)[iter_pipes]);
+		//define_fd_in(s, (s->pipes)[iter_pipes]);
+		//(s->array_fdin)[iter_pipes] = s->fdin;
+		//printf("%d\n", (s->array_fdin)[iter_pipes]);
+
+		//ИЗВЛЕЧЕНИЕ СТРОКИ БЕЗ РЕДИРЕКТОВ
+		s->pipes[iter_pipes] = extract_command(s->pipes[iter_pipes], '>'); //free можно внутри extract сделать
+		s->pipes[iter_pipes] = extract_command(s->pipes[iter_pipes], '<'); //free
+
+		//РАЗБИЕНИЕ И ЗАМЕНА ЭЛЕМЕНТОВ
+		make_command_elems(s, iter_pipes);
+		//ЗАКИДЫВАЮ В MASS3D И НАЧИНАЕМ КВН
+		(s->mass3d)[iter_pipes] = s->command_elems; //free
+		iter_pipes++;
+	}
+}
+
 void	ft_parser(t_mini *s, char *line, char **env)
 {
 	int		iter_commands;
-	int		iter_pipes;
-	int		iter_elems;
-	char	*tmp;
-
 
 	//ДРОБИМ НА КОМАНДЫ
 	s->commands = ft_split_new(line, ';');
+	if (NULL == s->commands)
+		printf("malloc error: can't allocate for s->commands\n");
 	iter_commands = 0;
 	while ((s->commands)[iter_commands])
 	{
@@ -258,56 +270,17 @@ void	ft_parser(t_mini *s, char *line, char **env)
 		s->mass3d = (char ***)malloc((s->pipe.count_pipe + 1) * sizeof(char **)); //free
 		s->array_fdin = (int *)malloc(ft_arrlen(s->pipes) * sizeof(int));
 		s->array_fdout = (int *)malloc(ft_arrlen(s->pipes) * sizeof(int));
+		
+		//Сортировка пайпов, определение всех fd, заполнение массивов по fd
+		ft_sort_pipes(s);
 
-		//цикл по коммандам с пайпов
-		iter_pipes = 0;
-		while ((s->pipes)[iter_pipes])
-		{
-			//ОПРЕДЕЛЯЕМ FD IN & OUT
-			define_fd_out(s, (s->pipes)[iter_pipes]);
-			(s->array_fdout)[iter_pipes] = s->fdout;
-			printf("%d\n", (s->array_fdout)[iter_pipes]);
-			define_fd_in(s, (s->pipes)[iter_pipes]);
-			(s->array_fdin)[iter_pipes] = s->fdin;
-			printf("%d\n", (s->array_fdin)[iter_pipes]);
+		//цикл по коммандам с пайпов, внутри разбиение по пробелам и замены
+		make_pipes(s);
 
-			//ИЗВЛЕЧЕНИЕ СТРОКИ БЕЗ РЕДИРЕКТОВ
-			s->pipes[iter_pipes] = extract_command(s->pipes[iter_pipes], '>'); //free можно внутри extract сделать
-			s->pipes[iter_pipes] = extract_command(s->pipes[iter_pipes], '<'); //free
-
-			//РАЗБИЕНИЕ И ЗАМЕНА ЭЛЕМЕНТОВ
-			s->command_elems = ft_split_new((s->pipes)[iter_pipes], ' '); 
-			iter_elems = 0;
-			while ((s->command_elems)[iter_elems])
-			{
-				tmp = (s->command_elems)[iter_elems];
-				(s->command_elems)[iter_elems] = make_substitute((s->command_elems)[iter_elems], &(s->head)); 
-				free(tmp);
-				tmp = NULL;
-				iter_elems++;
-			}
-
-			//ЗАКИДЫВАЮ В MASS3D И НАЧИНАЕМ КВН
-			(s->mass3d)[iter_pipes] = s->command_elems; //free
-			//if (ft_strlen_modif((s->pipes)[iter_pipes]) > 0)
-			//{
-			//	sort_ft(s, env);
-			//}
-			iter_pipes++;
-		}
-		// (s->array_fdout)[iter_pipes] = -1;
-		// (s->array_fdin)[iter_pipes] = -1;
-		// int j = 0;
-		// while (s->array_fdout[j])
-		// {
-		// 	printf("%d\n", s->array_fdout[j]);
-		// 	j++;
-		// }
+		//проверка исполняемых файлов
 		if (ft_strlen_modif((s->commands)[iter_commands]) > 0)
-		{
 			sort_ft(s, env);
-		}
+		// else ()
 		iter_commands++;
 	}
-	//ft_memdel_1d(line); // всё еще сегает
 }

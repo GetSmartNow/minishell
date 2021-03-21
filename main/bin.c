@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 11:36:22 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/19 19:26:08 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/21 16:34:09 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,6 @@ int				absolute_path(t_mini *s, char *bin, char *exec)
 	return (s->var.count_bin);
 }
 
-char				**exec_bin_2(t_mini *s, char **bin, char *exec)
-{
-	// 
-	return (bin);
-}
-
 int					exec_bin_1(t_mini *s, char *exec)
 {
 	int			i = 0;
@@ -106,6 +100,8 @@ int					exec_bin_1(t_mini *s, char *exec)
 		ft_memdel_1d(s->var.path);
 		return 0;
 	}
+	else if (exec == NULL) //dopiska
+		return -1;
 	else if (exec[0] == '.' && exec[1] == '/')
 	{
 		s->var.bin = exec;
@@ -124,9 +120,8 @@ int					exec_bin_1(t_mini *s, char *exec)
 		s->var.count_bin = 1;
 	else
 		s->var.count_bin = 5;
-	while (bin[i]) //bin[i + 3]
-	{ //make it finish when command is found
-		// printf("%s\n", bin[i]);
+	while (bin[i])
+	{
 		if (s->var.count_bin == 1)
 			absolute_path(s, bin[i], exec);
 		else
@@ -139,7 +134,7 @@ int					exec_bin_1(t_mini *s, char *exec)
 
 void				bin_error(t_mini *s, char *exec, int res)
 {
-	if (res == 4 || res == 6 || res == 0)
+	if (res == 4 || res == 6 || res == 0 || res == -1) //dopiska
 	{
 		g_sig.exit_status = 0;
 		return ;
@@ -174,25 +169,26 @@ int					exec_bin(t_mini *s, char **arr, char *exec)
 	res = exec_bin_1(s, exec);
 	g_sig.pid = fork();
 	if (g_sig.pid < 0)
-	{
-		write(STDERR, "error\n", 6);
 		exit (127);
-	}
 	else if (g_sig.pid == 0)
 	{
-		printf("fdin: %d\n", s->fdin);
-		printf("fdout: %d\n", s->fdout);
-		if (s->from_file)
-			dup2(s->fdin, STDIN);
-		if (s->in_file)
-			dup2(s->fdout, STDOUT);
+		if (s->array_fdin[0])
+		{
+			dup2(s->array_fdin[0], STDIN);
+			close(s->array_fdin[0]);
+		}
+		if (s->array_fdout[0] > 1)
+		{
+			dup2(s->array_fdout[0], STDOUT);
+			close(s->array_fdout[0]);
+		}
 		execve(s->var.bin, arr, s->env);
 		exit (1);
 	}
 	else
 		wait(NULL);
-	//if (res)
-		//ft_memdel_1d(s->var.bin);
+	if (res)
+		ft_memdel_1d(s->var.bin);
 	bin_error(s, exec, res);
 	return (0);
 }
