@@ -145,4 +145,6 @@ char				*extract_file_name(char *line, char redir);
 //parser/utils1
 int 				skip_symbol(const char *str, int *symbol_count, char symbol);
 int					is_quote(char symbol);
+//parser/find_redir
+void				define_flag(int shield_count, int *flag);
 #endif

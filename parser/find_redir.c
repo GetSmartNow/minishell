@@ -1,8 +1,8 @@
 #include "../minishell.h"
 
-void define_flag(int *shield_count, int *flag)
+void define_flag(int shield_count, int *flag)
 {
-	if ((*shield_count) % 2 == 0)
+	if (shield_count % 2 == 0)
 	{
 		if ((*flag) == 0)
 			(*flag) = 1;
@@ -11,7 +11,6 @@ void define_flag(int *shield_count, int *flag)
 	}
 	else
 		*flag = 1;
-	(*shield_count) = 0;
 }
 
 int		find_redir(char *str, char c)
@@ -31,12 +30,12 @@ int		find_redir(char *str, char c)
 	{
 		iter += skip_symbol(str + iter, &shield_count, '\\');
 		if (str[iter] && is_quote(str[iter]) && flag == 0)
-			define_flag(&shield_count, &flag);
+			define_flag(shield_count, &flag);
 		else if (str[iter] && is_quote(str[iter]) && flag == 1)
-			define_flag(&shield_count, &flag);
+			define_flag(shield_count, &flag);
 		else if (str[iter] == c)
 		{
-			define_flag(&shield_count, &flag);
+			// define_flag(&shield_count, &flag);
 			if (flag == 0)
 			{
 				position = iter;
@@ -54,6 +53,7 @@ int		find_redir(char *str, char c)
 				return (position);
 			}
 		}
+		shield_count = 0;
 		iter++;
 	}
 	return (position);

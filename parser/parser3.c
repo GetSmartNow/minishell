@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   parser3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 16:49:51 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/21 01:01:55 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/21 15:18:17 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 char	*find_value_in_export(char *key, t_mass **head)
 {
@@ -282,6 +282,6 @@ char	*make_substitute(char *command, t_mass **head, int counter)
 	//if (res == NULL)
 	//	res = ft_strdup("");
 	//DELETE SOMEDAY
-	printf("RES: |%s|\n", res);
+	// printf("RES: |%s|\n", res);
 	return (res);
 }
