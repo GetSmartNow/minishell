@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:32:58 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 14:57:19 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/21 16:49:45 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,9 @@ static void			mini_cd_minus_1(t_mini *s)
 {
 	t_mass			*tmp;
 	char			*line;
-	int				flag = 0;
+	int				flag;
 
+	flag = 0;
 	tmp = s->head;
 	while (tmp != NULL)
 	{
@@ -86,9 +87,7 @@ static int			mini_cd_minus(t_mini *s, char *exec, char *arg)
 	if (arg[0] == '-' && len >= 1)
 	{
 		if ((len == 2 && arg[1] == '-') || len == 1)
-		{
 			mini_cd_minus_1(s);
-		}
 		else
 		{
 			res = 0;
