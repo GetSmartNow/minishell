@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/06 15:49:30 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/20 06:18:24 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/21 15:12:15 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	ft_count(char const *s, char c)
 	return (n);
 }
 
-char		**main_loop(char **arr, char *s, char c, int words)
+char		**main_loop(char **arr, char const *s, char c, int words)
 {
 	int		i;
 	int		j;

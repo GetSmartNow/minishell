@@ -103,5 +103,3 @@ echo \> | cat -e
 echo '>'
 echo abs "<" 1.txt
 echo >> text.txt
-exit 111010101010101001010101010101010
-exit 110000000000000

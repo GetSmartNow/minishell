@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 15:01:15 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/21 16:22:08 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ void				get_pwd(t_mini	*s);
 void				init_signal(void);
 void				sig_int(int signum);
 void				sig_quit(int code);
+void				exit_code(t_mini *s);
 
 int					length_to_equal(t_mini *s, char *line);
 char				*put_quotes(char *s1);

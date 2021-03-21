@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:35:14 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 15:01:01 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/21 16:21:39 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,6 @@ static void		ft_init_before_loop(t_mini *s, char *av)
 
 static void		ft_init_in_loop(t_mini *s)
 {
-	//мб перенести в место выделения
-	//int			i = 0;
-	//int			j = 0;
-	//while (s->mass3d[i])
-	//{
-	//	j = 0;
-	//	while (s->mass3d[i][j])
-	//	{
-	//		s->mass3d[i][j] = NULL;
-	//		j++;
-	//	}
-	//	i++;
-	//}
 	s->fdin = 0;
 	s->fdout = 0;
 	s->in_file = NULL;
@@ -50,18 +37,6 @@ static void		ft_init_in_loop(t_mini *s)
 	s->pipe.count_commands = 0;
 	s->pipe.count_pipe = 0;
 	s->div_pipe = NULL;
-}
-
-static void		exit_code(t_mini *s) // signal goes to all proceses
-{
-	char		*nbr;
-
-	nbr = ft_itoa(g_sig.exit_status);
-	write(1, "bash: ", 6);
-	write(1, nbr, ft_strlen(nbr));
-	write(1, ": command not found\n", 20);
-	ft_memdel_1d(nbr);
-	g_sig.exit_status = 127;
 }
 
 void		sort_ft(t_mini *s, char **env1)
@@ -142,11 +117,7 @@ int			main(int ac, char **av, char **env)
 	int		j = 0;
 	int 	res = 0;
 
-	s.av = av[0];
-	s.var.pwd = 0;
-	s.exit = 0;
-	g_sig.exit_status = 0;
-	s.var.path = NULL;
+	ft_init_before_loop(&s, av[0]);
 	init_list(&s, env);
 	init_list_x(&s, env);
 	ft_shlvl(&s);

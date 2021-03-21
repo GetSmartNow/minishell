@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 11:36:22 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 14:59:42 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/21 15:22:44 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,6 @@ int				absolute_path(t_mini *s, char *bin, char *exec)
 	return (s->var.count_bin);
 }
 
-char				**exec_bin_2(t_mini *s, char **bin, char *exec)
-{
-	// 
-	return (bin);
-}
-
 int					exec_bin_1(t_mini *s, char *exec)
 {
 	int			i = 0;
@@ -126,9 +120,8 @@ int					exec_bin_1(t_mini *s, char *exec)
 		s->var.count_bin = 1;
 	else
 		s->var.count_bin = 5;
-	while (bin[i]) //bin[i + 3]
-	{ //make it finish when command is found
-		// printf("%s\n", bin[i]);
+	while (bin[i])
+	{
 		if (s->var.count_bin == 1)
 			absolute_path(s, bin[i], exec);
 		else

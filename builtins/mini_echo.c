@@ -6,13 +6,13 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:43:03 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/20 06:27:27 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/21 15:13:12 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void			mini_echo_1(t_mini *s, char *str, int i)
+static void			mini_echo_1(t_mini *s, char **str, int i)
 {
 	i = 1;
 	while (str[i])

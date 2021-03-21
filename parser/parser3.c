@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   parser3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 16:49:51 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/21 01:01:55 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/21 16:18:11 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,10 +230,17 @@ char	*make_substitute(char *command, t_mass **head, int counter)
 		}
 		else if (command[i] == '$')
 		{
-			if (!ft_strcmp(command + i, "$?"))
+			if (!ft_strncmp(command + i, "$?", 2))
 			{
-				res = ft_concat(res, ft_strdup("$?"));
-				i += ft_strlen_modif("$?");
+				if (!ft_strncmp(command + i, "$?", 3))
+				{
+					res = ft_concat(res, ft_strdup("$?"));
+				}
+				else
+				{
+					res = ft_concat(res, ft_itoa(g_sig.exit_status));
+				}
+					i += ft_strlen_modif("$?");
 			}
 			else
 			{

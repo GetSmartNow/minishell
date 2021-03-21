@@ -154,18 +154,14 @@ char			**ft_split_new(char const *s, char c)
 	char	**arr;
 	size_t	iter;
 	int		length;
+	int		num_words;
 
 	if (!s)
 		return (NULL);
 	iter = 0;
-<<<<<<< HEAD:new_split.c
-	length = count_words(s, c);
-	arr = (char **)malloc((count_words(s, c) + 1) * sizeof(char *));
-=======
 	num_words = count_words(s, c);
 	//printf("COUNT: %d\n", num_words);
 	arr = (char **)malloc((num_words + 1) * sizeof(char *));
->>>>>>> chingis:parser/new_split.c
 	if (NULL == arr)
 		return (NULL);
 	if (create_str(s, c, arr, &iter))
@@ -173,33 +169,3 @@ char			**ft_split_new(char const *s, char c)
 	arr[iter] = NULL;
 	return (arr);
 }
-
-<<<<<<< HEAD:new_split.c
-// int main(int argc, char *argv[])
-// {
-// 	char *line = "ls | cat -e";
-// 	printf("line: %s\n", line);
-// 	if (argc)
-// 	{
-// 		char **splited = ft_split_new(line, '|');
-// 		while (*splited)
-// 		{
-// 			printf("%s\n", *splited);
-// 			splited++;
-// 		}
-// 		printf("%s\n", *splited);
-// 	}
-// }
-=======
-//int	main(void)
-//{
-//	char *line = NULL;
-//	int i;
-//	while ((i = get_next_line(&line)))
-//	{
-//		char **arr = ft_split_new(line, ' ');
-//		free(line);
-//		line = NULL;
-//	}
-//}
->>>>>>> chingis:parser/new_split.c
