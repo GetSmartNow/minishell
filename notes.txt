@@ -1,4 +1,7 @@
- gcc -g libft/libft.a env/*.c builtins/*.c tools/*.c main/*.c *.h *.c
+ gcc -g libft/libft.a env/*.c builtins/*.c tools/*.c main/*.c parser/*.c *.h *.c
+
+ TODO:
+ add extra function with mistakes
 
 		____________________PARSER______________________
 
@@ -101,6 +104,4 @@ $PWD
 ls | exit | pwd
 
 
-echo >> text.txt
 
-add extra function with mistakes
