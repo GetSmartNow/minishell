@@ -1,38 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser2.c                                          :+:      :+:    :+:   */
+/*   sort_pipes.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 20:57:27 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/22 01:56:43 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/22 14:14:58 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	ft_arr_strswap(char ***str_array, int i, int j)
-{
-	char	*tmp;
-	char	**array;
-
-	array = *str_array;
-	tmp = array[i];
-	array[i] = array[j];
-	array[j] = tmp;
-}
-
-void	ft_arr_intswap(int **int_array, int i, int j)
-{
-	int	tmp;
-	int	*array;
-
-	array = *int_array;
-	tmp = array[i];
-	array[i] = array[j];
-	array[j] = tmp;
-}
 
 void	create_fd(t_mini *s)
 {
@@ -41,7 +19,6 @@ void	create_fd(t_mini *s)
 	iter_pipes = 0;
 	while ((s->pipes)[iter_pipes])
 	{
-		//ОПРЕДЕЛЯЕМ FD IN & OUT
 		define_fd_out(s, (s->pipes)[iter_pipes]);
 		(s->array_fdout)[iter_pipes] = s->fdout;
 		define_fd_in(s, (s->pipes)[iter_pipes]);

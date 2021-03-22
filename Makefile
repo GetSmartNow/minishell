@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+         #
+#    By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/09 17:56:31 by ctycho            #+#    #+#              #
-#    Updated: 2021/03/21 16:27:27 by ctycho           ###   ########.fr        #
+#    Updated: 2021/03/22 13:54:56 by mvernius         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,8 +39,9 @@ SRCS	:=	$(addprefix ${MAIN_D}, main_test.c bin.c mini_pipes.c signal.c \
 			$(addprefix $(ENV), ft_shlvl.c ft_pwd.c) \
 			$(addprefix ${BUILT}, mini_cd.c mini_echo.c mini_env.c mini_exit.c \
 			mini_export.c mini_pwd.c mini_unset.c) \
-			$(addprefix $(PARS_D), new_split.c parser1.c parser2.c parser3.c \
-			utils1.c find_symbol.c)
+			$(addprefix $(PARS_D), find_symbol.c make_subst.c new_split.c \
+			parser.c sort_pipes.c substitution_if.c utils_err.c utils_fd.c \
+			utils_init.c utils_str.c utils_str2.c utils_subst.c utils1.c utils2.c)
 
 #colors----------------------------------------------------------------------
 

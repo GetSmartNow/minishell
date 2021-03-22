@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:05:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 23:28:05 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/22 14:12:54 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,8 @@ int					mini_pipes(t_mini *s) //ps -a | cat -e | cat -e
 		g_sig.pid = fork();
 		if (g_sig.pid == 0)
 		{
-			printf("fd2: %d\n", s->array_fdout[i]);
-			printf("sdin: %d\n", s->array_fdin[i]);
+			// printf("fd2: %d\n", s->array_fdout[i]);
+			// printf("sdin: %d\n", s->array_fdin[i]);
 			if (i == 0) // first
 			{
 				if (s->array_fdin[i])

@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 11:36:22 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 21:35:43 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/22 14:13:56 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,9 @@ int					exec_bin_1(t_mini *s, char *exec)
 	tmp = s->head;
 	while (tmp != NULL && ft_strncmp(tmp->content, "PATH=", 5) != 0)
 		tmp = tmp->next;
-	if (ft_strncmp(exec,  s->av, ft_strlen(s->av)) == 0) //ft_strncmp(exec, s->av + 2, ft_strlen(s->av + 2)) == 0 || 
+	if (ft_strncmp(exec,  s->av, ft_strlen(s->av)) == 0)
 	{
-		// if (s->var.path == NULL)
-		// 	s->var.bin = ft_strjoin(s->head_local->content, s->av);
-		// else
-			s->var.bin = s->av;
+		s->var.bin = s->av;
 		ft_list_to_2d(s);
 		ft_memdel_1d(s->var.path);
 		return 0;
@@ -134,7 +131,7 @@ int					exec_bin_1(t_mini *s, char *exec)
 
 void				bin_error(t_mini *s, char *exec, int res)
 {
-	if (res == 4 || res == 6 || res == 0 || res == -1) //dopiska
+	if (res == 4 || res == 6 || res == 0 || res == -1)
 	{
 		g_sig.exit_status = 0;
 		return ;
@@ -167,8 +164,6 @@ int					exec_bin(t_mini *s, char **arr, char *exec)
 	char			*bin = NULL;
 	int				status;
 
-	printf("sdout: %d\n", s->array_fdout[0]);
-	printf("sdin: %d\n", s->array_fdin[0]);
 	res = exec_bin_1(s, exec);
 	g_sig.pid = fork();
 	if (g_sig.pid < 0)
@@ -191,9 +186,7 @@ int					exec_bin(t_mini *s, char **arr, char *exec)
 	else
 	{
 		waitpid(g_sig.pid, &status, 0);
-		printf("status: %d\n", status);
 	}
-		// wait(NULL);
 	if (res)
 		ft_memdel_1d(s->var.bin);
 	bin_error(s, exec, res);

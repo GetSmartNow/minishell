@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   find_symbol.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/22 14:17:12 by mvernius          #+#    #+#             */
+/*   Updated: 2021/03/22 14:17:13 by mvernius         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 void ident_bad_dup(char *str, char c, t_mini *s)
@@ -17,8 +29,6 @@ void ident_bad_dup(char *str, char c, t_mini *s)
 			s->err_message = ft_strnjoin_char(s->err_message, str[iter], 1);
 			s->err_message = ft_strnjoin_char(s->err_message, '\'', 1);
 			s->err_message = ft_strnjoin_char(s->err_message, '\n', 1);
-
-			//s->err_message = ft_concat(s->err_message, ft_strdup("\'\n"));
 		}
 		else
 		{
@@ -49,6 +59,17 @@ void define_flag(int shield_count, int *flag)
 	}
 	else
 		*flag = 1;
+}
+
+void define_flag2(int shield_count, int *flag)
+{
+	if (shield_count % 2 == 0)
+	{
+		if ((*flag) == 0)
+			(*flag) = 1;
+		else
+			(*flag) = 0;
+	}
 }
 
 int find_symbol(char *str, char c, t_mini *s)

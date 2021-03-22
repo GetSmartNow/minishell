@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/22 02:44:11 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/22 14:07:25 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,30 +132,109 @@ void				my_lstadd_back(t_mass **lst, t_mass *new);
 void				my_lstdelone(t_mass *lst, void (*del)(void *));
 t_mass				*deletelem(t_mass *lst);
 void				ft_list_sort(t_mass **lst);
+void				sort_ft(t_mini *s, char **env1);
 
 
 //________________PARSER
-void				ft_parser(t_mini *s, char *line, char **env);
-char *make_substitute(char *command, t_mass **head, int counter, t_mini *s);
-char				**ft_split_new(char const *s, char c);
-int					ft_strlen_modif(const char *str);
-void				sort_ft(t_mini *s, char **env1);
-int					ft_isspace(char c);
-char				*ft_strnjoin_char(char *s1, char c, int quantity);
-char				*find_file_name(char *line, int position, int *len);
-int find_symbol(char *str, char c, t_mini *s);
-void				define_fd_in(t_mini *s, char *line);
-void				define_fd_out(t_mini *s, char *line);
-void				ft_sort_pipes(t_mini *s);
-int					ft_arrlen(char **matrix);
-char *extract_file_name(char *line, char redir, t_mini *s);
-char	*ft_concat(char *str1, char *str2);
 
-//parser/utils1
-int 				skip_symbol(const char *str, int *symbol_count, char symbol);
-int					is_quote(char symbol);
-//parser/find_symbol
-void				define_flag(int shield_count, int *flag);
-//parser/parser1
-void				paste_error(const char *str, t_mini *s);
+/* 
+**	parser/find_symbol.c
+*/
+void ident_bad_dup(char *str, char c, t_mini *s);
+void define_flag(int shield_count, int *flag);
+void define_flag2(int shield_count, int *flag);
+int find_symbol(char *str, char c, t_mini *s);
+
+/* 
+**	parser/make_subst.c
+*/
+char *make_substitute(char *command, t_mass **head, int counter, t_mini *s);
+
+/* 
+**	parser/new_split.c
+*/
+char			**ft_split_new(char const *s, char c);
+
+/* 
+**	parser/parser.c
+*/
+void	ft_parser(t_mini *s, char *line, char **env);
+void prepare_commands(t_mini *s, const char *line, char **env);
+void prepare_for_pipes(t_mini *s, int iter_commands);
+void run_pipes(t_mini *s);
+void make_run_command_elems(t_mini *s, int iter_pipes);
+
+/* 
+**	parser/sort_pipes.c
+*/
+void	create_fd(t_mini *s);
+void	ft_sort_pipes(t_mini *s);
+
+/* 
+**	parser/substitution_if.c
+*/
+int if_shield(const char *command, int *count_shield, int *i, char **res);
+int if_single_quote(char *command, t_mini *s, int *i, char **res);
+int if_dollar(char *command, t_mass **head, int *i, char **res);
+int if_double_quote(int *i, int *flag1);
+
+/* 
+**	parser/utils_err.c
+*/
+void	paste_error(const char *str, t_mini *s);
+void	print_error(t_mini *s);
+void 	run_checks(char *str, t_mini *s);
+
+/* 
+**	parser/utils_fd.c
+*/
+void	define_fd_in(t_mini *s, char *line);
+void	define_fd_out(t_mini *s, char *line);
+int ft_fill_fd(t_mini *s, char *line, char *file_name, int position);
+
+/* 
+**	parser/utils_init.c
+*/
+void init_before_replacement(int *i, char **res, int *count_shield, int *flag1);
+void init_err_info(t_mini *s);
+
+/* 
+**	parser/utils_str.c
+*/
+char	*ft_strnjoin_char(char *s1, char c, int quantity);
+char	*ft_concat(char *str1, char *str2);
+void add_simple_char(char c, int *i, char **res, int counter);
+void replace(char *command, t_mass **head, int *i, char **res);
+char	*extract_key(char *str, int pos);
+
+/* 
+**	parser/utils_str2.c
+*/
+char	*ft_strcut(char *line, int start, int len);
+char *extract_command(char *line, char redir, t_mini *s);
+char *extract_file_name(char *line, char redir, t_mini *s);
+char	*find_file_name(char *line, int position, int *len);
+
+/* 
+**	parser/utils_subst.c
+*/
+char	*find_value_in_export(char *key, t_mass **head);
+char	*extract_from_quotes(char *str, int pos);
+int	is_shielded(char c);
+void errno_handler(const char *command, int *i, char **res);
+/* 
+**	parser/utils1.c
+*/
+int skip_symbol(const char *str, int *symbol_count, char symbol);
+int is_quote(char symbol);
+int	ft_arrlen(char **matrix);
+int	ft_isspace(char c);
+int	ft_strlen_modif(const char *str);
+/* 
+**	parser/utils2.c
+*/
+void	ft_arr_strswap(char ***str_array, int i, int j);
+void	ft_arr_intswap(int **int_array, int i, int j);
+void free_command(t_mini *s);
+int		detect_out_redirect_type(const char *str, int position);
 #endif
