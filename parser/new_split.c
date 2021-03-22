@@ -140,7 +140,6 @@ static void		*my_free(char **array, size_t i)
 static size_t	create_str(const char *s, char c, char **arr, size_t *iter)
 {
 	int	len_word;
-	int	i;
 
 	while (*s)
 	{
@@ -154,7 +153,6 @@ static size_t	create_str(const char *s, char c, char **arr, size_t *iter)
 			if (NULL == arr[*iter])
 				return (1);
 			*iter += 1;
-			//printf("FROM SPLIT: |%s|\n", arr[*iter - 1]);
 		}
 	}
 	return (0);
@@ -164,14 +162,12 @@ char			**ft_split_new(char const *s, char c)
 {
 	char	**arr;
 	size_t	iter;
-	int		length;
 	int		num_words;
 
 	if (!s)
 		return (NULL);
 	iter = 0;
 	num_words = count_words(s, c);
-	//printf("COUNT: %d\n", num_words);
 	arr = (char **)malloc((num_words + 1) * sizeof(char *));
 	if (NULL == arr)
 		return (NULL);

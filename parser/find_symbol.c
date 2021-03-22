@@ -65,21 +65,16 @@ int find_symbol(char *str, char c, t_mini *s)
 	while (str[iter])
 	{
 		iter += skip_symbol(str + iter, &shield_count, '\\');
-		if (str[iter] && is_quote(str[iter]) && flag == 0)
-			define_flag(shield_count, &flag);
-		else if (str[iter] && is_quote(str[iter]) && flag == 1)
+		if (str[iter] && is_quote(str[iter]))
 			define_flag(shield_count, &flag);
 		else if (str[iter] == c)
 		{
-			//define_flag(shield_count, &flag);
 			if (shield_count % 2 == 1)
 				flag = 1;
 			if (flag == 0)
 			{
 				position = iter;
 				ident_bad_dup(str + iter, c, s);
-				//else
-				//	iter -= check_flag;
 				return (position);
 			}
 		}

@@ -12,7 +12,7 @@ int	ft_arrlen(char **matrix)
 	return (i);
 }
 //UTILS
-int		detect_out_redirect_type(char *str, int position)
+int		detect_out_redirect_type(const char *str, int position)
 {
 	int	out;
 

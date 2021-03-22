@@ -156,17 +156,6 @@ int	ft_isspace(char c)
 	return (result);
 }
 
-int		ft_isemptystr(char *str)
-{
-	while (*str)
-	{
-		if (!ft_isspace(*str))
-			return 0;
-		str++;
-	}
-	return (1);
-}
-
 void add_simple_char(char c, int *i, char **res, int counter)
 {
 	if (counter == 0)
