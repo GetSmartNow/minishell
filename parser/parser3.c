@@ -174,112 +174,119 @@ int		ft_isemptystr(char *str)
 	return (1);
 }
 
-char	*make_substitute(char *command, t_mass **head, int counter)
+void add_simple_char(char c, int *i, char **res, int counter)
+{
+	if (counter == 0)
+	{
+		(*res) = ft_strnjoin_char((*res), (char)ft_tolower(c), 1);
+		(*i)++;
+	}
+	else
+	{
+		(*res) = ft_strnjoin_char((*res), c, 1);
+		(*i)++;
+	}
+}
+
+void errno_handler(const char *command, int *i, char **res)
+{
+	if (!ft_strncmp(command, "$?", 3))
+		(*res) = ft_concat((*res), ft_strdup("$?"));
+	else
+		(*res) = ft_concat((*res), ft_itoa(g_sig.exit_status));
+	(*i) += ft_strlen_modif("$?");
+}
+
+void replace(char *command, t_mass **head, int *i, char **res)
+{
+	char	*key;
+	char	*tmp;
+
+	key = extract_key(command, ++(*i));
+	if (NULL != key)
+	{
+		tmp = find_value_in_export(key, head);
+		(*i) += ft_strlen_modif(key);
+		if (NULL != tmp && ft_strcmp(tmp, ""))
+			(*res) = ft_concat((*res), tmp);
+		ft_memdel_1d(key);
+	}
+	else
+		(*i)++;
+}
+
+int if_shield(const char *command, int *count_shield, int *i, char **res)
+{
+	(*i) += skip_symbol(command + (*i), count_shield, '\\');
+	if ((*count_shield) >= 2)
+	{
+		(*res) = ft_strnjoin_char((*res), '\\', (*count_shield) / 2);
+	}
+	if (is_shielded(command[(*i)]) && (*count_shield) % 2 == 1)
+	{
+		(*res) = ft_strnjoin_char((*res), command[(*i)], 1);
+		(*i)++;
+	}
+	(*count_shield) = 0;
+	return (-1);
+}
+
+int if_single_quote(char *command, t_mini *s, int *i, char **res)
+{
+	char *tmp;
+
+	tmp = extract_from_quotes(command, (*i)); //no need in free cause of concat
+	if (tmp)
+	{
+		(*res) = ft_concat((*res), tmp);
+		(*i) += (ft_strlen_modif(tmp) + 2); //сомневаюсь насчет 2, но пока до сих пор работает
+	}
+	else
+		paste_error("quote is not closed\n", s);
+	return (-1);
+}
+
+int if_dollar(char *command, t_mass **head, int *i, char **res)
+{
+	if (!ft_strncmp(command + (*i), "$?", 2))
+		errno_handler(command + (*i), i, res);
+	else
+		replace(command, head, i, res);
+	return (-1);
+}
+
+int if_double_quote(int *i, int *flag1)
+{
+	(*i)++;
+	(*flag1)++;
+	return (-1);
+}
+
+char *make_substitute(char *command, t_mass **head, int counter, t_mini *s)
 {
 	int		i;
 	char	*res;
-	char	*tmp;
-	char	*key;
 	int		count_shield;
+	int 	flag1;
 
-	tmp = NULL;
+	flag1 = 0;
 	res = NULL;
 	i = 0;
 	count_shield = 0;
-	while (command[i])
+	while (command[i] && s->err_status == 0)
 	{
 		if (command[i] == '\\')
-		{
-			while (command[i] == '\\')
-			{
-				i++;
-				count_shield++;
-			}
-			if (count_shield >= 2)
-			{
-				res = ft_strnjoin_char(res, '\\', count_shield / 2);
-			}
-			if (is_shielded(command[i]) && count_shield % 2 == 1)
-			{
-				res = ft_strnjoin_char(res, command[i], 1);
-				i++;
-				count_shield = 0;
-			}
-			counter = -1;
-		}
+			counter = if_shield(command, &count_shield, &i, &res);
 		else if (command[i] == '\"')
-		{
-			i++;
-			counter = -1;
-		}
+			counter = if_double_quote(&i, &flag1);
 		else if (command[i] == '\'')
-		{
-			tmp = extract_from_quotes(command, i); //no need in free cause of concat
-			if (tmp)
-			{
-				res = ft_concat(res, tmp);
-				i += (ft_strlen_modif(tmp) + 2); //сомневаюсь насчет 2, но пока до сих пор работает
-			}
-			else
-			{
-				tmp = ft_substr(command, i, ft_strlen_modif(command) - i); //no need in free cause of concat
-				res = ft_concat(res, tmp);
-				i += ft_strlen_modif(tmp);
-			}
-			counter = -1;
-		}
+			counter = if_single_quote(command, s, &i, &res);
 		else if (command[i] == '$')
-		{
-			if (!ft_strncmp(command + i, "$?", 2))
-			{
-				if (!ft_strncmp(command + i, "$?", 3))
-				{
-					res = ft_concat(res, ft_strdup("$?"));
-				}
-				else
-				{
-					res = ft_concat(res, ft_itoa(g_sig.exit_status));
-				}
-					i += ft_strlen_modif("$?");
-			}
-			else
-			{
-				key = extract_key(command, ++i); //free
-
-				//DELETE SOMEDAY
-				//printf("KEY: |%s|\n", key);
-				if (NULL != key)
-				{
-					tmp = find_value_in_export(key, head); //free
-					
-					//DELETE SOMEDAY
-					//printf("TMP: |%s|\n", tmp);
-					i += ft_strlen_modif(key);
-					if (NULL != tmp && ft_strcmp(tmp, ""))
-						res = ft_concat(res, tmp);
-					free(key);
-					key = NULL;
-				}
-				else
-				{
-					i++;
-				}
-			}
-			counter = -1;
-		}
+			counter = if_dollar(command, head, &i, &res);
 		else
-		{
-			if (counter == 0)
-			{
-				res = ft_strnjoin_char(res, ft_tolower(command[i]), 1);
-				i++;
-			}
-			else
-			{
-				res = ft_strnjoin_char(res, command[i], 1);
-				i++;
-			}
-		}
+			add_simple_char(command[i], &i, &res, counter);
 	}
+	if (flag1 % 2 == 1)
+		paste_error("quote is not closed\n", s);
 	return (res);
 }

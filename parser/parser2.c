@@ -44,11 +44,8 @@ void	create_fd(t_mini *s)
 		//ОПРЕДЕЛЯЕМ FD IN & OUT
 		define_fd_out(s, (s->pipes)[iter_pipes]);
 		(s->array_fdout)[iter_pipes] = s->fdout;
-		//close(s->fdout);
-		//printf("%d\n", (s->array_fdout)[iter_pipes]);
 		define_fd_in(s, (s->pipes)[iter_pipes]);
 		(s->array_fdin)[iter_pipes] = s->fdin;
-		//close(s->fdin);
 		iter_pipes++;
 	}
 }

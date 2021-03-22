@@ -77,8 +77,6 @@ void	define_fd_out(t_mini *s, char *line)
 
 	iter = 0;
 	file_name = NULL;
-	//if (s->fdout != -1)
-	//	close(s->fdout);
 	s->fdout = -1;
 	while (line[iter])
 	{
@@ -87,7 +85,9 @@ void	define_fd_out(t_mini *s, char *line)
 		{
 			len = 0;
 			ft_memdel_1d((void *)file_name);
-			file_name = find_file_name(line + iter, position, &len); //free
+			file_name = find_file_name(line + iter, position, &len);
+			if (NULL == file_name)
+				paste_error("malloc error\n", s);
 			iter += position + ft_fill_fd(s, line + iter, file_name, position);
 		}
 		else
@@ -121,6 +121,8 @@ void	define_fd_in(t_mini *s, char *line)
 			len = 0;
 			ft_memdel_1d((void *)file_name);
 			file_name = find_file_name(line + iter, position, &len);
+			if (NULL == file_name)
+				paste_error("malloc error\n", s);
 			if (s->fdin != -1)
 				close(s->fdin);
 			fd = open(file_name, O_RDONLY); //какой корректно юзать?
@@ -181,6 +183,8 @@ char *extract_command(char *line, char redir, t_mini *s)
 	file_name = NULL;
 	iter = 0;
 	res = ft_strdup(line);
+	if (NULL == res)
+		paste_error("malloc error\n", s);
 	position = 0;
 	while (*res && position >= 0)
 	{
@@ -188,12 +192,11 @@ char *extract_command(char *line, char redir, t_mini *s)
 		if (position >= 0)
 		{
 			len = 0;
-			if (file_name != NULL) //memdel1d
-				ft_memdel_1d(file_name);
+			ft_memdel_1d(file_name);
 			file_name = find_file_name(res, position, &len);
-			res = ft_strcut(res, iter + position, len); //love this function, add later to my lib;
-			if (NULL == res)
+			if (NULL == file_name)
 				paste_error("malloc error\n", s);
+			res = ft_strcut(res, iter + position, len); //love this function, add later to my lib;
 		}
 	}
 	ft_memdel_1d((void *)file_name);
@@ -217,12 +220,10 @@ char *extract_file_name(char *line, char redir, t_mini *s)
 		if (position >= 0)
 		{
 			len = 0;
-			if (file_name != NULL)
-			{
-				free(file_name);
-				file_name = NULL;
-			}
+			ft_memdel_1d(file_name);
 			file_name = find_file_name(line + iter, position, &len);
+			if (NULL == file_name)
+				paste_error("malloc error\n", s);
 			iter += position + 1;
 		}
 	}
@@ -235,13 +236,14 @@ void make_command_elems(t_mini *s, int iter_pipes)
 	char	*tmp;
 
 	s->command_elems = ft_split_new((s->pipes)[iter_pipes], ' ');
+	if (NULL == s->command_elems)
+		paste_error("malloc error\n", s);
 	iter_elems = 0;
 	while ((s->command_elems)[iter_elems])
 	{
 		tmp = (s->command_elems)[iter_elems];
-		(s->command_elems)[iter_elems] = make_substitute((s->command_elems)[iter_elems], &(s->head), iter_elems);
-		free(tmp);
-		tmp = NULL;
+		(s->command_elems)[iter_elems] = make_substitute((s->command_elems)[iter_elems], &(s->head), iter_elems, s);
+		ft_memdel_1d((void *)tmp);
 		iter_elems++;
 	}
 }
@@ -255,9 +257,12 @@ void make_pipes(t_mini *s)
 	while ((s->pipes)[iter_pipes])
 	{
 		//ИЗВЛЕЧЕНИЕ СТРОКИ БЕЗ РЕДИРЕКТОВ
-		s->pipes[iter_pipes] = extract_command(s->pipes[iter_pipes], '>', s); //free можно внутри extract сделать
-		s->pipes[iter_pipes] = extract_command(s->pipes[iter_pipes], '<', s); //free
-
+		s->pipes[iter_pipes] = extract_command(s->pipes[iter_pipes], '>', s);
+		if (NULL == s->pipes[iter_pipes])
+			paste_error("malloc error\n", s);
+		s->pipes[iter_pipes] = extract_command(s->pipes[iter_pipes], '<', s);
+		if (NULL == s->pipes[iter_pipes])
+			paste_error("malloc error\n", s);
 		//РАЗБИЕНИЕ И ЗАМЕНА ЭЛЕМЕНТОВ
 		make_command_elems(s, iter_pipes);
 		//ЗАКИДЫВАЮ В MASS3D И НАЧИНАЕМ КВН
