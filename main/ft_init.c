@@ -6,14 +6,19 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/21 16:27:47 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/22 22:01:10 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/23 00:21:14 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void			ft_init_before_loop(t_mini *s, char *av)
+void			ft_init_before_loop(t_mini *s, char *av, char **env)
 {
+	init_list(s, env);
+	init_list_x(s, env);
+	ft_shlvl(s);
+	get_pwd(s);
+	sigcat = 0;
 	g_sig.exit_status = 0;
 	s->av = av;
 	s->var.pwd = 0;

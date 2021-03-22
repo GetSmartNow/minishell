@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/22 21:32:37 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/23 00:19:58 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ t_sig	g_sig;
 int		sigcat;
 
 /*INIT*/
-void				ft_init_before_loop(t_mini *s, char *av);
+void				ft_init_before_loop(t_mini *s, char *av, char **env);
 void				ft_init_in_loop(t_mini *s);
 int					init_list(t_mini *s, char **env);
 int					init_list_x(t_mini *s, char **env);
@@ -110,7 +110,8 @@ void				mini_env(t_mini *s);
 void				export_to_env(t_mini *s, int i);
 void				mini_export(t_mini *s);
 void				mini_unset(t_mini *s);
-int					mini_pipes(t_mini *s);
+int					mini_pipes(t_mini *s, char ***arr);
+int					mini_bin_p1(t_mini *s, char *exec, int i);
 
 /*EXEC*/
 int					exec_bin(t_mini *s, char **arr, char *command);
