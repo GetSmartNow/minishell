@@ -6,13 +6,13 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 14:17:12 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/22 14:17:13 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/22 21:05:56 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void ident_bad_dup(char *str, char c, t_mini *s)
+void	ident_bad_dup(char *str, char c, t_mini *s)
 {
 	int iter;
 
@@ -48,7 +48,7 @@ void ident_bad_dup(char *str, char c, t_mini *s)
 	//добавить присвоение 258 ошибки.
 }
 
-void define_flag(int shield_count, int *flag)
+void	define_flag(int shield_count, int *flag)
 {
 	if (shield_count % 2 == 0)
 	{
@@ -61,7 +61,7 @@ void define_flag(int shield_count, int *flag)
 		*flag = 1;
 }
 
-void define_flag2(int shield_count, int *flag)
+void	define_flag2(int shield_count, int *flag)
 {
 	if (shield_count % 2 == 0)
 	{
@@ -72,7 +72,7 @@ void define_flag2(int shield_count, int *flag)
 	}
 }
 
-int find_symbol(char *str, char c, t_mini *s)
+int		find_symbol(char *str, char c, t_mini *s)
 {
 	int	iter;
 	int	shield_count;
@@ -104,5 +104,3 @@ int find_symbol(char *str, char c, t_mini *s)
 	}
 	return (position);
 }
-
-

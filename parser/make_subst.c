@@ -6,18 +6,18 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 14:17:17 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/22 15:15:40 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/22 21:06:47 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char *make_substitute(char *command, t_mass **head, int counter, t_mini *s)
+char	*make_substitute(char *command, t_mass **head, int counter, t_mini *s)
 {
 	int		i;
 	char	*res;
 	int		count_shield;
-	int 	flag1;
+	int		flag1;
 
 	init_before_replacement(&i, &res, &count_shield, &flag1);
 	while (command[i] && s->err_status == 0)
