@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 21:06:01 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/22 02:44:11 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ typedef struct		s_mini
 	char			*free_line;
 	
 	
-	
+	int				err_status;
+	char			*err_message;
 	int				fdout;
 	int				fdin;
 	int				*array_fdout;
@@ -142,16 +143,19 @@ void				sort_ft(t_mini *s, char **env1);
 int					ft_isspace(char c);
 char				*ft_strnjoin_char(char *s1, char c, int quantity);
 char				*find_file_name(char *line, int position, int *len);
-int					find_redir(char *str, char c);
+int find_symbol(char *str, char c, t_mini *s);
 void				define_fd_in(t_mini *s, char *line);
 void				define_fd_out(t_mini *s, char *line);
 void				ft_sort_pipes(t_mini *s);
 int					ft_arrlen(char **matrix);
-char				*extract_file_name(char *line, char redir);
+char *extract_file_name(char *line, char redir, t_mini *s);
+char	*ft_concat(char *str1, char *str2);
 
 //parser/utils1
 int 				skip_symbol(const char *str, int *symbol_count, char symbol);
 int					is_quote(char symbol);
-//parser/find_redir
+//parser/find_symbol
 void				define_flag(int shield_count, int *flag);
+//parser/parser1
+void				paste_error(const char *str, t_mini *s);
 #endif

@@ -64,8 +64,7 @@ int ft_fill_fd(t_mini *s, char *line, char *file_name, int position)
 	else if (fd_type == 1)
 		s->fdout = open(file_name, O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
 	if (s->fdout < 0)
-		printf("error in open (ft_fill_fd)\n");
-	printf("fd: %d\n", s->fdout);
+		paste_error("output file error\n", s);
 	return (fd_type);
 }
 
@@ -83,7 +82,7 @@ void	define_fd_out(t_mini *s, char *line)
 	s->fdout = -1;
 	while (line[iter])
 	{
-		position = find_redir(line + iter, '>');
+		position = find_symbol(line + iter, '>', s);
 		if (position >= 0)
 		{
 			len = 0;
@@ -116,7 +115,7 @@ void	define_fd_in(t_mini *s, char *line)
 	file_name = NULL;
 	while (line[iter])
 	{
-		position = find_redir(line + iter, '<');
+		position = find_symbol(line + iter, '<', s);
 		if (position >= 0)
 		{
 			len = 0;
@@ -126,7 +125,7 @@ void	define_fd_in(t_mini *s, char *line)
 				close(s->fdin);
 			fd = open(file_name, O_RDONLY); //какой корректно юзать?
 			if (fd < 0)
-				printf("input file error\n");
+				paste_error("input file error\n", s);
 			else
 				s->fdin = fd;
 			iter += position + 1;
@@ -171,7 +170,7 @@ char	*ft_strcut(char *line, int start, int len)
 	return (res);
 }
 
-char	*extract_command(char *line, char redir)
+char *extract_command(char *line, char redir, t_mini *s)
 {
 	int		len;
 	char	*res;
@@ -185,17 +184,16 @@ char	*extract_command(char *line, char redir)
 	position = 0;
 	while (*res && position >= 0)
 	{
-		position = find_redir(res, redir);
+		position = find_symbol(res, redir, s);
 		if (position >= 0)
 		{
 			len = 0;
 			if (file_name != NULL) //memdel1d
-			{
-				free(file_name);
-				file_name = NULL;
-			}
+				ft_memdel_1d(file_name);
 			file_name = find_file_name(res, position, &len);
 			res = ft_strcut(res, iter + position, len); //love this function, add later to my lib;
+			if (NULL == res)
+				paste_error("malloc error\n", s);
 		}
 	}
 	ft_memdel_1d((void *)file_name);
@@ -203,7 +201,7 @@ char	*extract_command(char *line, char redir)
 	return (res);
 }
 
-char	*extract_file_name(char *line, char redir)
+char *extract_file_name(char *line, char redir, t_mini *s)
 {
 	int		len;
 	int		iter;
@@ -215,7 +213,7 @@ char	*extract_file_name(char *line, char redir)
 	file_name = NULL;
 	while (line[iter] && position >= 0)
 	{
-		position = find_redir(line + iter, redir);
+		position = find_symbol(line + iter, redir, s);
 		if (position >= 0)
 		{
 			len = 0;
@@ -257,8 +255,8 @@ void make_pipes(t_mini *s)
 	while ((s->pipes)[iter_pipes])
 	{
 		//ИЗВЛЕЧЕНИЕ СТРОКИ БЕЗ РЕДИРЕКТОВ
-		s->pipes[iter_pipes] = extract_command(s->pipes[iter_pipes], '>'); //free можно внутри extract сделать
-		s->pipes[iter_pipes] = extract_command(s->pipes[iter_pipes], '<'); //free
+		s->pipes[iter_pipes] = extract_command(s->pipes[iter_pipes], '>', s); //free можно внутри extract сделать
+		s->pipes[iter_pipes] = extract_command(s->pipes[iter_pipes], '<', s); //free
 
 		//РАЗБИЕНИЕ И ЗАМЕНА ЭЛЕМЕНТОВ
 		make_command_elems(s, iter_pipes);
@@ -268,48 +266,109 @@ void make_pipes(t_mini *s)
 	}
 }
 
+void	paste_error(const char *str, t_mini *s)
+{
+	if (s->err_message == NULL)
+		s->err_message = ft_strdup(str);
+	s->err_status = 1;
+}
+
+void	print_error(t_mini *s)
+{
+	write(STDERR, "bash: ", 6);
+	write(STDERR, s->err_message, ft_strlen(s->err_message));
+}
+
+void 	run_checks(char *str, t_mini *s)
+{
+	int position;
+	int i;
+
+	position = 0;
+	i = 0;
+	while (str[i] && position >=0)
+	{
+		position = find_symbol(str + i, '|', s);
+		i += position + 1;
+	}
+	i = 0;
+	position = 0;
+	while (str[i] && position >=0)
+	{
+		position = find_symbol(str + i, '>', s);
+		i += position + 1;
+	}
+	i = 0;
+	position = 0;
+	while (str[i] && position >=0)
+	{
+		position = find_symbol(str + i, '<', s);
+		i += position + 1;
+	}
+}
+
 void	ft_parser(t_mini *s, char *line, char **env)
 {
 	int		iter_commands;
 
 	//ДРОБИМ НА КОМАНДЫ
-	s->commands = ft_split_new(line, ';');
-	if (NULL == s->commands)
-		printf("malloc error: can't allocate for s->commands\n");
-	iter_commands = 0;
-	while ((s->commands)[iter_commands])
+	s->err_message = NULL;
+	s->err_status = 0;
+	run_checks(line, s);
+	if (s->err_status == 0)
 	{
-		//ДРОБИМ НА ПАЙПЫ, СЧИТАЕМ ПАЙПЫ, ВЫДЕЛЯЕМ ПОД КОЛИЧЕСТВО ПАЙПОВ ПАМЯТЬ В МАС3Д
-		s->pipes = ft_split_new((s->commands)[iter_commands], '|');
-		s->pipe.count_pipe = ft_arrlen(s->pipes) - 1;
-		s->pipe.count_commands = s->pipe.count_pipe + 1;
-
-		//выделение памяти под мас3д, массивы фдшников
-		s->mass3d = (char ***)malloc((s->pipe.count_commands + 1) * sizeof(char **)); //free
-		s->array_fdin = (int *)malloc(ft_arrlen(s->pipes) * sizeof(int));
-		s->array_fdout = (int *)malloc(ft_arrlen(s->pipes) * sizeof(int));
-		
-		//Сортировка пайпов, определение всех fd, заполнение массивов по fd
-		ft_sort_pipes(s);
-
-		//цикл по коммандам с пайпов, внутри разбиение по пробелам и замены
-		make_pipes(s);
-
-		//проверка исполняемых файлов
-		if (ft_strlen_modif((s->commands)[iter_commands]) > 0)
-			sort_ft(s, env);
-
-		int i = -1;
-		while (++i < s->pipe.count_commands)
+		s->commands = ft_split_new(line, ';');
+		if (NULL == s->commands)
+			paste_error("malloc error\n", s);
+		iter_commands = 0;
+		while ((s->commands)[iter_commands])
 		{
-			ft_memdel_2d((void **)s->mass3d[i]);
+			if (s->err_status == 0)
+			{
+				//ДРОБИМ НА ПАЙПЫ, СЧИТАЕМ ПАЙПЫ, ВЫДЕЛЯЕМ ПОД КОЛИЧЕСТВО ПАЙПОВ ПАМЯТЬ В МАС3Д
+				s->pipes = ft_split_new((s->commands)[iter_commands], '|');
+				if (NULL == s->pipes)
+					paste_error("malloc error\n", s);
+				s->pipe.count_pipe = ft_arrlen(s->pipes) - 1;
+				s->pipe.count_commands = s->pipe.count_pipe + 1;
+
+				//выделение памяти под мас3д, массивы фдшников
+				s->mass3d = (char ***)malloc((s->pipe.count_commands + 1) * sizeof(char **)); //free
+				if (NULL == s->mass3d)
+					paste_error("malloc error\n", s);
+				s->array_fdin = (int *)malloc(ft_arrlen(s->pipes) * sizeof(int));
+				if (NULL == s->array_fdin)
+					paste_error("malloc error\n", s);
+				s->array_fdout = (int *)malloc(ft_arrlen(s->pipes) * sizeof(int));
+				if (NULL == s->array_fdout)
+					paste_error("malloc error\n", s);
+
+				//Сортировка пайпов, определение всех fd, заполнение массивов по fd
+				ft_sort_pipes(s);
+
+				//цикл по коммандам с пайпов, внутри разбиение по пробелам и замены
+				make_pipes(s);
+
+				if (s->err_status)
+					print_error(s);
+				else if (ft_strlen_modif((s->commands)[iter_commands]) > 0)
+					sort_ft(s, env);
+				iter_commands++;
+				int i = -1;
+				while (++i < s->pipe.count_commands)
+				{
+					ft_memdel_2d((void **)s->mass3d[i]);
+				}
+				ft_memdel_2d((void **)s->pipes);
+				ft_memdel_1d((void *)s->array_fdin);
+				ft_memdel_1d((void *)s->array_fdout);
+				free(s->mass3d);
+				s->mass3d = NULL;
+			}
+			//проверка исполняемых файлов
 		}
-		ft_memdel_2d((void **)s->pipes);
-		ft_memdel_1d((void *)s->array_fdin);
-		ft_memdel_1d((void *)s->array_fdout);
-		free(s->mass3d);
-		s->mass3d = NULL;
-		iter_commands++;
+		ft_memdel_2d((void **)s->commands);
 	}
-	ft_memdel_2d((void **)s->commands);
+	if (s->err_status)
+		print_error(s);
 }

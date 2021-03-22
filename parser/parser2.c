@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 20:57:27 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/21 21:33:03 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/22 01:56:43 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	create_fd(t_mini *s)
 		//ОПРЕДЕЛЯЕМ FD IN & OUT
 		define_fd_out(s, (s->pipes)[iter_pipes]);
 		(s->array_fdout)[iter_pipes] = s->fdout;
-		printf("fd1: %d\n", s->array_fdout[iter_pipes]);
 		//close(s->fdout);
 		//printf("%d\n", (s->array_fdout)[iter_pipes]);
 		define_fd_in(s, (s->pipes)[iter_pipes]);
@@ -71,11 +70,11 @@ void	ft_sort_pipes(t_mini *s)
 	{
 		j = i + 1;
 		ft_memdel_1d((void *)file_name1);
-		file_name1 = extract_file_name((s->pipes)[i], '<');
+		file_name1 = extract_file_name((s->pipes)[i], '<', s);
 		while (j < arr_len)
 		{
 			ft_memdel_1d((void *)file_name2);
-			file_name2 = extract_file_name((s->pipes)[j], '>');
+			file_name2 = extract_file_name((s->pipes)[j], '>', s);
 			if (file_name1 && file_name2)
 			{
 				if (!ft_strcmp(file_name1, file_name2))

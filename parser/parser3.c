@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 16:49:51 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/21 22:24:42 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/22 02:44:03 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	*ft_strnjoin_char(char *s1, char c, int quantity)
 	return (result);
 }
 
-static char	*ft_concat(char *str1, char *str2)
+char	*ft_concat(char *str1, char *str2)
 {
 	int		len;
 	int		i;
