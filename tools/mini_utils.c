@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/21 21:13:20 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/17 15:08:33 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/22 04:25:47 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ char				*put_quotes(char *s1)
 	char	*s = NULL;
 
 	s = (char *)malloc(sizeof(char) * ft_strlen(s1) + 3);
+	if (s == NULL)
+		return (NULL);
 	while (s1[j])
 	{
 		s[i] = s1[j];

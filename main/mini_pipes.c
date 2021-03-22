@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:05:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/22 14:12:54 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/22 21:02:03 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,8 @@ int					mini_pipes(t_mini *s) //ps -a | cat -e | cat -e
 		close(s->pipe.fd[j][1]);
 		free(s->pipe.fd[j]);
 	}
+	free(s->pipe.fd);
+	s->pipe.fd = NULL;
 	for (int i = 0; i < s->pipe.count_commands; i++)
 		wait(NULL);
 	free(s->pipe.fd);

@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 13:26:54 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 20:25:31 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/22 02:22:59 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ typedef struct		s_list
 	struct s_list	*next;
 }					t_list;
 
-int		sigint;
-int		sigd;
+int					sigint;
+int					sigd;
 
 /*--------GNL---------*/
 int					get_next_line(char **line);

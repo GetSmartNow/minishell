@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/22 15:12:11 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/22 21:02:38 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,12 +108,15 @@ void				mini_oldpwd(t_mini *s);
 void				mini_echo(char **str, t_mini *s);
 int					mini_exit(t_mini *s, char *exec, char *arg);
 void				mini_env(t_mini *s);
+void				export_to_env(t_mini *s, int i);
 void				mini_export(t_mini *s);
 void				mini_unset(t_mini *s);
 int					mini_pipes(t_mini *s);
 
 /*ENV*/
 void				ft_shlvl(t_mini *s);
+int					check_shlvl(t_mini *s, char *line, int	sep);
+int					mini_atoi(char *line);
 void				get_pwd(t_mini	*s);
 
 /*SIGNAL*/
