@@ -61,7 +61,7 @@ char	*ft_strnjoin_char(char *s1, char c, int quantity)
 	result = (char *)malloc(len * sizeof(char));
 	if (NULL == result)
 		return (NULL);
-	while (s1[i])
+	while (s1 && s1[i])
 	{
 		result[i] = s1[i];
 		i++;
@@ -69,8 +69,7 @@ char	*ft_strnjoin_char(char *s1, char c, int quantity)
 	while (quantity--)
 		result[i++] = c;
 	result[i] = '\0';
-	free(s1);
-	s1 = NULL; //some addition
+	ft_memdel_1d(s1);
 	return (result);
 }
 
@@ -83,6 +82,8 @@ char	*ft_concat(char *str1, char *str2)
 
 	len = ft_strlen_modif(str1) + ft_strlen_modif(str2) + 1;
 	res = (char *)malloc(len * sizeof(char));
+	if (NULL == res)
+		return (NULL);
 	j = 0;
 	i = 0;
 	if (str1)
@@ -93,16 +94,8 @@ char	*ft_concat(char *str1, char *str2)
 		while (str2[j])
 			res[i++] = str2[j++];
 	res[i] = '\0';
-	if (str1 != NULL)
-	{
-		free(str1);
-		str1 = NULL;
-	}
-	if (str2 != NULL)
-	{
-		free(str2);
-		str2 = NULL;
-	}
+	ft_memdel_1d(str1);
+	ft_memdel_1d(str2);
 	return (res);
 }
 
@@ -252,7 +245,7 @@ int if_dollar(char *command, t_mass **head, int *i, char **res)
 		errno_handler(command + (*i), i, res);
 	else
 		replace(command, head, i, res);
-	return (-1);
+	return (-2);
 }
 
 int if_double_quote(int *i, int *flag1)
@@ -262,6 +255,14 @@ int if_double_quote(int *i, int *flag1)
 	return (-1);
 }
 
+void init_before_replacement(int *i, char **res, int *count_shield, int *flag1)
+{
+	(*flag1) = 0;
+	(*res) = NULL;
+	(*i) = 0;
+	(*count_shield) = 0;
+}
+
 char *make_substitute(char *command, t_mass **head, int counter, t_mini *s)
 {
 	int		i;
@@ -269,10 +270,7 @@ char *make_substitute(char *command, t_mass **head, int counter, t_mini *s)
 	int		count_shield;
 	int 	flag1;
 
-	flag1 = 0;
-	res = NULL;
-	i = 0;
-	count_shield = 0;
+	init_before_replacement(&i, &res, &count_shield, &flag1);
 	while (command[i] && s->err_status == 0)
 	{
 		if (command[i] == '\\')
@@ -288,5 +286,7 @@ char *make_substitute(char *command, t_mass **head, int counter, t_mini *s)
 	}
 	if (flag1 % 2 == 1)
 		paste_error("quote is not closed\n", s);
+	if (counter != -2 && res == NULL)
+		paste_error("malloc error\n", s);
 	return (res);
 }

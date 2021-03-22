@@ -230,7 +230,7 @@ char *extract_file_name(char *line, char redir, t_mini *s)
 	return (file_name);
 }
 
-void make_command_elems(t_mini *s, int iter_pipes)
+void make_run_command_elems(t_mini *s, int iter_pipes)
 {
 	int 	iter_elems;
 	char	*tmp;
@@ -248,25 +248,21 @@ void make_command_elems(t_mini *s, int iter_pipes)
 	}
 }
 
-void make_pipes(t_mini *s)
+void run_pipes(t_mini *s)
 {
 	int 	iter_pipes;
-	char	*tmp;
 
 	iter_pipes = 0;
 	while ((s->pipes)[iter_pipes])
 	{
-		//ИЗВЛЕЧЕНИЕ СТРОКИ БЕЗ РЕДИРЕКТОВ
 		s->pipes[iter_pipes] = extract_command(s->pipes[iter_pipes], '>', s);
 		if (NULL == s->pipes[iter_pipes])
 			paste_error("malloc error\n", s);
 		s->pipes[iter_pipes] = extract_command(s->pipes[iter_pipes], '<', s);
 		if (NULL == s->pipes[iter_pipes])
 			paste_error("malloc error\n", s);
-		//РАЗБИЕНИЕ И ЗАМЕНА ЭЛЕМЕНТОВ
-		make_command_elems(s, iter_pipes);
-		//ЗАКИДЫВАЮ В MASS3D И НАЧИНАЕМ КВН
-		(s->mass3d)[iter_pipes] = s->command_elems; //free
+		make_run_command_elems(s, iter_pipes);
+		(s->mass3d)[iter_pipes] = s->command_elems;
 		iter_pipes++;
 	}
 }
@@ -312,66 +308,80 @@ void 	run_checks(char *str, t_mini *s)
 	}
 }
 
-void	ft_parser(t_mini *s, char *line, char **env)
+void free_command(t_mini *s)
 {
-	int		iter_commands;
+	int i;
 
-	//ДРОБИМ НА КОМАНДЫ
+	i = -1;
+	while (++i < s->pipe.count_commands)
+	{
+		ft_memdel_2d((void **)s->mass3d[i]);
+	}
+	ft_memdel_2d((void **)s->pipes);
+	ft_memdel_1d((void *)s->array_fdin);
+	ft_memdel_1d((void *)s->array_fdout);
+	free(s->mass3d);
+	s->mass3d = NULL;
+}
+
+void prepare_for_pipes(t_mini *s, int iter_commands)
+{//ДРОБИМ НА ПАЙПЫ, СЧИТАЕМ ПАЙПЫ, ВЫДЕЛЯЕМ ПОД КОЛИЧЕСТВО ПАЙПОВ ПАМЯТЬ В МАС3Д
+	s->pipes = ft_split_new((s->commands)[iter_commands], '|');
+	if (NULL == s->pipes)
+		paste_error("malloc error\n", s);
+	s->pipe.count_pipe = ft_arrlen(s->pipes) - 1;
+	s->pipe.count_commands = s->pipe.count_pipe + 1;
+
+	//выделение памяти под мас3д, массивы фдшников
+	s->mass3d = (char ***)malloc((s->pipe.count_commands + 1) * sizeof(char **)); //free
+	if (NULL == s->mass3d)
+		paste_error("malloc error\n", s);
+	s->array_fdin = (int *)malloc(ft_arrlen(s->pipes) * sizeof(int));
+	if (NULL == s->array_fdin)
+		paste_error("malloc error\n", s);
+	s->array_fdout = (int *)malloc(ft_arrlen(s->pipes) * sizeof(int));
+	if (NULL == s->array_fdout)
+		paste_error("malloc error\n", s);
+}
+
+void prepare_commands(t_mini *s, const char *line, char **env)
+{
+	int iter_commands;
+
+	s->commands = ft_split_new(line, ';');
+	if (NULL == s->commands)
+		paste_error("malloc error\n", s);
+	iter_commands = 0;
+	while ((s->commands)[iter_commands])
+	{
+		if (s->err_status == 0)
+		{
+			prepare_for_pipes(s, iter_commands);
+			ft_sort_pipes(s);
+			run_pipes(s);
+			if (s->err_status)
+				print_error(s);
+			else if (ft_strlen_modif((s->commands)[iter_commands]) > 0)
+				sort_ft(s, env);
+			iter_commands++;
+			free_command(s);
+		}
+	}
+}
+
+void init_err_info(t_mini *s)
+{
 	s->err_message = NULL;
 	s->err_status = 0;
+}
+
+void	ft_parser(t_mini *s, char *line, char **env)
+{
+	init_err_info(s);
 	run_checks(line, s);
 	if (s->err_status == 0)
 	{
-		s->commands = ft_split_new(line, ';');
-		if (NULL == s->commands)
-			paste_error("malloc error\n", s);
-		iter_commands = 0;
-		while ((s->commands)[iter_commands])
-		{
-			if (s->err_status == 0)
-			{
-				//ДРОБИМ НА ПАЙПЫ, СЧИТАЕМ ПАЙПЫ, ВЫДЕЛЯЕМ ПОД КОЛИЧЕСТВО ПАЙПОВ ПАМЯТЬ В МАС3Д
-				s->pipes = ft_split_new((s->commands)[iter_commands], '|');
-				if (NULL == s->pipes)
-					paste_error("malloc error\n", s);
-				s->pipe.count_pipe = ft_arrlen(s->pipes) - 1;
-				s->pipe.count_commands = s->pipe.count_pipe + 1;
-
-				//выделение памяти под мас3д, массивы фдшников
-				s->mass3d = (char ***)malloc((s->pipe.count_commands + 1) * sizeof(char **)); //free
-				if (NULL == s->mass3d)
-					paste_error("malloc error\n", s);
-				s->array_fdin = (int *)malloc(ft_arrlen(s->pipes) * sizeof(int));
-				if (NULL == s->array_fdin)
-					paste_error("malloc error\n", s);
-				s->array_fdout = (int *)malloc(ft_arrlen(s->pipes) * sizeof(int));
-				if (NULL == s->array_fdout)
-					paste_error("malloc error\n", s);
-
-				//Сортировка пайпов, определение всех fd, заполнение массивов по fd
-				ft_sort_pipes(s);
-
-				//цикл по коммандам с пайпов, внутри разбиение по пробелам и замены
-				make_pipes(s);
-
-				if (s->err_status)
-					print_error(s);
-				else if (ft_strlen_modif((s->commands)[iter_commands]) > 0)
-					sort_ft(s, env);
-				iter_commands++;
-				int i = -1;
-				while (++i < s->pipe.count_commands)
-				{
-					ft_memdel_2d((void **)s->mass3d[i]);
-				}
-				ft_memdel_2d((void **)s->pipes);
-				ft_memdel_1d((void *)s->array_fdin);
-				ft_memdel_1d((void *)s->array_fdout);
-				free(s->mass3d);
-				s->mass3d = NULL;
-			}
-			//проверка исполняемых файлов
-		}
+		prepare_commands(s, line, env);
 		ft_memdel_2d((void **)s->commands);
 	}
 	if (s->err_status)
