@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/22 14:07:25 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/22 15:12:11 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,8 @@ void	ft_sort_pipes(t_mini *s);
 */
 int if_shield(const char *command, int *count_shield, int *i, char **res);
 int if_single_quote(char *command, t_mini *s, int *i, char **res);
-int if_dollar(char *command, t_mass **head, int *i, char **res);
+int if_dollar(char *command, t_mass **head, int *counter, char **res);
+// int if_dollar(char *command, t_mass **head, int *i, char **res);
 int if_double_quote(int *i, int *flag1);
 
 /* 
@@ -204,8 +205,10 @@ void init_err_info(t_mini *s);
 char	*ft_strnjoin_char(char *s1, char c, int quantity);
 char	*ft_concat(char *str1, char *str2);
 void add_simple_char(char c, int *i, char **res, int counter);
-void replace(char *command, t_mass **head, int *i, char **res);
-char	*extract_key(char *str, int pos);
+// void replace(char *command, t_mass **head, int *i, char **res);
+int replace(char *command, t_mass **head, char **res);
+// char	*extract_key(char *str, int pos);
+char	*extract_key(char *str);
 
 /* 
 **	parser/utils_str2.c
@@ -221,7 +224,8 @@ char	*find_file_name(char *line, int position, int *len);
 char	*find_value_in_export(char *key, t_mass **head);
 char	*extract_from_quotes(char *str, int pos);
 int	is_shielded(char c);
-void errno_handler(const char *command, int *i, char **res);
+// void errno_handler(const char *command, int *i, char **res);
+int errno_handler(const char *command, int *counter, char **res);
 /* 
 **	parser/utils1.c
 */

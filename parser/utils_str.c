@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 14:16:39 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/22 14:16:40 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/22 15:11:54 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,28 +78,49 @@ void add_simple_char(char c, int *i, char **res, int counter)
 	}
 }
 
-void replace(char *command, t_mass **head, int *i, char **res)
+int replace(char *command, t_mass **head, char **res)
 {
 	char	*key;
 	char	*tmp;
+	int		i;
 
-	key = extract_key(command, ++(*i));
+	key = extract_key(command);
 	if (NULL != key)
 	{
 		tmp = find_value_in_export(key, head);
-		(*i) += ft_strlen_modif(key);
+		i += ft_strlen_modif(key);
 		if (NULL != tmp && ft_strcmp(tmp, ""))
 			(*res) = ft_concat((*res), tmp);
 		ft_memdel_1d(key);
 	}
 	else
-		(*i)++;
+		i++;
+	return (i);
 }
+// void replace(char *command, t_mass **head, int *i, char **res)
+// {
+// 	char	*key;
+// 	char	*tmp;
 
-char	*extract_key(char *str, int pos)
+// 	key = extract_key(command, ++(*i));
+// 	if (NULL != key)
+// 	{
+// 		tmp = find_value_in_export(key, head);
+// 		(*i) += ft_strlen_modif(key);
+// 		if (NULL != tmp && ft_strcmp(tmp, ""))
+// 			(*res) = ft_concat((*res), tmp);
+// 		ft_memdel_1d(key);
+// 	}
+// 	else
+// 		(*i)++;
+// }
+
+char	*extract_key(char *str)
 {
 	char	*res;
+	int		pos;
 
+	pos = 0;
 	res = NULL;
 	if (ft_isdigit(str[pos]))
 		return (NULL);
@@ -110,3 +131,17 @@ char	*extract_key(char *str, int pos)
 	}
 	return (res);
 }
+// char	*extract_key(char *str, int pos)
+// {
+// 	char	*res;
+
+// 	res = NULL;
+// 	if (ft_isdigit(str[pos]))
+// 		return (NULL);
+// 	while (str[pos] && ft_isalnum((int)str[pos]))
+// 	{
+// 		res = ft_strnjoin_char(res, str[pos], 1);
+// 		pos++;
+// 	}
+// 	return (res);
+// }

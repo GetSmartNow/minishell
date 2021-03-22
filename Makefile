@@ -40,8 +40,8 @@ SRCS	:=	$(addprefix ${MAIN_D}, main_test.c bin.c mini_pipes.c signal.c \
 			$(addprefix ${BUILT}, mini_cd.c mini_echo.c mini_env.c mini_exit.c \
 			mini_export.c mini_pwd.c mini_unset.c) \
 			$(addprefix $(PARS_D), find_symbol.c make_subst.c new_split.c \
-			parser.c sort_pipes.c substitution_if.c utils_err.c utils_fd.c \
-			utils_init.c utils_str.c utils_str2.c utils_subst.c utils1.c utils2.c)
+            parser.c sort_pipes.c substitution_if.c utils_err.c utils_fd.c \
+            utils_init.c utils_str.c utils_str2.c utils_subst.c utils1.c utils2.c)
 
 #colors----------------------------------------------------------------------
 

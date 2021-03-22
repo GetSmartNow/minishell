@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 14:16:26 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/22 14:16:29 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/22 15:03:29 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,27 @@ int	is_shielded(char c)
 
 
 
-void errno_handler(const char *command, int *i, char **res)
+int errno_handler(const char *command, int *counter, char **res)
 {
 	if (!ft_strncmp(command, "$?", 3))
-		(*res) = ft_concat((*res), ft_strdup("$?"));
+	{
+		if (*counter == 0)
+			(*res) = ft_concat((*res), ft_strdup("$?"));
+		else
+			(*res) = ft_concat((*res), ft_itoa(g_sig.exit_status));
+	}
 	else
 		(*res) = ft_concat((*res), ft_itoa(g_sig.exit_status));
-	(*i) += ft_strlen_modif("$?");
+	return (ft_strlen_modif("$?"));
 }
+// void errno_handler(const char *command, int *i, char **res)
+// {
+// 	if (!ft_strncmp(command, "$?", 3))
+// 		(*res) = ft_concat((*res), ft_strdup("$?"));
+// 	else
+// 		(*res) = ft_concat((*res), ft_itoa(g_sig.exit_status));
+// 	(*i) += ft_strlen_modif("$?");
+// }
 
 
 

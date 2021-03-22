@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 14:17:17 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/22 14:17:20 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/22 15:15:40 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char *make_substitute(char *command, t_mass **head, int counter, t_mini *s)
 		else if (command[i] == '\'')
 			counter = if_single_quote(command, s, &i, &res);
 		else if (command[i] == '$')
-			counter = if_dollar(command, head, &i, &res);
+			i += if_dollar(command + i, head, &counter, &res);
 		else
 			add_simple_char(command[i], &i, &res, counter);
 	}

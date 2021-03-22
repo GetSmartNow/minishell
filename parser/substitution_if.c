@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 14:16:56 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/22 14:16:57 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/22 15:16:25 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,25 @@ int if_single_quote(char *command, t_mini *s, int *i, char **res)
 	return (-1);
 }
 
-int if_dollar(char *command, t_mass **head, int *i, char **res)
+int if_dollar(char *command, t_mass **head, int *counter, char **res)
 {
-	if (!ft_strncmp(command + (*i), "$?", 2))
-		errno_handler(command + (*i), i, res);
+	int	i = 0;
+
+	if (!ft_strncmp(command, "$?", 2))
+		i = errno_handler(command, counter, res);
 	else
-		replace(command, head, i, res);
-	return (-2);
+		i = replace(++command, head, res);
+	*counter = -2;
+	return (i + 1);
 }
+// int if_dollar(char *command, t_mass **head, int *i, char **res)
+// {
+// 	if (!ft_strncmp(command + (*i), "$?", 2))
+// 		errno_handler(command + (*i), i, res);
+// 	else
+// 		replace(command, head, i, res);
+// 	return (-2);
+// }
 
 int if_double_quote(int *i, int *flag1)
 {
