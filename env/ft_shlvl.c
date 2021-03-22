@@ -3,113 +3,102 @@
 /*                                                        :::      ::::::::   */
 /*   ft_shlvl.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 20:33:50 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/17 15:05:23 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/22 06:05:03 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int			mini_atoi(char *line)
+static void			ft_shlvl_export_p2(t_mini *s, char *content, char *tmp_sh)
 {
-	int				i;
-	int				res;
+	char			*line;
 
-	i = 0;
-	res = 0;
-	while (line[i] != '\0')
+	s->var.shlvl = mini_atoi(content);
+	s->var.shlvl++;
+	if (s->var.shlvl == 1000)
 	{
-		if (line[i] >= '0' && line[i] <= '9')
-		{
-			res = (res * 10) + (line[i] - 48);
-			i++;
-		}
-		else
-			i++;
+		ft_memdel_1d(content);
+		content = put_quotes("SHLVL=""");
 	}
-	return (res);
+	else
+	{
+		tmp_sh = ft_itoa(s->var.shlvl);
+		ft_memdel_1d(content);
+		line = ft_strjoin_free("SHLVL=", tmp_sh, tmp_sh);
+		content = put_quotes(line);
+		ft_memdel_1d(line);
+	}
 }
 
-static int				check_shlvl(t_mini *s, char *line, int	sep)
+static int			ft_shlvl_export(t_mini *s, char *tmp_sh, int f)
 {
-	int					i = 0;
-	int					flag = 0;
+	t_mass			*tmp;
+	char			*line;
 
-	if (sep == 0)
+	f = 0;
+	tmp_sh = NULL;
+	tmp = s->head_x;
+	while (tmp != NULL)
 	{
-		while (line[i] != '=')
-			i++;
-		i++;
-		if (line[i] == '\0')
-			return (2);
-		while (line[i] != '\0')
+		if (ft_strncmp(tmp->content, "SHLVL=", 6) == 0)
 		{
-			if (line[i] >= '0' && line[i] <= '9')
-				flag = 1;
-			else
-				return (2);
-			i++;
+			f = check_shlvl(s, tmp->content, 1);
+			if (f == 1)
+				ft_shlvl_export_p2(s, tmp->content, tmp_sh);
+			else if (f == 2)
+			{
+				ft_memdel_1d(tmp->content);
+				tmp->content = put_quotes("SHLVL=1");
+			}
+		}
+		tmp = tmp->next;
+	}
+	return (f);
+}
+
+static int			ft_shlvl_env(t_mini *s, char *content, char *tmp_sh, int f)
+{
+	f = check_shlvl(s, content, 0);
+	if (f == 1)
+	{
+		s->var.shlvl = mini_atoi(content);
+		s->var.shlvl++;
+		if (s->var.shlvl == 1000)
+		{
+			ft_memdel_1d(content);
+			content = ft_strdup("SHLVL=");
+		}
+		else
+		{
+			tmp_sh = ft_itoa(s->var.shlvl);
+			ft_memdel_1d(content);
+			content = ft_strjoin_free("SHLVL=", tmp_sh, tmp_sh);
 		}
 	}
-	else if (sep == 1)
+	else if (f == 2)
 	{
-		while (line[i] != '=')
-			i++;
-		i = i + 2;
-		if (line[i + 1] == '\0')
-			return (2);
-		while (line[i + 1] != '\0')
-		{
-			if (line[i] >= '0' && line[i] <= '9')
-				flag = 1;
-			else
-				return (2);
-			i++;
-		}
+		ft_memdel_1d(content);
+		content = ft_strdup("SHLVL=1");
 	}
-	return (flag);
+	return (f);
 }
 
 void				ft_shlvl(t_mini *s)
 {
 	t_mass			*tmp;
-	int				flag = 0;
+	int				flag;
 	char			*line;
-	char			*tmp_sh = NULL;
+	char			*tmp_sh;
 
+	flag = 0;
 	tmp = s->head;
 	while (tmp != NULL)
 	{
 		if (ft_strncmp(tmp->content, "SHLVL=", 6) == 0)
-		{
-			flag = check_shlvl(s, tmp->content, 0);
-			if (flag == 1)
-			{
-				s->var.shlvl = mini_atoi(tmp->content);
-				s->var.shlvl++;
-				if (s->var.shlvl == 1000)
-				{
-					ft_memdel_1d(tmp->content);
-					// ft_bzero(tmp->content, ft_strlen(tmp->content));
-					tmp->content = ft_strdup("SHLVL=");
-				}
-				else
-				{
-					tmp_sh = ft_itoa(s->var.shlvl);
-					ft_memdel_1d(tmp->content);
-					// ft_bzero(tmp->content, ft_strlen(tmp->content));
-					tmp->content = ft_strjoin_free("SHLVL=", tmp_sh, tmp_sh);
-				}
-			}
-			else if (flag == 2)
-			{
-				ft_memdel_1d(tmp->content);
-				// ft_bzero(tmp->content, ft_strlen(tmp->content));
-				tmp->content = ft_strdup("SHLVL=1");
-			}
-		}
+			flag = ft_shlvl_env(s, tmp->content, tmp_sh, flag);
 		tmp = tmp->next;
 	}
 	if (flag == 0)
@@ -117,43 +106,7 @@ void				ft_shlvl(t_mini *s)
 		line = ft_strdup("SHLVL=1");
 		my_lstadd_back(&s->head, my_lstnew(line));
 	}
-	flag = 0;
-	tmp_sh = NULL;
-	tmp = s->head_x;
-	while (tmp != NULL)
-	{
-		if (ft_strncmp(tmp->content, "SHLVL=", 6) == 0)
-		{
-			flag = check_shlvl(s, tmp->content, 1);
-			if (flag == 1)
-			{
-				s->var.shlvl = mini_atoi(tmp->content);
-				s->var.shlvl++;
-				if (s->var.shlvl == 1000)
-				{
-					ft_memdel_1d(tmp->content);
-					// ft_bzero(tmp->content, ft_strlen(tmp->content));
-					tmp->content = put_quotes("SHLVL=""");
-				}
-				else
-				{
-					tmp_sh = ft_itoa(s->var.shlvl);
-					ft_memdel_1d(tmp->content);
-					// ft_bzero(tmp->content, ft_strlen(tmp->content));
-					line = ft_strjoin_free("SHLVL=", tmp_sh, tmp_sh);
-					tmp->content = put_quotes(line);
-					ft_memdel_1d(line);
-				}
-			}
-			else if (flag == 2)
-			{
-				ft_memdel_1d(tmp->content);
-				// ft_bzero(tmp->content, ft_strlen(tmp->content));
-				tmp->content = put_quotes("SHLVL=1");
-			}
-		}
-		tmp = tmp->next;
-	}
+	flag = ft_shlvl_export(s, tmp_sh, flag);
 	if (flag == 0)
 	{
 		line = put_quotes("SHLVL=1");

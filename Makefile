@@ -6,7 +6,7 @@
 #    By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/09 17:56:31 by ctycho            #+#    #+#              #
-#    Updated: 2021/03/21 16:27:27 by ctycho           ###   ########.fr        #
+#    Updated: 2021/03/22 05:57:38 by ctycho           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ INC		:=	minishell.h
 SRCS	:=	$(addprefix ${MAIN_D}, main_test.c bin.c mini_pipes.c signal.c \
 			ft_init.c) \
 			$(addprefix ${TOOL}, libft_utils.c ft_error.c mini_utils.c) \
-			$(addprefix $(ENV), ft_shlvl.c ft_pwd.c) \
+			$(addprefix $(ENV), ft_shlvl.c ft_pwd.c ft_shlvl_utils.c) \
 			$(addprefix ${BUILT}, mini_cd.c mini_echo.c mini_env.c mini_exit.c \
 			mini_export.c mini_pwd.c mini_unset.c) \
 			$(addprefix $(PARS_D), new_split.c parser1.c parser2.c parser3.c \

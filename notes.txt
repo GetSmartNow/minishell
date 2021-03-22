@@ -107,3 +107,4 @@ ls | exit | pwd
 
 ls > a1 | cat < A1 > A2 | echo hello > a1
 
+if (ft_strncmp(tmp->content, "OLDPWD", ft_strlen("OLDPWD")) == 0) mini_pwd 29 line

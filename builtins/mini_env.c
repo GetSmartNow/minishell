@@ -3,14 +3,55 @@
 /*                                                        :::      ::::::::   */
 /*   mini_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:45:27 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/17 15:05:10 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/22 03:10:22 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+static int			export_to_env_1(t_mini *s, char *arg, int flag)
+{
+	t_mass			*tmp;
+	int				length;
+
+	tmp = s->head;
+	while (tmp != NULL)
+	{
+		length = length_to_equal(s, arg);
+		if (ft_strncmp(tmp->content, arg, length) == 0)
+		{
+			flag = 1;
+			ft_memdel_1d(tmp->content);
+			ft_bzero(tmp->content, ft_strlen(tmp->content));
+			tmp->content = ft_strdup(arg);
+		}
+		tmp = tmp->next;
+	}
+	return (flag);
+}
+
+void				export_to_env(t_mini *s, int i)
+{
+	char			*line;
+	int				flag;
+
+	flag = 0;
+	line = NULL;
+	while (s->mass3d[0][i])
+	{
+		flag = export_to_env_1(s, s->mass3d[0][i], flag);
+		if (flag == 0)
+		{
+			line = ft_strdup(s->mass3d[0][i]);
+			my_lstadd_back(&s->head, my_lstnew(line));
+		}
+		i++;
+	}
+	ft_list_sort(&s->head);
+}
 
 void				mini_env(t_mini *s)
 {

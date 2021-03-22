@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:44:29 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 19:05:31 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/22 02:35:03 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 
 static int			check_number(char *s)
 {
-	int				i = 0;
+	int				i;
 	int				res;
 	int				count;
 
+	i = 0;
 	count = 0;
 	res = 0;
 	while (s[i] && count < 20)
@@ -38,7 +39,7 @@ static int			check_number(char *s)
 	return (res);
 }
 
-int				mini_exit(t_mini *s, char *exec, char *arg)
+int					mini_exit(t_mini *s, char *exec, char *arg)
 {
 	int				res;
 
