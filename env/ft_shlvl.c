@@ -6,13 +6,13 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 20:33:50 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/22 06:05:03 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/22 15:06:13 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void			ft_shlvl_export_p2(t_mini *s, char *content, char *tmp_sh)
+static char			*ft_shlvl_export_p2(t_mini *s, char *content, char *tmp_sh)
 {
 	char			*line;
 
@@ -31,6 +31,7 @@ static void			ft_shlvl_export_p2(t_mini *s, char *content, char *tmp_sh)
 		content = put_quotes(line);
 		ft_memdel_1d(line);
 	}
+	return (content);
 }
 
 static int			ft_shlvl_export(t_mini *s, char *tmp_sh, int f)
@@ -45,9 +46,9 @@ static int			ft_shlvl_export(t_mini *s, char *tmp_sh, int f)
 	{
 		if (ft_strncmp(tmp->content, "SHLVL=", 6) == 0)
 		{
-			f = check_shlvl(s, tmp->content, 1);
+			f = check_shlvl_export(s, tmp->content);
 			if (f == 1)
-				ft_shlvl_export_p2(s, tmp->content, tmp_sh);
+				tmp->content = ft_shlvl_export_p2(s, tmp->content, tmp_sh);
 			else if (f == 2)
 			{
 				ft_memdel_1d(tmp->content);
@@ -61,7 +62,7 @@ static int			ft_shlvl_export(t_mini *s, char *tmp_sh, int f)
 
 static int			ft_shlvl_env(t_mini *s, char *content, char *tmp_sh, int f)
 {
-	f = check_shlvl(s, content, 0);
+	f = check_shlvl_env(s, content);
 	if (f == 1)
 	{
 		s->var.shlvl = mini_atoi(content);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_test.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:35:14 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 21:07:28 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/22 20:17:01 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int			main(int ac, char **av, char **env)
 	init_list_x(&s, env);
 	ft_shlvl(&s);
 	get_pwd(&s);
+	sigcat = 0;
 	while (status && s.exit == 0)
 	{
 		init_signal();

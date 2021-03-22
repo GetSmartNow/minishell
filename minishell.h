@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/22 05:48:43 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/22 21:32:37 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ typedef struct		s_mini
 }					t_mini;
 
 t_sig	g_sig;
+int		sigcat;
 
 /*INIT*/
 void				ft_init_before_loop(t_mini *s, char *av);
@@ -98,7 +99,6 @@ void				ft_init_in_loop(t_mini *s);
 int					init_list(t_mini *s, char **env);
 int					init_list_x(t_mini *s, char **env);
 
-int					exec_bin(t_mini *s, char **arr, char *command);
 int					mini_bin(t_mini *s);
 void				mini_cd(t_mini *s, char *exec, char *arg);
 void				mini_pwd(t_mini	*s);
@@ -112,9 +112,18 @@ void				mini_export(t_mini *s);
 void				mini_unset(t_mini *s);
 int					mini_pipes(t_mini *s);
 
+/*EXEC*/
+int					exec_bin(t_mini *s, char **arr, char *command);
+void				ft_list_to_2d(t_mini *s);
+int					magic_box(t_mini *s, char *dir, char *exec);
+int					absolute_path(t_mini *s, char *bin, char *exec);
+void				bin_error(t_mini *s, char *exec, int res, int status);
+void				bin_error_p2(t_mini *s, char *exec, int res);
+
 /*ENV*/
 void				ft_shlvl(t_mini *s);
-int					check_shlvl(t_mini *s, char *line, int	sep);
+int					check_shlvl_env(t_mini *s, char *line);
+int					check_shlvl_export(t_mini *s, char *line);
 int					mini_atoi(char *line);
 void				get_pwd(t_mini	*s);
 

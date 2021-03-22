@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   libft_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 18:43:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/08 19:20:46 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/22 15:11:36 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_mass	*my_lstnew(void *content)
+t_mass			*my_lstnew(void *content)
 {
-	t_mass	*new;
+	t_mass		*new;
 
 	new = malloc(sizeof(t_mass));
 	if (new == NULL)
@@ -27,7 +27,7 @@ t_mass	*my_lstnew(void *content)
 
 void			my_lstadd_back(t_mass **lst, t_mass *new)
 {
-	t_mass	*end;
+	t_mass		*end;
 
 	if (lst == NULL)
 		return ;
@@ -47,16 +47,16 @@ t_mass			*deletelem(t_mass *lst)
 {
 	t_mass		*prev;
 	t_mass		*next;
-	
-	prev = lst->prev; // узел, предшествующий lst
-	next = lst->next; // узел, следующий за lst
+
+	prev = lst->prev;
+	next = lst->next;
 	if (prev != NULL)
-		prev->next = lst->next; // переставляем указатель
+		prev->next = lst->next;
 	if (next != NULL)
-		next->prev = lst->prev; // переставляем указатель
+		next->prev = lst->prev;
 	free(lst->content);
-	free(lst); // освобождаем память удаляемого элемента
-	return(prev);
+	free(lst);
+	return (prev);
 }
 
 void			ft_list_sort(t_mass **lst)
@@ -65,7 +65,6 @@ void			ft_list_sort(t_mass **lst)
 	t_mass		*ptr1;
 	t_mass		*next;
 	char		*tmp;
-	int			i;
 
 	ptr = *(lst);
 	while (ptr != NULL)
@@ -75,9 +74,7 @@ void			ft_list_sort(t_mass **lst)
 		{
 			if (ft_strcmp(ptr1->content, ptr1->next->content) > 0)
 			{
-				// printf("|%s|\n", ptr1->content);
 				tmp = ptr1->content;
-				// write(1, "#", 1);
 				ptr1->content = ptr1->next->content;
 				ptr1->next->content = tmp;
 			}

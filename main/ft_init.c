@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/21 16:27:47 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 21:11:30 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/22 22:01:10 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ void			ft_init_in_loop(t_mini *s)
 
 int				init_list_x(t_mini *s, char **env)
 {
-	t_mass		*tmp = NULL;
-	t_mass		*tmp1 = NULL;
-	char		*line = NULL;
-	int			i = 0;
+	char		*line;
+	int			i;
 
+	i = 0;
+	line = NULL;
 	s->head_x = NULL;
 	while (env[i] != NULL)
 	{
@@ -61,11 +61,11 @@ int				init_list_x(t_mini *s, char **env)
 
 int				init_list(t_mini *s, char **env)
 {
-	t_mass		*tmp = NULL;
-	t_mass		*tmp1 = NULL;
-	char		*line = NULL;
-	int			i = 0;
+	char		*line;
+	int			i;
 
+	i = 0;
+	line = NULL;
 	s->head = NULL;
 	while (env[i] != NULL)
 	{

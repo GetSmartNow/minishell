@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:05:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/22 02:16:14 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/22 22:08:57 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,16 @@ static int		init_pipes(t_mini *s)
 	int			i = -1;
 	
 	s->pipe.fd = (int **)malloc(sizeof(int *) * s->pipe.count_pipe);
+	// if (s->pipe.fd == NULL)
+	// {
+		
+	// 	return (-1);
+	// }
 	while (++i < s->pipe.count_pipe)
 	{
 		s->pipe.fd[i] = (int *)malloc(sizeof(int) * 2);
+		// if (s->pipe.fd[i] == NULL)
+		// 	return (NULL);
 	}
 	i = -1;
 	while (++i < s->pipe.count_pipe)
@@ -80,69 +87,56 @@ static int		mini_bin1(t_mini *s, int i)
 	return (flag);
 }
 
-int					mini_pipes(t_mini *s) //ps -a | cat -e | cat -e
+void					mini_pipes_child_p2(t_mini *s, int i)
 {
-	int		i = 0;
-	int		res;
-	int		j;
-
-	init_pipes(s);
-	for(i = 0; i < s->pipe.count_commands; i++)
+	if (s->array_fdin[i])
 	{
-		res = mini_bin1(s, i);
-		g_sig.pid = fork();
-		if (g_sig.pid == 0)
-		{
-			if (i == 0) // first
-			{
-				if (s->array_fdin[i])
-				{
-					dup2(s->array_fdin[i], STDIN);
-					close(s->array_fdin[i]);
-				}
-				if (s->array_fdout[i] > 1)
-				{
-					dup2(s->array_fdout[i], STDOUT);
-					close(s->array_fdout[i]);	
-				}
-				else
-					dup2(s->pipe.fd[i][1], STDOUT);
-				for (int k = 0; k < s->pipe.count_pipe; k++)
-				{
-					close(s->pipe.fd[k][1]);
-					if (k != 0)
-						close(s->pipe.fd[k][0]);
-				}
-			}
-			else
-			{
-				if (s->array_fdin[i])
-				{
-					dup2(s->array_fdin[i], STDIN);
-					close(s->array_fdin[i]);
-				}
-				else
-					dup2(s->pipe.fd[i - 1][0], STDIN);
-				if (s->array_fdout[i] > 1)
-				{
-					dup2(s->array_fdout[i], STDOUT);
-					close(s->array_fdout[i]);	
-				}
-				else if (i + 1 != s->pipe.count_commands)
-					dup2(s->pipe.fd[i][1], STDOUT);
-				for (int k = 0; k < s->pipe.count_pipe; k++)
-				{
-					close(s->pipe.fd[k][1]);
-					if (k != 0 && i + 1 != s->pipe.count_commands)
-						close(s->pipe.fd[k][0]);
-				}
-			}
-			execve(s->var.bin, s->mass3d[i], s->env);
-			exit (1);
-		}
-		if (res)
-			ft_memdel_1d(s->var.bin);
+		dup2(s->array_fdin[i], STDIN);
+		close(s->array_fdin[i]);
 	}
+	else
+		dup2(s->pipe.fd[i - 1][0], STDIN);
+	if (s->array_fdout[i] > 1)
+	{
+		dup2(s->array_fdout[i], STDOUT);
+		close(s->array_fdout[i]);	
+	}
+	else if (i + 1 != s->pipe.count_commands)
+		dup2(s->pipe.fd[i][1], STDOUT);
+	for (int k = 0; k < s->pipe.count_pipe; k++)
+	{
+		close(s->pipe.fd[k][1]);
+		if (k != 0 && i + 1 != s->pipe.count_commands)
+			close(s->pipe.fd[k][0]);
+	}
+}
+
+void					mini_pipes_child_p1(t_mini *s, int i)
+{
+	if (s->array_fdin[i])
+	{
+		dup2(s->array_fdin[i], STDIN);
+		close(s->array_fdin[i]);
+	}
+	if (s->array_fdout[i] > 1)
+	{
+		dup2(s->array_fdout[i], STDOUT);
+		close(s->array_fdout[i]);	
+	}
+	else
+		dup2(s->pipe.fd[i][1], STDOUT);
+	for (int k = 0; k < s->pipe.count_pipe; k++)
+	{
+		close(s->pipe.fd[k][1]);
+		if (k != 0)
+			close(s->pipe.fd[k][0]);
+	}
+}
+
+void					mini_pipes_p2(t_mini *s)
+{
+	int				j;
+
 	j = -1;
 	while (++j < s->pipe.count_pipe)
 	{
@@ -152,7 +146,37 @@ int					mini_pipes(t_mini *s) //ps -a | cat -e | cat -e
 	}
 	free(s->pipe.fd);
 	s->pipe.fd = NULL;
+	int status = 1;
 	for (int i = 0; i < s->pipe.count_commands; i++)
-		wait(NULL);
+		waitpid(g_sig.pid, &status, 0);
+	printf("status: %d\n", status);
+}
+
+int					mini_pipes(t_mini *s)
+{
+	int		i;
+	int		res;
+
+	i = 0;
+	init_pipes(s);
+	for(i = 0; i < s->pipe.count_commands; i++)
+	{
+		res = mini_bin1(s, i);
+		g_sig.pid = fork();
+		if (g_sig.pid < 0)
+			exit (127);
+		else if (g_sig.pid == 0)
+		{
+			if (i == 0)
+				mini_pipes_child_p1(s, i);
+			else
+				mini_pipes_child_p2(s, i);
+			execve(s->var.bin, s->mass3d[i], s->env);
+			exit (1);
+		}
+		if (res)
+			ft_memdel_1d(s->var.bin);
+	}
+	mini_pipes_p2(s);
 	return (0);
 }
