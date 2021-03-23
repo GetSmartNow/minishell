@@ -6,7 +6,11 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2021/03/23 22:51:04 by mvernius         ###   ########.fr       */
+=======
+/*   Updated: 2021/03/23 23:36:40 by ctycho           ###   ########.fr       */
+>>>>>>> master
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +56,7 @@ typedef struct		s_env
 	char			*oldpwd;
 	char			*path;
 	int				count_bin;
+	int				minus_f;
 }					t_env;
 
 typedef struct		s_sig
@@ -77,6 +82,11 @@ typedef struct		s_mini
 	int				ret;
 	int				exit;
 	char			*free_line;
+<<<<<<< HEAD
+=======
+	
+	
+>>>>>>> master
 	int				err_status;
 	char			*err_message;
 	int				fdout;
