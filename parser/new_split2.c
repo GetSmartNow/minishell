@@ -1,31 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memdel_2d.c                                     :+:      :+:    :+:   */
+/*   new_split2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/12 14:46:29 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 23:12:10 by mvernius         ###   ########.fr       */
+/*   Created: 2021/03/23 21:39:04 by mvernius          #+#    #+#             */
+/*   Updated: 2021/03/23 21:39:25 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-void		ft_memdel_2d(void **s)
+void	little_check(int shield_count, int *state, int *flag)
 {
-	int		i;
+	if (shield_count % 2 == 1)
+		(*flag) = 1;
+	if ((*flag) == 0)
+		(*state) = 0;
+}
 
-	i = 0;
-	if (s)
-	{
-		while (s[i] != NULL)
-		{
-			free(s[i]);
-			s[i] = NULL;
-			i++;
-		}
-	}
-	free(s);
-	s = NULL;
+void	little_init(int *state, int *count, int *flag, int *shield_count)
+{
+	(*flag) = 0;
+	(*state) = 0;
+	(*count) = 0;
+	(*shield_count) = 0;
 }

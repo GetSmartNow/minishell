@@ -1,31 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memdel_2d.c                                     :+:      :+:    :+:   */
+/*   utils_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/12 14:46:29 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 23:12:10 by mvernius         ###   ########.fr       */
+/*   Created: 2021/03/22 14:16:43 by mvernius          #+#    #+#             */
+/*   Updated: 2021/03/23 16:54:32 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-void		ft_memdel_2d(void **s)
+void	init_before_replacement(int *i, char **res,
+	int *count_shield, int *flag1)
 {
-	int		i;
+	(*flag1) = 0;
+	(*res) = NULL;
+	(*i) = 0;
+	(*count_shield) = 0;
+}
 
-	i = 0;
-	if (s)
-	{
-		while (s[i] != NULL)
-		{
-			free(s[i]);
-			s[i] = NULL;
-			i++;
-		}
-	}
-	free(s);
-	s = NULL;
+void	init_err_info(t_mini *s)
+{
+	s->err_message = NULL;
+	s->err_status = 0;
+}
+
+void	init_fs(int *iter, int *shield_count, int *position, int *flag)
+{
+	(*iter) = 0;
+	(*shield_count) = 0;
+	(*position) = -1;
+	(*flag) = 0;
 }

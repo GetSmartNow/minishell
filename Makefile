@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+         #
+#    By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/09 17:56:31 by ctycho            #+#    #+#              #
-#    Updated: 2021/03/23 21:44:55 by ctycho           ###   ########.fr        #
+#    Updated: 2021/03/23 22:37:38 by mvernius         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,14 +34,16 @@ PARS_D	:=	./parser/
 
 INC		:=	minishell.h
 SRCS	:=	$(addprefix ${MAIN_D}, main.c bin.c mini_pipes.c signal.c \
-			ft_init.c bin_p2.c mini_pipes_p2.c) \
-			$(addprefix ${TOOL}, libft_utils.c ft_error.c mini_utils.c) \
-			$(addprefix $(ENV), ft_shlvl.c ft_pwd.c ft_shlvl_utils.c) \
-			$(addprefix ${BUILT}, mini_cd.c mini_echo.c mini_env.c mini_exit.c \
-			mini_export.c mini_pwd.c mini_unset.c mini_cd_p2.c \
-			mini_export_p2.c) \
-			$(addprefix $(PARS_D), new_split.c parser1.c parser2.c parser3.c \
-			utils1.c find_redir.c)
+            ft_init.c bin_p2.c mini_pipes_p2.c) \
+            $(addprefix ${TOOL}, libft_utils.c ft_error.c mini_utils.c) \
+            $(addprefix $(ENV), ft_shlvl.c ft_pwd.c ft_shlvl_utils.c) \
+            $(addprefix ${BUILT}, mini_cd.c mini_echo.c mini_env.c mini_exit.c \
+            mini_export.c mini_pwd.c mini_unset.c mini_cd_p2.c \
+            mini_export_p2.c) \
+			$(addprefix $(PARS_D), find_symbol.c make_subst.c new_split.c \
+            parser.c sort_pipes.c substitution_if.c utils_err.c utils_fd.c \
+            utils_init.c utils_str.c utils_str2.c utils_subst.c utils1.c \
+            utils2.c new_split2.c)
 
 #colors----------------------------------------------------------------------
 

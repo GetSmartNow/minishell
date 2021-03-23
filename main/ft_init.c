@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/21 16:27:47 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/23 21:59:22 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/23 23:36:57 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void			ft_init_in_loop(t_mini *s)
 	s->free_line = NULL;
 	s->env = NULL;
 	s->tmp = NULL;
+	s->var.minus_f = 0;
 	s->var.bin = NULL;
 	s->var.oldpwd = NULL;
 	s->var.count_bin = 0;

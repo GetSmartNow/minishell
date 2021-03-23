@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:32:58 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/23 21:40:09 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/23 23:42:23 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,10 @@ static void			mini_cd_minus_1(t_mini *s)
 		tmp = tmp->next;
 	}
 	if (flag == 0)
+	{
 		write(1, "bash: cd: OLDPWD not set\n", 25);
+		s->var.minus_f = 1;
+	}
 }
 
 static int			mini_cd_minus(t_mini *s, char *arg)
@@ -118,7 +121,7 @@ void				mini_cd(t_mini *s, char *arg)
 		write(1, ": No such file or directory\n", 28);
 		g_sig.exit_status = 1;
 	}
-	else
+	else if (s->var.minus_f == 0)
 	{
 		if (s->var.pwd == 0)
 			mini_oldpwd(s);

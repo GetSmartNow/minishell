@@ -6,19 +6,37 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:43:03 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/23 16:58:05 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/23 23:55:18 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+static int			mini_echo_2(char *s)
+{
+	int				i;
+
+	i = 1;
+	while (s[i])
+	{
+		if (s[i] == 'n')
+			i++;
+		else
+			return (-1);
+	}
+	return (0);
+}
 
 static void			mini_echo_1(t_mini *s, char **str, int i)
 {
 	i = 1;
 	while (str[i])
 	{
-		if (ft_strcmp(str[i], "-n") == 0)
+		if (mini_echo_2(str[i]) == 0)
+		{
+
 			i++;
+		}
 		else
 		{
 			write(s->fdout, str[i], ft_strlen(str[i]));
@@ -35,7 +53,7 @@ void				mini_echo(char **str, t_mini *s)
 	i = 0;
 	if (str[1] == NULL)
 		write(s->fdout, "\n", 1);
-	else if (ft_strcmp(str[1], "-n") == 0)
+	else if (str[1][0] == '-' && str[1][1] == 'n')
 		mini_echo_1(s, str, i);
 	else
 	{
