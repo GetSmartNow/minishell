@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 14:16:26 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/23 16:50:34 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/23 23:46:40 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,5 @@ int		errno_handler(const char *command, int *counter, char **res)
 	}
 	else
 		(*res) = ft_concat((*res), ft_itoa(g_sig.exit_status));
-	return (ft_strlen_modif("$?"));
+	return (1);
 }

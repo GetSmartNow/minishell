@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 14:17:01 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/23 22:21:20 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/23 23:28:17 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,5 +106,8 @@ void	ft_parser(t_mini *s, char *line, char **env)
 		ft_memdel_1d(s->err_message);
 	}
 	else
+	{
 		print_error(s);
+		ft_memdel_1d(s->err_message);
+	}
 }

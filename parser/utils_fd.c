@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 14:16:46 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/23 16:57:53 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/23 22:35:37 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void	define_fd_out(t_mini *s, char *line)
 	int		position;
 	char	*file_name;
 	int		iter;
-	int		len;
 
 	iter = 0;
 	file_name = NULL;
