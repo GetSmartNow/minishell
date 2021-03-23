@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 13:26:54 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/22 02:22:59 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/23 20:41:59 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,15 @@ typedef struct		s_list
 	struct s_list	*next;
 }					t_list;
 
-int					sigint;
-int					sigd;
+int					g_sigint;
+int					g_sigd;
 
-/*--------GNL---------*/
 int					get_next_line(char **line);
 char				*strdup_till_null(char *s);
 size_t				ft_strlen_1(const char *s);
 char				*ft_join_str(char *s1, char *s2);
 char				*find_null(char *remainder);
 int					check_end(char *s);
-
-
 void				*ft_memset(void *str, int c, size_t len);
 void				ft_bzero(void *s, size_t n);
 void				*ft_memdel_1d(void *ptr);

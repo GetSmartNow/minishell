@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:44:29 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/22 02:35:03 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/23 21:37:48 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,11 @@ int					mini_exit(t_mini *s, char *exec, char *arg)
 {
 	int				res;
 
+	res = 0;
 	s->exit = 1;
 	write(1, exec, ft_strlen(exec));
 	write(1, "\n", 1);
-	if (arg)
+	if (arg != NULL)
 	{
 		res = check_number(arg);
 		g_sig.exit_status = res;

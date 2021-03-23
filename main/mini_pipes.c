@@ -6,146 +6,98 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:05:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/22 21:02:03 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/23 22:24:08 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int		init_pipes(t_mini *s)
+static int			init_pipes(t_mini *s)
 {
-	int			i = -1;
-	
+	int				i;
+
+	i = -1;
 	s->pipe.fd = (int **)malloc(sizeof(int *) * s->pipe.count_pipe);
+	if (s->pipe.fd == NULL)
+	{
+		write(STDERR, "malloc was not allocated\n", 26);
+		return (-1);
+	}
 	while (++i < s->pipe.count_pipe)
 	{
 		s->pipe.fd[i] = (int *)malloc(sizeof(int) * 2);
+		if (s->pipe.fd[i] == NULL)
+		{
+			write(STDERR, "malloc was not allocated\n", 26);
+			return (-1);
+		}
 	}
 	i = -1;
 	while (++i < s->pipe.count_pipe)
-	{
 		pipe(s->pipe.fd[i]);
-	}
 	return (0);
 }
 
-static int		mini_bin1(t_mini *s, int i)
+void				mini_pipes_child_p2(t_mini *s, int i)
 {
-	char		**bin = NULL;
-	char		*line = NULL;
-	t_mass		*tmp;
-	int			m = 0;
-	DIR				*folder;
-	struct dirent	*command;
-	int				flag;
+	int				k;
 
-	flag = 0;
-	tmp = s->head;
-	while (tmp != NULL && ft_strncmp(tmp->content, "PATH=", 5) != 0)
-		tmp = tmp->next;
-	if (s->mass3d[i][0][0] == '/')
-		s->var.bin = ft_strdup(s->mass3d[i][0]);
-	else if (tmp == NULL)
-		return (-1);
-	else
+	k = -1;
+	if (s->array_fdin[i])
 	{
-		line = ft_substr(tmp->content, 5, ft_strlen(tmp->content));
-		bin = ft_split(line, ':');
-		ft_memdel_1d(line);
-		m = 0;
-		while (bin[m] && flag == 0) //bin[m + 3]
-		{
-			// printf("%s\n", bin[m]);
-			folder = opendir(bin[m]);
-			if (folder == NULL)
-			{
-				write(1, "error\n", 6);
-				exit (127);
-			}
-			while ((command = readdir(folder)))
-			{
-				if (ft_strcmp(command->d_name, s->mass3d[i][0]) == 0)
-				{
-					flag = 1;
-					line = ft_strjoin(bin[m], "/");
-					s->var.bin = ft_strjoin(line, s->mass3d[i][0]);
-					ft_memdel_1d(line);
-				}
-			}
-			closedir(folder);
-			m++;
-		}
+		dup2(s->array_fdin[i], STDIN);
+		close(s->array_fdin[i]);
 	}
-	ft_memdel_2d((void**)bin);
-	return (flag);
+	else
+		dup2(s->pipe.fd[i - 1][0], STDIN);
+	if (s->array_fdout[i] > 1)
+	{
+		dup2(s->array_fdout[i], STDOUT);
+		close(s->array_fdout[i]);
+	}
+	else if (i + 1 != s->pipe.count_commands)
+		dup2(s->pipe.fd[i][1], STDOUT);
+	while (++k < s->pipe.count_pipe)
+	{
+		close(s->pipe.fd[k][1]);
+		if (k != 0 && i + 1 != s->pipe.count_commands)
+			close(s->pipe.fd[k][0]);
+	}
 }
 
-int					mini_pipes(t_mini *s) //ps -a | cat -e | cat -e
+void				mini_pipes_child_p1(t_mini *s, int i)
 {
-	int		i = 0;
-	int		res;
-	int		j;
+	int				k;
 
-	init_pipes(s);
-	for(i = 0; i < s->pipe.count_commands; i++)
+	k = 0;
+	if (s->array_fdin[i])
 	{
-		res = mini_bin1(s, i);
-		g_sig.pid = fork();
-		if (g_sig.pid == 0)
-		{
-			// printf("fd2: %d\n", s->array_fdout[i]);
-			// printf("sdin: %d\n", s->array_fdin[i]);
-			if (i == 0) // first
-			{
-				if (s->array_fdin[i])
-				{
-					dup2(s->array_fdin[i], STDIN);
-					close(s->array_fdin[i]);
-				}
-				if (s->array_fdout[i] > 1)
-				{
-					dup2(s->array_fdout[i], STDOUT);
-					close(s->array_fdout[i]);	
-				}
-				else
-					dup2(s->pipe.fd[i][1], STDOUT);
-				for (int k = 0; k < s->pipe.count_pipe; k++)
-				{
-					close(s->pipe.fd[k][1]);
-					if (k != 0)
-						close(s->pipe.fd[k][0]);
-				}
-			}
-			else
-			{
-				if (s->array_fdin[i])
-				{
-					dup2(s->array_fdin[i], STDIN);
-					close(s->array_fdin[i]);
-				}
-				else
-					dup2(s->pipe.fd[i - 1][0], STDIN);
-				if (s->array_fdout[i] > 1)
-				{
-					dup2(s->array_fdout[i], STDOUT);
-					close(s->array_fdout[i]);	
-				}
-				else if (i + 1 != s->pipe.count_commands)
-					dup2(s->pipe.fd[i][1], STDOUT);
-				for (int k = 0; k < s->pipe.count_pipe; k++)
-				{
-					close(s->pipe.fd[k][1]);
-					if (k != 0 && i + 1 != s->pipe.count_commands)
-						close(s->pipe.fd[k][0]);
-				}
-			}
-			execve(s->var.bin, s->mass3d[i], s->env);
-			exit (1);
-		}
-		if (res)
-			ft_memdel_1d(s->var.bin);
+		dup2(s->array_fdin[i], STDIN);
+		close(s->array_fdin[i]);
 	}
+	if (s->array_fdout[i] > 1)
+	{
+		dup2(s->array_fdout[i], STDOUT);
+		close(s->array_fdout[i]);
+	}
+	else
+		dup2(s->pipe.fd[i][1], STDOUT);
+	while (k < s->pipe.count_pipe)
+	{
+		close(s->pipe.fd[k][1]);
+		if (k != 0)
+			close(s->pipe.fd[k][0]);
+		k++;
+	}
+}
+
+void				mini_pipes_p2(t_mini *s)
+{
+	int				j;
+	int				status;
+
 	j = -1;
+	status = 1;
 	while (++j < s->pipe.count_pipe)
 	{
 		close(s->pipe.fd[j][0]);
@@ -154,9 +106,36 @@ int					mini_pipes(t_mini *s) //ps -a | cat -e | cat -e
 	}
 	free(s->pipe.fd);
 	s->pipe.fd = NULL;
-	for (int i = 0; i < s->pipe.count_commands; i++)
+	j = -1;
+	while (++j < s->pipe.count_commands)
 		wait(NULL);
-	free(s->pipe.fd);
-	s->pipe.fd = NULL;
-	return (0);
+}
+
+void				mini_pipes(t_mini *s, char ***arr)
+{
+	int				i;
+	int				res;
+
+	i = -1;
+	init_pipes(s);
+	while (++i < s->pipe.count_commands)
+	{
+		res = mini_bin_p1(s, arr[i][0], i);
+		g_sig.pid = fork();
+		if (g_sig.pid < 0)
+			exit(127);
+		else if (g_sig.pid == 0)
+		{
+			if (i == 0)
+				mini_pipes_child_p1(s, i);
+			else
+				mini_pipes_child_p2(s, i);
+			if (execve(s->var.bin, arr[i], s->env) == -1)
+				write(2, strerror(errno), ft_strlen(strerror(errno)));
+			exit(1);
+		}
+		if (res)
+			ft_memdel_1d(s->var.bin);
+	}
+	mini_pipes_p2(s);
 }

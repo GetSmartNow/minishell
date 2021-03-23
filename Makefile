@@ -6,7 +6,11 @@
 #    By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/09 17:56:31 by ctycho            #+#    #+#              #
+<<<<<<< HEAD
 #    Updated: 2021/03/22 21:02:58 by mvernius         ###   ########.fr        #
+=======
+#    Updated: 2021/03/23 21:44:55 by ctycho           ###   ########.fr        #
+>>>>>>> master
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +19,7 @@ NAME	:=	minishell
 #flags------------------------------------------------------------------------
 
 CC		:=	gcc
-FLAG	:=	-I.
+FLAG	:=	-I. -Wall -Wextra -Werror
 RM		:=	rm -f
 AR		:=	ar rc
 
@@ -33,8 +37,8 @@ PARS_D	:=	./parser/
 #files------------------------------------------------------------------------
 
 INC		:=	minishell.h
-SRCS	:=	$(addprefix ${MAIN_D}, main_test.c bin.c mini_pipes.c signal.c \
-			ft_init.c) \
+SRCS	:=	$(addprefix ${MAIN_D}, main.c bin.c mini_pipes.c signal.c \
+			ft_init.c bin_p2.c mini_pipes_p2.c) \
 			$(addprefix ${TOOL}, libft_utils.c ft_error.c mini_utils.c) \
 			$(addprefix $(ENV), ft_shlvl.c ft_pwd.c ft_shlvl_utils.c) \
 			$(addprefix ${BUILT}, mini_cd.c mini_echo.c mini_env.c mini_exit.c \

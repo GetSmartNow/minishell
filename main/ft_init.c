@@ -6,19 +6,24 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/21 16:27:47 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/22 21:02:06 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/23 22:23:55 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void			ft_init_before_loop(t_mini *s, char *av)
+void			ft_init_before_loop(t_mini *s, char *av, char **env)
 {
-	g_sig.exit_status = 0;
+	init_list(s, env);
+	init_list_x(s, env);
+	ft_shlvl(s);
+	get_pwd(s);
+	g_sigcat = 0;
 	s->av = av;
 	s->var.pwd = 0;
 	s->exit = 0;
 	s->var.path = NULL;
+	s->iter = 0;
 }
 
 void			ft_init_in_loop(t_mini *s)
@@ -39,11 +44,11 @@ void			ft_init_in_loop(t_mini *s)
 
 int				init_list_x(t_mini *s, char **env)
 {
-	t_mass		*tmp = NULL;
-	t_mass		*tmp1 = NULL;
-	char		*line = NULL;
-	int			i = 0;
+	char		*line;
+	int			i;
 
+	i = 0;
+	line = NULL;
 	s->head_x = NULL;
 	while (env[i] != NULL)
 	{
@@ -61,11 +66,11 @@ int				init_list_x(t_mini *s, char **env)
 
 int				init_list(t_mini *s, char **env)
 {
-	t_mass		*tmp = NULL;
-	t_mass		*tmp1 = NULL;
-	char		*line = NULL;
-	int			i = 0;
+	char		*line;
+	int			i;
 
+	i = 0;
+	line = NULL;
 	s->head = NULL;
 	while (env[i] != NULL)
 	{
