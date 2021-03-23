@@ -12,6 +12,33 @@
 
 #include "../minishell.h"
 
+void	ibd_if_block(const char *str, char c, t_mini *s, int iter)
+{
+	if (str[iter] == '\0')
+		paste_error("syntax error near unexpected token `newline\'\n", s);
+	else if (!ft_isspace(str[iter]) && !ft_isalnum(str[iter]))
+	{
+		paste_error("syntax error near unexpected token `", s);
+		s->err_message = ft_strnjoin_char(s->err_message, str[iter], 1);
+		s->err_message = ft_strnjoin_char(s->err_message, '\'', 1);
+		s->err_message = ft_strnjoin_char(s->err_message, '\n', 1);
+	}
+	else
+	{
+		if (c == '<' && iter > 1)
+			paste_error("syntax error near unexpected token `<\'\n", s);
+		else if (c == '>' && iter > 2)
+		{
+			if (iter == 3)
+				paste_error("syntax error near unexpected token `>\'\n", s);
+			else
+				paste_error("syntax error near unexpected token `>>\'\n", s);
+		}
+		else if (c == '|' && iter > 1)
+			paste_error("syntax error near unexpected token `|\'\n", s);
+	}
+}
+
 void	ident_bad_dup(char *str, char c, t_mini *s)
 {
 	int iter;
@@ -21,29 +48,7 @@ void	ident_bad_dup(char *str, char c, t_mini *s)
 		iter++;
 	if (s->err_message == NULL)
 	{
-		if (str[iter] == '\0')
-			paste_error("syntax error near unexpected token `newline\'\n", s);
-		else if (!ft_isspace(str[iter]) && !ft_isalnum(str[iter]))
-		{
-			paste_error("syntax error near unexpected token `", s);
-			s->err_message = ft_strnjoin_char(s->err_message, str[iter], 1);
-			s->err_message = ft_strnjoin_char(s->err_message, '\'', 1);
-			s->err_message = ft_strnjoin_char(s->err_message, '\n', 1);
-		}
-		else
-		{
-			if (c == '<' && iter > 1)
-				paste_error("syntax error near unexpected token `<\'\n", s);
-			else if (c == '>' && iter > 2)
-			{
-				if (iter == 3)
-					paste_error("syntax error near unexpected token `>\'\n", s);
-				else
-					paste_error("syntax error near unexpected token `>>\'\n", s);
-			}
-			else if (c == '|' && iter > 1)
-				paste_error("syntax error near unexpected token `|\'\n", s);
-		}
+		ibd_if_block(str, c, s, iter);
 	}
 	g_sig.exit_status = 258;
 }
@@ -79,10 +84,7 @@ int		find_symbol(char *str, char c, t_mini *s)
 	int	position;
 	int	flag;
 
-	iter = 0;
-	shield_count = 0;
-	position = -1;
-	flag = 0;
+	init_fs(&iter, &shield_count, &position, &flag);
 	while (str[iter])
 	{
 		iter += skip_symbol(str + iter, &shield_count, '\\');
@@ -94,9 +96,8 @@ int		find_symbol(char *str, char c, t_mini *s)
 				flag = 1;
 			if (flag == 0)
 			{
-				position = iter;
 				ident_bad_dup(str + iter, c, s);
-				return (position);
+				return (iter);
 			}
 		}
 		shield_count = 0;

@@ -6,13 +6,33 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 14:17:17 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/23 20:39:10 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/23 21:08:26 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*make_substitute(char *command, t_mass **head, int counter, t_mini *s)
+static void	check_flag(t_mini *s, int flag1)
+{
+	if (flag1 % 2 == 1)
+		paste_error("quote is not closed\n", s);
+}
+
+static char	*extra_res(const char *command, char *res, int flag1)
+{
+	if (flag1 % 2 == 0 && ft_strlen_modif(command) == flag1 && res == NULL)
+		res = ft_strdup("");
+	return (res);
+}
+
+static void	check_res(int counter, t_mini *s, const char *res)
+{
+	if (counter != -2 && res == NULL)
+		paste_error("malloc error\n", s);
+}
+
+char		*make_substitute(char *command, t_mass **head, int counter,
+			t_mini *s)
 {
 	int		i;
 	char	*res;
@@ -33,11 +53,8 @@ char	*make_substitute(char *command, t_mass **head, int counter, t_mini *s)
 		else
 			add_simple_char(command[i], &i, &res, counter);
 	}
-	if (flag1 % 2 == 1)
-		paste_error("quote is not closed\n", s);
-	else if (flag1 % 2 == 0 && ft_strlen_modif(command) == flag1 && res == NULL)
-		res = ft_strdup("");
-	else if (counter != -2 && res == NULL)
-		paste_error("malloc error\n", s);
+	check_flag(s, flag1);
+	res = extra_res(command, res, flag1);
+	check_res(counter, s, res);
 	return (res);
 }

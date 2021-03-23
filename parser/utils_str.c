@@ -97,8 +97,8 @@ int		replace(char *command, t_mass **head, char **res)
 	{
 		(*res) = ft_strnjoin_char((*res), '$', 1);
 	}
-	// else
-	// 	i++;
+	else
+		i++;
 	return (i);
 }
 
@@ -109,7 +109,6 @@ char	*extract_key(char *str)
 
 	pos = 0;
 	res = NULL;
-	// res = ft_strdup("");
 	if (ft_isdigit(str[pos]))
 		return (NULL);
 	while (str[pos] && ft_isalnum((int)str[pos]))

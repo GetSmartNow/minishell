@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/21 15:17:40 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/22 21:07:28 by mvernius         ###   ########.fr       */
+/*   Created: 2021/03/23 21:38:44 by mvernius          #+#    #+#             */
+/*   Updated: 2021/03/23 21:38:49 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,9 @@ static size_t	count_words(char const *s, char sep)
 	int		flag;
 	int		shield_count;
 
-	flag = 0;
-	i = 0;
-	state = 0;
-	count = 0;
-	shield_count = 0;
-	while (s[i])
+	i = -1;
+	little_init(&state, &count, &flag, &shield_count);
+	while (s[++i])
 	{
 		i += skip_symbol(s + i, &shield_count, '\\');
 		if (s[i] && is_quote(s[i]))
@@ -65,14 +62,8 @@ static size_t	count_words(char const *s, char sep)
 			state = 1;
 		}
 		else if (s[i] == sep)
-		{
-			if (shield_count % 2 == 1)
-				flag = 1;
-			if (flag == 0)
-				state = 0;
-		}
+			little_check(shield_count, &state, &flag);
 		shield_count = 0;
-		i++;
 	}
 	return (count);
 }

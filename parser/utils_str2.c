@@ -57,11 +57,7 @@ char	*extract_command(char *line, char redir, t_mini *s)
 		position = find_symbol(res, redir, s);
 		if (position >= 0)
 		{
-			len = 0;
-			ft_memdel_1d(file_name);
-			file_name = find_file_name(res, position, &len);
-			if (NULL == file_name)
-				paste_error("malloc error\n", s);
+			len = search_filename(s, res, position, &file_name);
 			res = ft_strcut(res, iter + position, len);
 		}
 	}
