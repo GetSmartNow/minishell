@@ -91,6 +91,15 @@ typedef struct		s_mini
 
 }					t_mini;
 
+typedef struct 		s_pars
+{
+	int		state;
+	int		count;
+	int		i;
+	int		flag;
+	int		shield_count;
+}					t_pars;
+
 t_sig	g_sig;
 
 /*INIT*/
@@ -157,6 +166,8 @@ char *make_substitute(char *command, t_mass **head, int counter, t_mini *s);
 **	parser/new_split.c
 */
 char			**ft_split_new(char const *s, char c);
+void little_init(int *state, int *count, int *flag, int *shield_count);
+void little_check(int shield_count, int *state, int *flag);
 
 /* 
 **	parser/parser.c
@@ -195,12 +206,15 @@ void 	run_checks(char *str, t_mini *s);
 void	define_fd_in(t_mini *s, char *line);
 void	define_fd_out(t_mini *s, char *line);
 int ft_fill_fd(t_mini *s, char *line, char *file_name, int position);
+int search_filename(t_mini *s, char *line, int position, char **file_name);
 
 /* 
 **	parser/utils_init.c
 */
 void init_before_replacement(int *i, char **res, int *count_shield, int *flag1);
 void init_err_info(t_mini *s);
+void	init_fs(int *iter, int *shield_count, int *position, int *flag);
+void simple_init(t_pars *p);
 
 /* 
 **	parser/utils_str.c
