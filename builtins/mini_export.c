@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:46:29 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/22 03:26:41 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/23 21:48:46 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int			export_to_export_1(t_mini *s, char *arg, int flag, int eq)
 	{
 		if (eq == 1)
 		{
-			length = length_to_equal(s, arg);
+			length = length_to_equal(arg);
 			if (ft_strncmp(tmp->content, arg, length) == 0)
 			{
 				flag = 1;
@@ -61,7 +61,7 @@ void				export_to_export(t_mini *s, int i, int equal)
 	ft_list_sort(&s->head_x);
 }
 
-int					valid_arg(t_mini *s, char *arg)
+int					valid_arg(char *arg)
 {
 	int				i;
 	int				res;
@@ -94,6 +94,7 @@ static void			mini_export_out(t_mini *s)
 		write(1, "\n", 1);
 		tmp = tmp->next;
 	}
+	g_sig.exit_status = 0;
 }
 
 void				mini_export(t_mini *s)
@@ -105,19 +106,19 @@ void				mini_export(t_mini *s)
 	{
 		while (s->mass3d[0][i])
 		{
-			if (valid_arg(s, s->mass3d[0][i]) == -1)
-			{
-				write(STDERR, "bash: export: `", 15);
-				write(STDERR, s->mass3d[0][i], ft_strlen(s->mass3d[0][i]));
-				write(STDERR, "': not a valid identifier\n", 26);
-			}
+			if (valid_arg(s->mass3d[0][i]) == -1)
+				not_valid_arg(s, i);
 			else if (ft_strchr(s->mass3d[0][i], '='))
 			{
 				export_to_env(s, i);
 				export_to_export(s, i, 1);
+				g_sig.exit_status = 0;
 			}
 			else
+			{
 				export_to_export(s, i, 0);
+				g_sig.exit_status = 0;
+			}
 			i++;
 		}
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 14:55:26 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/21 21:06:26 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/23 20:42:36 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int					caught_signal(char *remainder, int byte_was_read)
 		write(1, "  \b\b", 4);
 		if (ft_strlen_1(remainder) != 0)
 		{
-			sigd = 1;
+			g_sigd = 1;
 			byte_was_read = 1;
 		}
 		else

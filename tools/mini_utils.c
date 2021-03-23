@@ -6,13 +6,13 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/21 21:13:20 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/22 15:15:26 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/23 21:47:33 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int					length_to_equal(t_mini *s, char *line)
+int					length_to_equal(char *line)
 {
 	int				i;
 

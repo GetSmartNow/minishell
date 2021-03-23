@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:32:58 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/23 16:47:37 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/23 21:40:09 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 static void			empty_olpwd(t_mini *s)
 {
 	t_mass			*tmp;
-	char			*line;
 
 	tmp = s->head;
 	while (tmp != NULL)
@@ -56,7 +55,6 @@ static int			mini_cd_minus_2(t_mini *s, char *arg, int res)
 static void			mini_cd_minus_1(t_mini *s)
 {
 	t_mass			*tmp;
-	char			*line;
 	int				flag;
 
 	flag = 0;
@@ -77,7 +75,7 @@ static void			mini_cd_minus_1(t_mini *s)
 		write(1, "bash: cd: OLDPWD not set\n", 25);
 }
 
-static int			mini_cd_minus(t_mini *s, char *exec, char *arg)
+static int			mini_cd_minus(t_mini *s, char *arg)
 {
 	int				res;
 	int				len;
@@ -102,10 +100,9 @@ static int			mini_cd_minus(t_mini *s, char *exec, char *arg)
 	return (res);
 }
 
-void				mini_cd(t_mini *s, char *exec, char *arg)
+void				mini_cd(t_mini *s, char *arg)
 {
 	int				res;
-	t_mass			*tmp;
 
 	res = 0;
 	if (arg == NULL)
@@ -113,7 +110,7 @@ void				mini_cd(t_mini *s, char *exec, char *arg)
 		get_home(s);
 		return ;
 	}
-	res = mini_cd_minus(s, exec, arg);
+	res = mini_cd_minus(s, arg);
 	if (res == -1 && s->mass3d[0][1][0] != '-')
 	{
 		write(1, "bash: cd: ", 10);

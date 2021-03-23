@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 11:36:22 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/22 21:58:50 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/23 21:53:34 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int					exec_bin(t_mini *s, char **arr, char *exec)
 	res = exec_path_p1(s, exec);
 	if (ft_strcmp(s->var.bin, "cat") == 0 ||\
 	ft_strcmp(s->var.bin, "/bin/cat") == 0)
-		sigcat = 1;
+		g_sigcat = 1;
 	g_sig.pid = fork();
 	if (g_sig.pid < 0)
 		exit(127);
@@ -104,10 +104,12 @@ int					exec_bin(t_mini *s, char **arr, char *exec)
 	waitpid(g_sig.pid, &status, 0);
 	if (res)
 		ft_memdel_1d(s->var.bin);
-	bin_error(s, exec, res, status);
+	bin_error(exec, res, status);
 	if (status == 2)
 		g_sig.exit_status = 130;
 	else if (status == 3)
 		g_sig.exit_status = 131;
+	else if (status != 0 && status != 256)
+		g_sig.exit_status = status >> 8;
 	return (0);
 }

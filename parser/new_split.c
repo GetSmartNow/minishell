@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   new_split.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/21 15:17:40 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/21 16:25:19 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/23 21:54:37 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,6 @@ static void		*my_free(char **array, size_t i)
 static size_t	create_str(const char *s, char c, char **arr, size_t *iter)
 {
 	int	len_word;
-	int	i;
 
 	while (*s)
 	{
@@ -164,7 +163,6 @@ char			**ft_split_new(char const *s, char c)
 {
 	char	**arr;
 	size_t	iter;
-	int		length;
 	int		num_words;
 
 	if (!s)

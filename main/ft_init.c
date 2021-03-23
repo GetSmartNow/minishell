@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/21 16:27:47 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/23 16:35:48 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/23 21:59:22 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ void			ft_init_before_loop(t_mini *s, char *av, char **env)
 	init_list_x(s, env);
 	ft_shlvl(s);
 	get_pwd(s);
-	sigcat = 0;
-	g_sig.exit_status = 0;
+	g_sigcat = 0;
 	s->av = av;
 	s->var.pwd = 0;
 	s->exit = 0;
 	s->var.path = NULL;
+	s->iter = 0;
 }
 
 void			ft_init_in_loop(t_mini *s)

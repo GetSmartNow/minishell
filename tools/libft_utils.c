@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 18:43:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/22 15:11:36 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/23 21:32:26 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ void			ft_list_sort(t_mass **lst)
 {
 	t_mass		*ptr;
 	t_mass		*ptr1;
-	t_mass		*next;
 	char		*tmp;
 
 	ptr = *(lst);

@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 05:47:18 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/22 15:07:34 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/23 21:41:27 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int						mini_atoi(char *line)
 	return (res);
 }
 
-int						check_shlvl_export(t_mini *s, char *line)
+int						check_shlvl_export(char *line)
 {
 	int					i;
 	int					flag;
@@ -55,7 +55,7 @@ int						check_shlvl_export(t_mini *s, char *line)
 	return (flag);
 }
 
-int						check_shlvl_env(t_mini *s, char *line)
+int						check_shlvl_env(char *line)
 {
 	int					i;
 	int					flag;

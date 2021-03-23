@@ -250,7 +250,6 @@ void make_command_elems(t_mini *s, int iter_pipes)
 void make_pipes(t_mini *s)
 {
 	int 	iter_pipes;
-	char	*tmp;
 
 	iter_pipes = 0;
 	while ((s->pipes)[iter_pipes])

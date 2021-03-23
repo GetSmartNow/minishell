@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 22:37:10 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/23 00:10:42 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/23 21:59:59 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ int					mini_bin_p1(t_mini *s, char *exec, int i)
 	char			**bin;
 	char			*line;
 	t_mass			*tmp;
-	int				m;
 	int				flag;
 
 	flag = 0;
+	bin = NULL;
 	tmp = s->head;
 	while (tmp != NULL && ft_strncmp(tmp->content, "PATH=", 5) != 0)
 		tmp = tmp->next;
@@ -59,9 +59,9 @@ int					mini_bin_p1(t_mini *s, char *exec, int i)
 		line = ft_substr(tmp->content, 5, ft_strlen(tmp->content));
 		bin = ft_split(line, ':');
 		ft_memdel_1d(line);
-		m = -1;
-		while (bin[++m] && flag == 0)
-			flag = magic_box_p2(s, bin[m], exec, flag);
+		s->iter = -1;
+		while (bin[++s->iter] && flag == 0)
+			flag = magic_box_p2(s, bin[s->iter], exec, flag);
 	}
 	ft_memdel_2d((void**)bin);
 	return (flag);

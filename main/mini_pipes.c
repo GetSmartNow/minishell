@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:05:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/23 16:49:47 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/23 21:30:29 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ void				mini_pipes_child_p1(t_mini *s, int i)
 void				mini_pipes_p2(t_mini *s)
 {
 	int				j;
-	int				i;
 	int				status;
 
 	j = -1;

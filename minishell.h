@@ -6,29 +6,28 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/23 16:50:22 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/23 21:59:00 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include "libft/include/libft.h"
+# include "libft/include/libft.h"
 
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
-#include <errno.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <sys/wait.h>
-#include <dirent.h>
-#include <signal.h>
+# include <stdio.h>
+# include <unistd.h>
+# include <string.h>
+# include <errno.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <sys/wait.h>
+# include <dirent.h>
+# include <signal.h>
 
-#define STDIN 0
-#define STDOUT 1
-#define STDERR 2
-
+# define STDIN 0
+# define STDOUT 1
+# define STDERR 2
 
 typedef struct		s_pipe
 {
@@ -65,6 +64,7 @@ typedef struct		s_sig
 
 typedef struct		s_mini
 {
+	int				iter;
 	t_pipe			pipe;
 	t_mass			*head;
 	t_mass			*head_x;
@@ -90,8 +90,8 @@ typedef struct		s_mini
 
 }					t_mini;
 
-t_sig	g_sig;
-int		sigcat;
+t_sig				g_sig;
+int					g_sigcat;
 
 /*INIT*/
 void				ft_init_before_loop(t_mini *s, char *av, char **env);
@@ -100,7 +100,7 @@ int					init_list(t_mini *s, char **env);
 int					init_list_x(t_mini *s, char **env);
 
 int					mini_bin(t_mini *s);
-void				mini_cd(t_mini *s, char *exec, char *arg);
+void				mini_cd(t_mini *s, char *arg);
 void				get_home(t_mini *s);
 void				mini_pwd(t_mini	*s);
 void				mini_pwd_1(t_mini *s);
@@ -110,6 +110,7 @@ int					mini_exit(t_mini *s, char *exec, char *arg);
 void				mini_env(t_mini *s);
 void				export_to_env(t_mini *s, int i);
 void				mini_export(t_mini *s);
+void				not_valid_arg(t_mini *s, int i);
 void				mini_unset(t_mini *s);
 void				mini_pipes(t_mini *s, char ***arr);
 int					mini_bin_p1(t_mini *s, char *exec, int i);
@@ -119,13 +120,13 @@ int					exec_bin(t_mini *s, char **arr, char *command);
 void				ft_list_to_2d(t_mini *s);
 int					magic_box(t_mini *s, char *dir, char *exec);
 int					absolute_path(t_mini *s, char *bin, char *exec);
-void				bin_error(t_mini *s, char *exec, int res, int status);
-void				bin_error_p2(t_mini *s, char *exec, int res);
+void				bin_error(char *exec, int res, int status);
+void				bin_error_p2(char *exec, int res);
 
 /*ENV*/
 void				ft_shlvl(t_mini *s);
-int					check_shlvl_env(t_mini *s, char *line);
-int					check_shlvl_export(t_mini *s, char *line);
+int					check_shlvl_env(char *line);
+int					check_shlvl_export(char *line);
 int					mini_atoi(char *line);
 void				get_pwd(t_mini	*s);
 
@@ -133,9 +134,9 @@ void				get_pwd(t_mini	*s);
 void				init_signal(void);
 void				sig_int(int signum);
 void				sig_quit(int code);
-void				exit_code(t_mini *s);
+void				exit_code(void);
 
-int					length_to_equal(t_mini *s, char *line);
+int					length_to_equal(char *line);
 char				*put_quotes(char *s1);
 void				ft_error(char *error, int flag);
 char				*mini_putnbr(int n);

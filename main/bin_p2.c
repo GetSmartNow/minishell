@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 21:23:06 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/22 21:59:14 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/23 21:54:00 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void				ft_list_to_2d(t_mini *s)
 {
 	t_mass			*tmp;
-	char			*line;
 	int				i;
 
 	i = 0;
@@ -80,7 +79,7 @@ int					absolute_path(t_mini *s, char *bin, char *exec)
 	return (s->var.count_bin);
 }
 
-void				bin_error_p2(t_mini *s, char *exec, int res)
+void				bin_error_p2(char *exec, int res)
 {
 	write(1, "bash: ", 6);
 	write(1, exec, ft_strlen(exec));
@@ -101,7 +100,7 @@ void				bin_error_p2(t_mini *s, char *exec, int res)
 	}
 }
 
-void				bin_error(t_mini *s, char *exec, int res, int status)
+void				bin_error(char *exec, int res, int status)
 {
 	if (res == 4 || res == 6 || res == 0 || res == -1)
 	{
@@ -112,5 +111,5 @@ void				bin_error(t_mini *s, char *exec, int res, int status)
 		return ;
 	}
 	else
-		bin_error_p2(s, exec, res);
+		bin_error_p2(exec, res);
 }

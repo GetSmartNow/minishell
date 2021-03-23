@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:45:27 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/22 03:10:22 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/23 21:49:03 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int			export_to_env_1(t_mini *s, char *arg, int flag)
 	tmp = s->head;
 	while (tmp != NULL)
 	{
-		length = length_to_equal(s, arg);
+		length = length_to_equal(arg);
 		if (ft_strncmp(tmp->content, arg, length) == 0)
 		{
 			flag = 1;
@@ -77,5 +77,6 @@ void				mini_env(t_mini *s)
 			tmp = tmp->next;
 			i++;
 		}
+		g_sig.exit_status = 0;
 	}
 }

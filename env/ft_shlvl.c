@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 20:33:50 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/22 15:06:13 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/23 21:47:13 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ static char			*ft_shlvl_export_p2(t_mini *s, char *content, char *tmp_sh)
 static int			ft_shlvl_export(t_mini *s, char *tmp_sh, int f)
 {
 	t_mass			*tmp;
-	char			*line;
 
 	f = 0;
 	tmp_sh = NULL;
@@ -46,7 +45,7 @@ static int			ft_shlvl_export(t_mini *s, char *tmp_sh, int f)
 	{
 		if (ft_strncmp(tmp->content, "SHLVL=", 6) == 0)
 		{
-			f = check_shlvl_export(s, tmp->content);
+			f = check_shlvl_export(tmp->content);
 			if (f == 1)
 				tmp->content = ft_shlvl_export_p2(s, tmp->content, tmp_sh);
 			else if (f == 2)
@@ -62,7 +61,7 @@ static int			ft_shlvl_export(t_mini *s, char *tmp_sh, int f)
 
 static int			ft_shlvl_env(t_mini *s, char *content, char *tmp_sh, int f)
 {
-	f = check_shlvl_env(s, content);
+	f = check_shlvl_env(content);
 	if (f == 1)
 	{
 		s->var.shlvl = mini_atoi(content);
@@ -96,6 +95,7 @@ void				ft_shlvl(t_mini *s)
 
 	flag = 0;
 	tmp = s->head;
+	tmp_sh = NULL;
 	while (tmp != NULL)
 	{
 		if (ft_strncmp(tmp->content, "SHLVL=", 6) == 0)

@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/27 11:53:47 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/22 05:27:24 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/23 21:46:25 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void			get_pwd(t_mini *s)
 	flag = 0;
 	line = NULL;
 	free_str = NULL;
+	tmp = NULL;
 	get_pwd_env(s, tmp, flag);
 	flag = get_pwd_export(s, tmp, flag);
 	if (flag == 0)

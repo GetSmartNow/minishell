@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:43:03 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/22 02:33:20 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/23 16:58:05 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,5 @@ void				mini_echo(char **str, t_mini *s)
 		}
 		write(s->fdout, "\n", 1);
 	}
+	g_sig.exit_status = 0;
 }
