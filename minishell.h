@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:59 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/23 00:19:58 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/23 16:50:22 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ int					init_list_x(t_mini *s, char **env);
 
 int					mini_bin(t_mini *s);
 void				mini_cd(t_mini *s, char *exec, char *arg);
+void				get_home(t_mini *s);
 void				mini_pwd(t_mini	*s);
 void				mini_pwd_1(t_mini *s);
 void				mini_oldpwd(t_mini *s);
@@ -110,7 +111,7 @@ void				mini_env(t_mini *s);
 void				export_to_env(t_mini *s, int i);
 void				mini_export(t_mini *s);
 void				mini_unset(t_mini *s);
-int					mini_pipes(t_mini *s, char ***arr);
+void				mini_pipes(t_mini *s, char ***arr);
 int					mini_bin_p1(t_mini *s, char *exec, int i);
 
 /*EXEC*/

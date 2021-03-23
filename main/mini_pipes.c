@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:05:16 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/23 01:07:20 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/23 16:49:47 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void				mini_pipes_child_p1(t_mini *s, int i)
 {
 	int				k;
 
-	k = -1;
+	k = 0;
 	if (s->array_fdin[i])
 	{
 		dup2(s->array_fdin[i], STDIN);
@@ -82,11 +82,12 @@ void				mini_pipes_child_p1(t_mini *s, int i)
 	}
 	else
 		dup2(s->pipe.fd[i][1], STDOUT);
-	while (++k < s->pipe.count_pipe)
+	while (k < s->pipe.count_pipe)
 	{
 		close(s->pipe.fd[k][1]);
 		if (k != 0)
 			close(s->pipe.fd[k][0]);
+		k++;
 	}
 }
 
@@ -108,10 +109,10 @@ void				mini_pipes_p2(t_mini *s)
 	s->pipe.fd = NULL;
 	j = -1;
 	while (++j < s->pipe.count_commands)
-		waitpid(g_sig.pid, &status, 0);
+		wait(NULL);
 }
 
-int					mini_pipes(t_mini *s, char ***arr)
+void				mini_pipes(t_mini *s, char ***arr)
 {
 	int				i;
 	int				res;
@@ -127,15 +128,9 @@ int					mini_pipes(t_mini *s, char ***arr)
 		else if (g_sig.pid == 0)
 		{
 			if (i == 0)
-			{
 				mini_pipes_child_p1(s, i);
-				
-			}
 			else
-			{
 				mini_pipes_child_p2(s, i);
-				
-			}
 			if (execve(s->var.bin, arr[i], s->env) == -1)
 				write(2, strerror(errno), ft_strlen(strerror(errno)));
 			exit(1);
@@ -144,5 +139,4 @@ int					mini_pipes(t_mini *s, char ***arr)
 			ft_memdel_1d(s->var.bin);
 	}
 	mini_pipes_p2(s);
-	return (0);
 }

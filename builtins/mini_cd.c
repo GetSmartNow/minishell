@@ -6,7 +6,7 @@
 /*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 14:32:58 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/22 03:58:50 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/23 16:47:37 by ctycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,10 @@ void				mini_cd(t_mini *s, char *exec, char *arg)
 
 	res = 0;
 	if (arg == NULL)
+	{
+		get_home(s);
 		return ;
+	}
 	res = mini_cd_minus(s, exec, arg);
 	if (res == -1 && s->mass3d[0][1][0] != '-')
 	{
@@ -120,13 +123,10 @@ void				mini_cd(t_mini *s, char *exec, char *arg)
 	}
 	else
 	{
-		write(1, "1", 1);
 		if (s->var.pwd == 0)
 			mini_oldpwd(s);
 		else
 			empty_olpwd(s);
-		write(1, "2", 1);
 		mini_pwd_1(s);
-		write(1, "3", 1);
 	}
 }
