@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 14:16:46 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/22 14:16:48 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/23 16:57:53 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	define_fd_out(t_mini *s, char *line)
 	ft_memdel_1d((void *)file_name);
 }
 
-int ft_fill_fd(t_mini *s, char *line, char *file_name, int position)
+int		ft_fill_fd(t_mini *s, char *line, char *file_name, int position)
 {
 	int fd_type;
 

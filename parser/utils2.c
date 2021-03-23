@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 14:16:11 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/22 14:16:14 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/23 16:49:11 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	ft_arr_intswap(int **int_array, int i, int j)
 	array[j] = tmp;
 }
 
-void free_command(t_mini *s)
+void	free_command(t_mini *s)
 {
 	int i;
 
@@ -54,7 +54,7 @@ int		detect_out_redirect_type(const char *str, int position)
 {
 	int	out;
 
-	out	= 0;
+	out = 0;
 	if (str[position] == '>' && str[position + 1] == '>')
 		out = 2;
 	else if (str[position + 1] != '>')

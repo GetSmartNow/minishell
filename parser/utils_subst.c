@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 14:16:26 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/22 15:03:29 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/23 16:50:34 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*find_value_in_export(char *key, t_mass **head)
 {
 	char	*value;
 	t_mass	*node;
-	char 	*tmp;
+	char	*tmp;
 	size_t	key_len;
 
 	key_len = ft_strlen(key);
@@ -24,9 +24,11 @@ char	*find_value_in_export(char *key, t_mass **head)
 	tmp = node->content;
 	while (node)
 	{
-		if (!ft_strncmp(key, tmp, key_len) && ((char *)(node->content))[key_len] == '=')
+		if (!ft_strncmp(key, tmp, key_len) &&
+			((char *)(node->content))[key_len] == '=')
 		{
-			value = ft_substr(tmp, key_len + 1, (ft_strlen(tmp) - (key_len + 1)));
+			value = ft_substr(tmp, key_len + 1, (ft_strlen(tmp) -
+				(key_len + 1)));
 			return (value);
 		}
 		node = node->next;
@@ -49,7 +51,7 @@ char	*extract_from_quotes(char *str, int pos)
 	return (NULL);
 }
 
-int	is_shielded(char c)
+int		is_shielded(char c)
 {
 	char	*shielded_list;
 	int		i;
@@ -65,9 +67,7 @@ int	is_shielded(char c)
 	return (0);
 }
 
-
-
-int errno_handler(const char *command, int *counter, char **res)
+int		errno_handler(const char *command, int *counter, char **res)
 {
 	if (!ft_strncmp(command, "$?", 3))
 	{
@@ -80,14 +80,3 @@ int errno_handler(const char *command, int *counter, char **res)
 		(*res) = ft_concat((*res), ft_itoa(g_sig.exit_status));
 	return (ft_strlen_modif("$?"));
 }
-// void errno_handler(const char *command, int *i, char **res)
-// {
-// 	if (!ft_strncmp(command, "$?", 3))
-// 		(*res) = ft_concat((*res), ft_strdup("$?"));
-// 	else
-// 		(*res) = ft_concat((*res), ft_itoa(g_sig.exit_status));
-// 	(*i) += ft_strlen_modif("$?");
-// }
-
-
-

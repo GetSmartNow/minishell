@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 14:17:17 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/22 21:06:47 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/23 20:39:10 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ char	*make_substitute(char *command, t_mass **head, int counter, t_mini *s)
 	}
 	if (flag1 % 2 == 1)
 		paste_error("quote is not closed\n", s);
-	if (counter != -2 && res == NULL)
+	else if (flag1 % 2 == 0 && ft_strlen_modif(command) == flag1 && res == NULL)
+		res = ft_strdup("");
+	else if (counter != -2 && res == NULL)
 		paste_error("malloc error\n", s);
 	return (res);
 }

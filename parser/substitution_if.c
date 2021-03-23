@@ -6,13 +6,13 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 14:16:56 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/22 15:16:25 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/23 20:47:27 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int if_shield(const char *command, int *count_shield, int *i, char **res)
+int	if_shield(const char *command, int *count_shield, int *i, char **res)
 {
 	(*i) += skip_symbol(command + (*i), count_shield, '\\');
 	if ((*count_shield) >= 2)
@@ -28,7 +28,7 @@ int if_shield(const char *command, int *count_shield, int *i, char **res)
 	return (-1);
 }
 
-int if_single_quote(char *command, t_mini *s, int *i, char **res)
+int	if_single_quote(char *command, t_mini *s, int *i, char **res)
 {
 	char *tmp;
 
@@ -43,27 +43,20 @@ int if_single_quote(char *command, t_mini *s, int *i, char **res)
 	return (-1);
 }
 
-int if_dollar(char *command, t_mass **head, int *counter, char **res)
+int	if_dollar(char *command, t_mass **head, int *counter, char **res)
 {
-	int	i = 0;
+	int	i;
 
+	i = 0;
 	if (!ft_strncmp(command, "$?", 2))
 		i = errno_handler(command, counter, res);
 	else
-		i = replace(++command, head, res);
+		i = replace(command, head, res);
 	*counter = -2;
 	return (i + 1);
 }
-// int if_dollar(char *command, t_mass **head, int *i, char **res)
-// {
-// 	if (!ft_strncmp(command + (*i), "$?", 2))
-// 		errno_handler(command + (*i), i, res);
-// 	else
-// 		replace(command, head, i, res);
-// 	return (-2);
-// }
 
-int if_double_quote(int *i, int *flag1)
+int	if_double_quote(int *i, int *flag1)
 {
 	(*i)++;
 	(*flag1)++;

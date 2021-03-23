@@ -6,13 +6,13 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 14:16:19 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/22 14:16:21 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/23 16:49:29 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int skip_symbol(const char *str, int *symbol_count, char symbol)
+int	skip_symbol(const char *str, int *symbol_count, char symbol)
 {
 	int iter;
 
@@ -25,7 +25,7 @@ int skip_symbol(const char *str, int *symbol_count, char symbol)
 	return (iter);
 }
 
-int is_quote(char symbol)
+int	is_quote(char symbol)
 {
 	if (symbol == '\'' || symbol == '\"')
 		return (1);

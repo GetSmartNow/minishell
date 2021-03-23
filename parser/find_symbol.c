@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 14:17:12 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/22 21:05:56 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/23 17:03:04 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	ident_bad_dup(char *str, char c, t_mini *s)
 				paste_error("syntax error near unexpected token `|\'\n", s);
 		}
 	}
-	//добавить присвоение 258 ошибки.
+	g_sig.exit_status = 258;
 }
 
 void	define_flag(int shield_count, int *flag)

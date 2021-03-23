@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 14:16:34 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/22 14:16:36 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/23 16:52:37 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,16 @@ char	*ft_strcut(char *line, int start, int len)
 	int		i;
 
 	i = 0;
-	iter = 0;
+	iter = -1;
 	res = ft_strdup("");
-	while (iter < start)
+	while (++iter < start)
 	{
 		res = ft_strnjoin_char(res, line[i], 1);
-		iter++;
 		i++;
 	}
-	iter = 0;
-	while (iter < len)
-	{
-		iter++;
+	iter = -1;
+	while (++iter < len)
 		i++;
-	}
 	while (line[i])
 	{
 		res = ft_strnjoin_char(res, line[i], 1);
@@ -42,7 +38,7 @@ char	*ft_strcut(char *line, int start, int len)
 	return (res);
 }
 
-char *extract_command(char *line, char redir, t_mini *s)
+char	*extract_command(char *line, char redir, t_mini *s)
 {
 	int		len;
 	char	*res;
@@ -74,7 +70,7 @@ char *extract_command(char *line, char redir, t_mini *s)
 	return (res);
 }
 
-char *extract_file_name(char *line, char redir, t_mini *s)
+char	*extract_file_name(char *line, char redir, t_mini *s)
 {
 	int		len;
 	int		iter;
@@ -106,14 +102,14 @@ char	*find_file_name(char *line, int position, int *len)
 	int	start;
 
 	counter = 0;
-
 	while (line[position] && !ft_isalnum(line[position]))
 	{
 		position++;
 		*len += 1;
-	}	
+	}
 	start = position;
-	while (line[position] && (ft_isalnum(line[position]) || line[position] == '.'))
+	while (line[position] && (ft_isalnum(line[position]) ||
+		line[position] == '.'))
 	{
 		counter++;
 		position++;
