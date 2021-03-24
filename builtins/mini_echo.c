@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_echo.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctycho <ctycho@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:43:03 by ctycho            #+#    #+#             */
-/*   Updated: 2021/03/23 23:55:18 by ctycho           ###   ########.fr       */
+/*   Updated: 2021/03/24 00:11:14 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int			mini_echo_2(char *s)
 	i = 1;
 	while (s[i])
 	{
-		if (s[i] == 'n')
+		if (s[i] == 'n' && s[0] == '-')
 			i++;
 		else
 			return (-1);
@@ -33,10 +33,7 @@ static void			mini_echo_1(t_mini *s, char **str, int i)
 	while (str[i])
 	{
 		if (mini_echo_2(str[i]) == 0)
-		{
-
 			i++;
-		}
 		else
 		{
 			write(s->fdout, str[i], ft_strlen(str[i]));
@@ -53,7 +50,7 @@ void				mini_echo(char **str, t_mini *s)
 	i = 0;
 	if (str[1] == NULL)
 		write(s->fdout, "\n", 1);
-	else if (str[1][0] == '-' && str[1][1] == 'n')
+	else if (str[1][0] == '-' && str[1][1] == 'n' && mini_echo_2(str[1]) == 0)
 		mini_echo_1(s, str, i);
 	else
 	{

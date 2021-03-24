@@ -6,7 +6,7 @@
 /*   By: mvernius <mvernius@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 14:16:39 by mvernius          #+#    #+#             */
-/*   Updated: 2021/03/23 20:49:25 by mvernius         ###   ########.fr       */
+/*   Updated: 2021/03/24 00:22:26 by mvernius         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,11 +94,11 @@ int		replace(char *command, t_mass **head, char **res)
 		ft_memdel_1d(key);
 	}
 	else if (*command == '$' && !ft_isalnum(*(command + 1)))
-	{
 		(*res) = ft_strnjoin_char((*res), '$', 1);
-	}
 	else
 		i++;
+	if (*res == NULL)
+		*res = ft_strdup("");
 	return (i);
 }
 
@@ -109,9 +109,7 @@ char	*extract_key(char *str)
 
 	pos = 0;
 	res = NULL;
-	if (ft_isdigit(str[pos]))
-		return (NULL);
-	while (str[pos] && ft_isalnum((int)str[pos]))
+	while (str[pos] && (ft_isalnum((int)str[pos]) || str[pos] == '_'))
 	{
 		res = ft_strnjoin_char(res, str[pos], 1);
 		pos++;
